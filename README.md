@@ -27,6 +27,8 @@ python3.exe ./tools/project.gen.py "./ProjectName.mds" "./tools/api/project.d.ts
 python3.exe ./tools/testedApps.gen.py "./TestedApps/TestedApps.tcTAs" "./tools/api/testedApps.d.ts"
 ```
 
+If you have several projects in your project suite, consider moving generated modules in according `./Script/lib/` folder for each project.
+
 3. Add `jsconfig.json` to your `Script` folder where you can set path to TypeScript API modules and whatever you like:
 
 ```json
@@ -41,6 +43,28 @@ python3.exe ./tools/testedApps.gen.py "./TestedApps/TestedApps.tcTAs" "./tools/a
     "include": [
         "./*.js",
         "../tools/api/*.ts",
+    ],
+}
+```
+
+In case you created project-dependent modules inside project's `./Script/lib/` folder, you should add create additional `./Script/lib/tsconfig.json` in order to properly link common and project-dependent API:
+
+```json
+{
+    "compilerOptions": {
+        "noLib": false,
+        "target": "es5",
+        "baseUrl": ".",
+        "strict": true,
+        "strictFunctionTypes": true,
+        "diagnostics": true,
+        "noImplicitAny": true,
+        "noEmitHelpers": true,
+        "declaration": false
+    },
+    "include": [
+        "../../tools/api/*.ts",
+        "./*.ts",
     ],
 }
 ```
