@@ -47,7 +47,7 @@ If you have several projects in your project suite, consider moving generated mo
 }
 ```
 
-In case you created project-dependent modules inside project's `./Script/lib/` folder, you should add create additional `./Script/lib/tsconfig.json` in order to properly link common and project-dependent API:
+In case you created project-dependent modules inside project's `./Script/lib/` folder, you should create additional `./Script/lib/tsconfig.json` in order to properly link common and project-dependent API:
 
 ```json
 {
