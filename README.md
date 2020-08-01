@@ -7,6 +7,10 @@ Inspired by https://github.com/falafelsoftware/testcomplete-typescript
 1. Clone this repo somewhere around, for example in `./tools/` inside your TestComplete project folder
 
 ```powershell
+# add as submodule
+git submodule add https://github.com/deitry/testcomplete-ts-api ./tools
+
+# or clone full repo
 git clone https://github.com/deitry/testcomplete-ts-api ./tools/
 ```
 
