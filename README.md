@@ -8,7 +8,7 @@ Inspired by https://github.com/falafelsoftware/testcomplete-typescript
 
 ```powershell
 # add as submodule
-git submodule add https://github.com/deitry/testcomplete-ts-api ./tools
+git submodule add https://github.com/deitry/testcomplete-ts-api ./tools/
 
 # or clone full repo
 git clone https://github.com/deitry/testcomplete-ts-api ./tools/
