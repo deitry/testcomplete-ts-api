@@ -85,7 +85,7 @@ def generateFile(sourceXmlPath: str, destinationDTs: str):
     with open(destinationDTs, 'w') as generatedFile:
         printHeader(generatedFile, sourceXmlPath)
         generatedFile.write('declare namespace Project {\n')
-        generatedFile.write('    interface _Variables {\n')
+        generatedFile.write('    interface _Variables extends TestComplete.ProjectVariables {\n')
 
         parseXML(sourceXmlPath, generatedFile)
 
