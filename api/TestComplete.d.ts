@@ -527,12 +527,16 @@ declare namespace TestComplete {
         WindowToScreen(X: int, Y: int): any;
     }
 
-    /** Project and Project Suite */
+    /* Project and Project Suite */
 
     interface Password {
         DecryptedValue: string;
     }
 
+    /**
+     * Provides a program interface to the properties of the current TestComplete project,
+     * to its test items and to the local variables defined in this project
+     */
     interface Project {
         FileName: string;
         Path: string;
@@ -542,6 +546,10 @@ declare namespace TestComplete {
         Variables: ProjectVariables;
     }
 
+    /**
+     * Provides a program interface to the properties of the current TestComplete project suite
+     * and to the local variables defined in this project suite.
+     */
     interface ProjectSuite {
         FileName: string;
         Path: string;
