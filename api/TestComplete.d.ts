@@ -550,7 +550,19 @@ declare namespace TestComplete {
         Variables: ProjectSuiteVariables;
     }
 
-    interface Variables {
+    /**
+     * IDispatch objects, for example, TestComplete scripting objects (Sys, Log),
+     * test objects obtained from applications (Aliases.browser), COM objects, and others.
+     */
+    interface IDispatch {
+        /**
+         * Assigns a value to an object’s property given the property name as a string.
+         * Last param in `...Params` is a value of property being setted whereas all others are property parameters.
+         */
+        $set(PropertyName: string, ...Params: any[]): never;
+    }
+
+    interface Variables extends IDispatch {
         VariableByName(Name: string): Variant;
         VariableCount: int;
         VariableExists(Name: string): boolean;
