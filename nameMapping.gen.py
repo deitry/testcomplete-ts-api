@@ -2,7 +2,7 @@
 
 from enum import IntEnum
 from sys import argv
-from typing import Dict, List, Tuple, Optional, Generator, TextIO
+from typing import Dict, List, Tuple, Optional, Generator, TextIO, Union
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 from textwrap import indent
@@ -119,6 +119,16 @@ def getPropertyValue(el: Element) -> Optional[PropertyValue]:
     return None
 
 
+def containsKeyword(elName: str, keywords: Union[str, List[str]]):
+    """Checks if given elName contains one of the given keywords."""
+    if type(keywords) is str:
+        keywords = [str(keywords)]
+    for keyword in keywords:
+        if elName.startswith(keyword) or elName.endswith(keyword):
+            return True
+    return False
+
+
 def getObject(el: Element, allObjects: Dict[str, NameMappingElement]):
     '''Creates mapped object by xml definition.'''
 
@@ -150,16 +160,20 @@ def getObject(el: Element, allObjects: Dict[str, NameMappingElement]):
 
     # last chance to deduce type
     if obj.type == 'Element':
-        if obj.name.startswith('radioButton'):
+        elName = obj.name.lower()
+
+        if containsKeyword(elName, 'radiobutton'):
             obj.type = 'RadioButton'
-        elif obj.name.startswith('comboBox'):
+        elif containsKeyword(elName, 'combobox'):
             obj.type = 'ComboBox'
-        elif obj.name.startswith('button'):
+        elif containsKeyword(elName, 'checkbox'):
+            obj.type = 'CheckBox'
+        elif containsKeyword(elName, 'button'):
             obj.type = 'Button'
-        elif obj.name.endswith('Button'):
-            obj.type = 'Button'
-        elif obj.name.endswith('Form'):
+        elif containsKeyword(elName, 'form'):
             obj.type = 'Form'
+        elif containsKeyword(elName, ['edit', 'textbox', 'input']):
+            obj.type = 'Edit'
 
     # child items
     for guid, child in getChilds(el, allObjects):
