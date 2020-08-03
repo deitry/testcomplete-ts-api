@@ -568,16 +568,16 @@ declare namespace TestComplete {
         /**
          * Assigns a value to an object’s property given the property name as a string.
          */
-        $set(PropertyName: string, Value: any): never;
+        $set(PropertyName: string, Value: any): void;
         /**
          * Assigns a value to an object’s property given the property name as a string.
          */
-        $set(PropertyName: string, Param: any, Value: any): never;
+        $set(PropertyName: string, Param: any, Value: any): void;
         /**
          * Assigns a value to an object’s property given the property name as a string.
          * Last param in `...Params` is a value of property being setted whereas all others are property parameters.
          */
-        $set(PropertyName: string, Param1: any, Param2: any, ...Params: any[]): never;
+        $set(PropertyName: string, Param1: any, Param2: any, ...Params: any[]): void;
 
         /**
          * Get an object’s property value given the property name as a string.
@@ -1966,7 +1966,7 @@ declare namespace TestComplete {
         WorkFolder: string,
 
         /** Activates an appropriate run mode and applies parameters to the tested application. */
-        Activate(): never,
+        Activate(): void,
 
         /** Specifies whether a parameter collection is currently active (that is, whether an appropriate run mode is selected). */
         IsActive(): boolean,
