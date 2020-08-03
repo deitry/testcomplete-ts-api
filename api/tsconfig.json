@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "noLib": false,
+        "target": "es5",
+        "baseUrl": ".",
+        "strict": true,
+        "strictFunctionTypes": true,
+        "diagnostics": true,
+        "noImplicitAny": true,
+        "noEmitHelpers": true,
+        "declaration": false
+    },
+    "include": [
+        "./*.ts",
+    ],
+}
