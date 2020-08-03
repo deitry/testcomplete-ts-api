@@ -77,8 +77,8 @@ def parseXML(xmlFile: str, destinationFile: TextIO):
                         destinationFile.write(f'        /** {description} */\n')
 
                     # TODO: variables values
-                    # TODO: readonly - to not change variables during tests
-                    destinationFile.write(f'        readonly {name}: {varType};\n')
+                    # TODO: optional readonly - to not change variables during tests
+                    destinationFile.write(f'        {name}: {varType};\n')
 
 
 def generateFile(sourceXmlPath: str, destinationDTs: str):
