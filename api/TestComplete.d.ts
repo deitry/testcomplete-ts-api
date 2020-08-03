@@ -563,6 +563,8 @@ declare namespace TestComplete {
      * test objects obtained from applications (Aliases.browser), COM objects, and others.
      */
     interface IDispatch {
+        // $set overrides are needed to make Value parameter mandatory
+
         /**
          * Assigns a value to an object’s property given the property name as a string.
          */
@@ -576,6 +578,12 @@ declare namespace TestComplete {
          * Last param in `...Params` is a value of property being setted whereas all others are property parameters.
          */
         $set(PropertyName: string, Param1: any, Param2: any, ...Params: any[]): never;
+
+        /**
+         * Get an object’s property value given the property name as a string.
+         * $get works similar to aqObject.GetPropertyValue, but is easier to use in JavaScript.
+         */
+        $get(PropertyName: string, ...Param: any[]): any;
     }
 
     interface Variables extends IDispatch {
@@ -987,24 +995,47 @@ declare namespace TestComplete {
         EnableStackOnWarning: boolean;
     }
 
+    /**
+     * Provides a test log structure that can hold text messages, images, files and file links generated from tests.
+     * The test log, which you can view via the Test Log, can store its items as a plain list
+     * or have them organized as a tree whose nodes are folders that can include test log items and other folders.
+     */
     interface Log {
+        /** Returns the number of information messages posted to the log by the current test item. */
         MsgCount: int;
+        /** Returns the number of warning messages posted to the log by the current test item. */
         WrnCount: int;
+        /** Returns the number of error messages posted to the log by the current test item. */
         ErrCount: int;
+        /** Returns the number of event messages posted to the log by the current test item. */
         EvnCount: int;
+        /** Returns the number of image messages posted to the log by the current test item. */
         ImgCount: int;
+        /** Returns the number of file messages posted to the log by the current test item. */
         FileCount: int;
+        /** Returns the number of file link messages posted to the log by the current test item. */
         LinkCount: int;
+        /** Returns the name of the file (including the path) that holds a list of test results. */
         Path: string;
+        /** Specifies whether to allow the posting of folders and messages of all kinds to the test log. */
         Enabled: boolean;
+        /** Returns the number of informative messages posted to the specified log folder by the current test item. */
         FolderMsgCount: int;
+        /** Returns the number of warning messages posted to the specified log folder by the current test item. */
         FolderWrnCount: int;
+        /** Returns the number of error messages posted to the specified log folder by the current test item. */
         FolderErrCount: int;
+        /** Returns the number of event messages posted to the specified log folder by the current test item. */
         FolderEvnCount: int;
+        /** Returns the number of image messages posted to the specified log folder by the current test item. */
         FolderImgCount: int;
+        /** Returns the number of files and file links posted to the specified log folder by the current test item. */
         FolderFileAndLinkCount: int;
+        /** Provides scripting interfaces to settings that enables or disables the call stack tracing for methods that post messages to the log. */
         readonly CallStackSettings: CallStackSettings;
+        /** Returns the number of checkpoint messages posted to the log by the current test item. */
         CheckpointCount: int;
+        /** Returns the number of checkpoint messages posted to the specified log folder by the current test item. */
         FolderCheckpointCount: int;
 
         /** Log MessageText detail,
@@ -1016,6 +1047,7 @@ declare namespace TestComplete {
             Attrib?: LogAttributes | null,
             Picture?: Picture | Element | string,
             FolderId?: int): void;
+        /** Posts a warning to the test log. */
         Warning(
             MessageText: any,
             AdditionalInformation?: any,
@@ -1045,6 +1077,7 @@ declare namespace TestComplete {
             Attrib?: LogAttributes | null,
             Picture?: Picture | Element | string,
             FolderId?: int): void;
+        /** Posts an image to the test log. */
         Picture(
             Picture: Picture | Element,
             MessageText?: any,
@@ -1052,6 +1085,7 @@ declare namespace TestComplete {
             Priority?: any, /* pmNormal */
             Attrib?: LogAttributes | null,
             FolderId?: int): string;
+        /** Posts a file to the test log. */
         File(
             FileName: string,
             MessageText?: any,
@@ -1059,6 +1093,7 @@ declare namespace TestComplete {
             Priority?: int, /* pmNormal */
             Attrib?: LogAttributes | null,
             FolderId?: int): string;
+        /** Posts a reference to a file or to any other resource to the test log. */
         Link(
             Link: string,
             MessageText?: any,
@@ -1066,14 +1101,22 @@ declare namespace TestComplete {
             Priority?: int, /* pmNormal */
             Attrib?: LogAttributes | null,
             FolderId?: int): void;
+        /**
+         * Turns off event logging until UnlockEvents is called.
+         * The optional Count parameter sets the number of latest events to keep in a safety buffer.
+         * They will be added to the log when posting an error or warning message.
+         */
         LockEvents(Count: int): void;
+        /** Re-enables event logging. See LockEvents() */
         UnlockEvents(): void;
+        /** Creates a folder in the test log. This folder can hold messages of different types and subfolders. */
         CreateFolder(
             MessageText: any,
             AdditionalInformation?: any,
             Priority?: any, /* pmNormal */
             Attrib?: LogAttributes | null,
             OwnerFolderId?: int): int;
+        /** Returns the number of folders created in the log by the current test item. */
         FolderCount(): int;
 
         /** Adds the specified folder to the folder stack
@@ -1082,20 +1125,24 @@ declare namespace TestComplete {
 
         /** Pops the top folder of the folder stack out of that stack */
         PopLogFolder(): void;
-
+        /** Saves the current test log results to one or several files in a particular format. */
         SaveResultsAs(
             FileName: string,
             LogFormat?: int, /* lsXML */
             ExportVisualizerImages?: boolean, /* true */
             LogScope?: int): boolean;
+        /** Posts the log contents to an issue-tracking system. */
         CreateIssueFromCurrentLog(): boolean;
+        /** Creates a new object that defines font and color settings to be applied to test log messages and folders. */
         CreateNewAttributes(): LogAttributes;
+        /** Creates a folder in the test log and activates the folder so that all posted messages are sent to this folder. */
         AppendFolder(
             MessageText: any,
             AdditionalInformation?: any,
             Priority?: any, /* pmNormal */
             Attrib?: LogAttributes | null,
             OwnerFolderId?: int): int;
+        /** Posts a checkpoint message to the test log. */
         Checkpoint(
             MessageText: any,
             AdditionalInformation?: any,
@@ -1103,6 +1150,7 @@ declare namespace TestComplete {
             Attrib?: LogAttributes | null,
             Picture?: Picture | Element | string,
             FolderId?: int): void;
+        /** Generates intermediate test results and saves them to the log item collection. */
         SaveToDisk(): void;
     }
 
@@ -2049,7 +2097,7 @@ declare namespace TestComplete {
     interface aqObjMethod { }
 }
 
-/**
+/*
  * Declarations
  * These allow you to use TestComplete keywords in TypeScript, e.g.
  *     var today = aqDateTime.Today()
@@ -2063,6 +2111,7 @@ declare const aqFile: TestComplete.aqFile;
 declare const aqFileSystem: TestComplete.aqFileSystem;
 declare const aqObject: TestComplete.aqObject;
 declare const aqPerformance: TestComplete.aqPerformance;
+/** Lets to perform various operations on string values */
 declare const aqString: TestComplete.aqString;
 declare const aqTestCase: TestComplete.aqTestCase;
 declare const aqUtils: TestComplete.aqUtils;
@@ -2072,6 +2121,11 @@ declare const Consts: TestComplete.Consts;
 declare const DDT: TestComplete.DDT;
 declare const Indicator: TestComplete.Indicator;
 declare const JavaClasses: TestComplete.JavaClasses;
+/**
+ * Provides a test log structure that can hold text messages, images, files and file links generated from tests.
+ * The test log, which you can view via the Test Log, can store its items as a plain list
+ * or have them organized as a tree whose nodes are folders that can include test log items and other folders.
+ */
 declare const Log: TestComplete.Log;
 declare const NameMapping: TestComplete.NameMapping;
 declare const Options: TestComplete.Options;
