@@ -1414,15 +1414,22 @@ declare namespace TestComplete {
         GetCOMServerPath(Server: string, Is64bit: boolean): string;
     }
 
+    /** Lets to perform various operations on string values */
     interface aqString {
+        /** Leading spaces will be trimmed. Value = 1 */
         readonly stLeading: int;
+        /** Trailing spaces will be trimmed. Value = 2 */
         readonly stTrailing: int;
+        /** Both leading and trailing spaces will be trimmed. Value = 3 */
         readonly stAll: int;
 
+        /** Specifies a character used to separate individual values in a list. */
         QuoteSymbol: string;
+        /** Specifies a symbol used as a quotation mark. */
         ListSeparator: string;
 
-        /** Removes spaces and control characters from the specified string. */
+        /** Removes spaces and control characters from the specified string.
+         * `Space` is one of the `aqString.stLeading`, `aqString.stTrailing`, `aqString.stAll` */
         Trim(InputString: string, Space: int): string;
         /** Concatenates two specified strings. */
         Concat(String1: string, String2: string): string;
