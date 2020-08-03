@@ -242,7 +242,7 @@ def generateElementDeclaration(
     # in aliases we use not a real obj name but name of alias
     result = el.attrib['Name'] + ": "
 
-    if obj.type != '':
+    if obj.type:
         result += f'{CLASS_PREFIX}{obj.type} & '
     result += '{\n'
     result += generatePropsDeclarations(obj)
