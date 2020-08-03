@@ -129,6 +129,26 @@ def containsKeyword(elName: str, keywords: Union[str, List[str]]):
     return False
 
 
+def inferTypeFromName(elName: str) -> str:
+    """Tries to guess type of element by its name."""
+    elName = elName.lower()
+
+    if containsKeyword(elName, 'radiobutton'):
+        return 'RadioButton'
+    elif containsKeyword(elName, 'combobox'):
+        return 'ComboBox'
+    elif containsKeyword(elName, 'checkbox'):
+        return 'CheckBox'
+    elif containsKeyword(elName, 'button'):
+        return 'Button'
+    elif containsKeyword(elName, 'form'):
+        return 'Form'
+    elif containsKeyword(elName, ['edit', 'textbox', 'input']):
+        return 'Edit'
+
+    return 'Element'
+
+
 def getObject(el: Element, allObjects: Dict[str, NameMappingElement]):
     '''Creates mapped object by xml definition.'''
 
@@ -160,20 +180,7 @@ def getObject(el: Element, allObjects: Dict[str, NameMappingElement]):
 
     # last chance to deduce type
     if obj.type == 'Element':
-        elName = obj.name.lower()
-
-        if containsKeyword(elName, 'radiobutton'):
-            obj.type = 'RadioButton'
-        elif containsKeyword(elName, 'combobox'):
-            obj.type = 'ComboBox'
-        elif containsKeyword(elName, 'checkbox'):
-            obj.type = 'CheckBox'
-        elif containsKeyword(elName, 'button'):
-            obj.type = 'Button'
-        elif containsKeyword(elName, 'form'):
-            obj.type = 'Form'
-        elif containsKeyword(elName, ['edit', 'textbox', 'input']):
-            obj.type = 'Edit'
+        obj.type = inferTypeFromName(obj.name)
 
     # child items
     for guid, child in getChilds(el, allObjects):
@@ -237,13 +244,16 @@ def generateElementDeclaration(
     '''Returns generated text for element definition including children.'''
 
     guid = el.attrib['Owner']
+    mappedName = el.attrib.get('Name', '')
     obj = allObjects[guid]
 
     # in aliases we use not a real obj name but name of alias
     result = el.attrib['Name'] + ": "
 
-    if obj.type:
-        result += f'{CLASS_PREFIX}{obj.type} & '
+    if (not obj.type) or obj.type == "Element":
+        obj.type = inferTypeFromName(mappedName)
+
+    result += f'{CLASS_PREFIX}{obj.type} & '
     result += '{\n'
     result += generatePropsDeclarations(obj)
     children = generateChildrenDeclaration(el, allObjects)
