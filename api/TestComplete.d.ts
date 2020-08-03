@@ -1422,39 +1422,61 @@ declare namespace TestComplete {
         QuoteSymbol: string;
         ListSeparator: string;
 
+        /** Removes spaces and control characters from the specified string. */
         Trim(InputString: string, Space: int): string;
+        /** Concatenates two specified strings. */
         Concat(String1: string, String2: string): string;
+        /** Encloses the specified string in quotes. */
         Quote(InputString: string): string;
+        /** Converts a quoted string to an unquoted string. */
+        Unquote(InputString: string): string;
+        /** Returns the number of characters in a string. */
         GetLength(SourceString: string): int;
+        /** Converts the specified string to upper case. */
         ToUpper(InputString: string): string;
+        /** Converts the specified string to lower case. */
         ToLower(InputString: string): string;
+        /** Inserts one string to another at the specified position. */
         Insert(InputString: string, InsertString: string, InsertPosition: int): string;
+        /** Retrieves a substring from the input string. */
         SubString(InputString: string, StartPosition: int, Length: int): string;
+        /** Retrieves a single character from the input string. */
         GetChar(InputString: string, Position: int): string;
+        /** Removes a number of characters from the input string. */
         Remove(InputString: string, StartPosition: int, Length: int): string;
+        /** Searches for a substring within the given string. */
         Find(
             InputString: string,
             SubString: string,
             StartPosition?: int,
             CaseSensitive?: boolean /* true */): int;
+        /** Searches for the last occurrence of the substring within the given string. */
+        FindLast(
+            InputString: string,
+            SubString: string,
+            CaseSensitive?: boolean /* true */): int;
+        /** Compares two specified strings. */
         Compare(String1: string, String2: string, CaseSensitive: boolean): int;
+        /** Replaces all the occurrences of one substring with another substring. */
         Replace(
             InputString: string,
             StringToReplace: string,
             SubsString: string,
             CaseSensitive?: boolean /* true */): string;
-        Unquote(InputString: string): string;
+        /** Checks whether a string contains a substring that matches the specified regular expression. */
         StrMatches(ExprStr: string, Str: string): boolean;
+        /** Returns the number of items in the string list. */
         GetListLength(List: string): int;
+        /** Returns an individual item from the list passed through the input string. */
         GetListItem(List: string, Index: int): string;
+        /** Adds a new item to a string list. */
         AddListItem(List: string, NewItem: string, Index: int): string;
+        /** Removes an item with the given index from a string list. */
         DeleteListItem(List: string, Index: int): string;
+        /** Changes the value of the string list item with the given index. */
         ChangeListItem(List: string, NewItem: string, Index: int): string;
+        /** Generates a formatted string. */
         Format(Format: string): string;
-        FindLast(
-            InputString: string,
-            SubString: string,
-            CaseSensitive?: boolean /* true */): int;
     }
 
     interface aqPerformance {
