@@ -7,6 +7,7 @@
 
 // interface int extends number {};
 declare type int = number;
+declare type double = number;
 
 declare namespace TestComplete {
 
@@ -1240,6 +1241,10 @@ declare namespace TestComplete {
         GetLocaleInfo(Locale: int, Type: int): string;
     }
 
+    /**
+     * Allows to manage files as well as read from and write to text and binary files.
+     * This object complements the aqFileSystem object, but unlike the latter it lets you deal with files only.
+     */
     interface aqFile {
         readonly faWrite: int; /* 10 */
         readonly faRead: int; /* 11 */
@@ -1249,38 +1254,58 @@ declare namespace TestComplete {
         readonly ctUnicode: int; /* 21 */ // UTF-16
         readonly ctUTF8: int; /* 22 */
 
+        /** Returns the time when the specified file was created. */
         GetCreationTime(PathToFile: string): any;
+        /** Returns the time when the specified file was last accessed. */
         GetLastAccessTime(PathToFile: string): any;
+        /** Returns the time when the specified file was last modified. */
         GetLastWriteTime(PathToFile: string): any;
+        /** Returns the size of the specified file. */
         GetSize(PathToFile: string): int;
+        /** Copies the specified file to a new location. */
         Copy(
             PathToExistingFile: string,
             PathToNewFile: string,
             RenameOnCollision?: boolean /* true */): boolean;
+        /** Deletes the specified file. */
         Delete(PathToFile: string): boolean;
+        /** Creates a new file with the specified name. NOTE: The folder where you want to create a file must exist. */
         Create(PathToFile: string): int;
+        /** Indicates whether the specified file, folder or drive exists. */
         Exists(Path: string): boolean;
+        /** Renames the specified file. */
         Rename(
             OldPath: string,
             NewPath: string,
             RenameOnCollision?: boolean /* true */): boolean;
+        /** Moves the specified file to a new location. */
         Move(
             PathToExistingFile: string,
             PathToNewFile: string,
             RenameOnCollision?: boolean /* true */): boolean;
+        /** Compares two specified files. */
         Compare(PathToFile1: string, PathToFile2: string): boolean;
+        /** Sets a new creation time for the specified file. */
         SetCreationTime(Path: string, Time: any): boolean;
+        /** Sets a new time when the file was last accessed. */
         SetLastAccessTime(Path: string, Time: any): boolean;
+        /** Sets a new time when the file was last written to. */
         SetLastWriteTime(Path: string, Time: any): boolean;
+        /** Returns the attributes of the specified file. */
         GetFileAttributes(PathToFile: string): int;
+        /** Assigns new attributes to the specified file. */
         SetFileAttributes(Path: string, fAttr: int): int;
+        /** Opens the specified file in binary mode. */
         OpenBinaryFile(Path: string, FileAccess: int, OverwriteOrCreate: boolean): any;
+        /** Opens the specified file in text mode. */
         OpenTextFile(
             Path: string,
             FileAccess: int,
             TextCodingType: int,
             OverwriteOrCreate?: boolean /* false */): aqTextFile;
+        /** Reads the whole contents of the specified text file into a single string. */
         ReadWholeTextFile(Path: string, TextCodingType: int): string;
+        /** Writes a string to the specified text file. */
         WriteToTextFile(
             Path: string,
             String: string,
@@ -1288,91 +1313,109 @@ declare namespace TestComplete {
             OverwriteOrCreate?: boolean /* false */): boolean;
     }
 
+    /** Lets you work with the computer’s file system: obtain information about drives,
+     * folders and files as well as to add, modify and remove files and folders. */
     interface aqFileSystem {
+        /** Returns the collection of disk drives of the current computer. */
         Drives: any;
 
         readonly fattrSet: int;
         readonly fattrInvert: int;
         readonly fattrFree: int;
 
+        /** A read-only file. */
         readonly faReadOnly: int;
+        /** A hidden file. */
         readonly faHidden: int;
+        /** A system file. */
         readonly faSystem: int;
         readonly faDirectory: int;
+        /** An archive file. */
         readonly faArchive: int;
         readonly faDevice: int;
+        /** A normal file (that is, a file without any other attributes set). */
         readonly faNormal: int;
+        /** A temporary file. */
         readonly faTemporary: int;
+        /** A sparse file. */
         readonly faSparseFile: int;
+        /** A link or shortcut file, or a file that has an associated reparse point. */
         readonly faReparsePoint: int;
+        /** A compressed file. */
         readonly faCompressed: int;
+        /** A file whose data is physically moved to offline storage. */
         readonly faOffline: int;
+        /** A file that is not indexed by the content indexing service. */
         readonly faNotContentIndexed: int;
+        /** An encrypted file. */
         readonly faEncrypted: int;
+        /** A virtual file. */
         readonly faVirtual: int;
 
-        CreateFolder(Path: string): int;
-        DeleteFolder(Path: string, RemoveNonEmpty?: boolean /* false */): boolean;
-        GetCurrentFolder(): string;
-        SetCurrentFolder(DirStr: string): boolean;
-        DeleteFile(PathToFile: string): boolean;
-        MoveFile(
-            PathToExistingFile: string,
-            PathToNewFile: string,
-            RenameOnCollision?: boolean /* true */): boolean;
-
-        /** Copy one or several files to a new location */
-        CopyFile(
-            PathToExistingFile: string,
-            PathToNewFile: string,
-            RenameOnCollision?: boolean /* true */): boolean;
-        GetShortPathName(longPath: string): string;
-        Exists(Path: string): boolean;
-        MoveFolder(
-            Source: string,
-            Destination: string,
-            RenameOnCollision?: boolean /* true */): boolean;
-
-        /** Copies the specified folder(s) to another location. */
-        CopyFolder(
-            Source: string,
-            Destination: string,
-            RenameOnCollision?: boolean /* true */): boolean;
-        GetFileName(PathToFile: string): string;
-        GetFileNameWithoutExtension(PathToFile: string): string;
-        IncludeTrailingBackSlash(PathToFolder: string): string;
-        ExcludeTrailingBackSlash(PathToFolder: string): string;
-        GetRelativePath(CurrentFolder: string, AbsoluteFileName: string): string;
-        GetFileDrive(PathToFile: string): string;
-        ExpandUNCFileName(InPath: string): string;
-        RenameFile(
-            OldPath: string,
-            NewPath: string,
-            RenameOnCollision?: boolean /* true */): boolean;
-        RenameFolder(OldPath: string, NewPath: string): boolean;
-        GetFileFolder(PathToFile: string): string;
-        GetFileExtension(PathToFile: string): string;
-        ExpandFileName(InPath: string): string;
-        FindFiles(
-            Path: string,
-            SearchPattern: string,
-            SearchInSubDirs?: boolean /* false */): ObjectIterator<aqFileInfo>;
-        FindFolders(
-            Path: string,
-            SearchPattern: string,
-            SearchInSubDirs?: boolean /* false */): ObjectIterator<aqFolderInfo>;
-        GetFileInfo(Path: string): any;
-        GetFolderInfo(Path: string): any;
-        GetDriveInfo(Drive: string): any;
+        /** Modifies the attribute(s) of the specified file or folder. */
         ChangeAttributes(Path: string, Attribute: int, Action: int): int;
+        /** Indicates whether the specified file or folder has certain attribute(s). */
         CheckAttributes(Path: string, Attribute: int): boolean;
-        MapNetworkDrive(
-            LocalName: string,
-            Path: string,
-            User: string,
-            Password: string,
-            Remember: boolean): int;
+        /** Copy one or several files to a new location */
+        CopyFile(PathToExistingFile: string,PathToNewFile: string,RenameOnCollision?: boolean /* true */): boolean;
+        /** Copies the specified folder(s) to another location. */
+        CopyFolder(Source: string,Destination: string,RenameOnCollision?: boolean /* true */): boolean;
+        /** Creates a new folder. */
+        CreateFolder(Path: string): int;
+        /** Deletes the specified file(s). */
+        DeleteFile(PathToFile: string): boolean;
+        /** Deletes the specified folder(s). */
+        DeleteFolder(Path: string, RemoveNonEmpty?: boolean /* false */): boolean;
+        /** Discards connection to the specified network folder. */
         DisconnectNetworkDrive(Name: string, Force: boolean, Remember: boolean): int;
+        /** Removes the trailing path delimiter from the specified path. */
+        ExcludeTrailingBackSlash(PathToFolder: string): string;
+        /** Indicates whether the specified drive, folder or file exists. */
+        Exists(Path: string): boolean;
+        /** Converts the given relative file name into a fully qualified path name. */
+        ExpandFileName(InPath: string): string;
+        /** Converts the given relative file name into a fully qualified path name using Universal Naming Convention. */
+        ExpandUNCFileName(InPath: string): string;
+        /** Searches a folder for files matching the specified pattern. */
+        FindFiles( Path: string, SearchPattern: string, SearchInSubDirs?: boolean /* false */): ObjectIterator<aqFileInfo>;
+        /** Searches a folder for subfolders matching the specified pattern. */
+        FindFolders(Path: string,SearchPattern: string,SearchInSubDirs?: boolean /* false */): ObjectIterator<aqFolderInfo>;
+        /** Returns the fully qualified name of the current folder. */
+        GetCurrentFolder(): string;
+        /** Retrieves detailed information about the specified drive volume. */
+        GetDriveInfo(Drive: string): aqDriveInfo;
+        /** Extracts the drive part from the specified path. */
+        GetFileDrive(PathToFile: string): string;
+        /** Returns the extension part of the specified path. */
+        GetFileExtension(PathToFile: string): string;
+        /** Extracts the folder path from the full path. */
+        GetFileFolder(PathToFile: string): string;
+        /** Returns an aqFileInfo object that provides information about the specified file. */
+        GetFileInfo(Path: string): aqFileInfo;
+        /** Returns the name and extension parts of the specified path. */
+        GetFileName(PathToFile: string): string;
+        /** Returns the file name, which is part of the specified path, without the extension. */
+        GetFileNameWithoutExtension(PathToFile: string): string;
+        /** Returns an aqFolderInfo object that provides information about the specified folder. */
+        GetFolderInfo(Path: string): any;
+        /** Converts a fully qualified path name into a relative path name. */
+        GetRelativePath(CurrentFolder: string, AbsoluteFileName: string): string;
+        /** Returns the given path in the short 8.3 format. */
+        GetShortPathName(longPath: string): string;
+        /** Ensures that the specified path ends with a trailing path delimiter. */
+        IncludeTrailingBackSlash(PathToFolder: string): string;
+        /** Establishes connection to the specified network folder. */
+        MapNetworkDrive(LocalName: string,Path: string,User: string,Password: string,Remember: boolean): int;
+        /** Moves the specified file(s) to a new location. */
+        MoveFile(PathToExistingFile: string, PathToNewFile: string, RenameOnCollision?: boolean /* true */): boolean;
+        /** Moves the specified folder(s) to another location. */
+        MoveFolder(Source: string,Destination: string,RenameOnCollision?: boolean /* true */): boolean;
+        /** Renames the specified file. */
+        RenameFile(OldPath: string,NewPath: string,RenameOnCollision?: boolean /* true */): boolean;
+        /** Renames the specified folder or moves it to another folder. */
+        RenameFolder(OldPath: string, NewPath: string): boolean;
+        /** Sets the specified folder as the current folder. */
+        SetCurrentFolder(DirStr: string): boolean;
     }
 
     // T == aqFileInfo | aqFolderInfo | aqDriveInfo |
@@ -2090,11 +2133,165 @@ declare namespace TestComplete {
         }
     }
 
-    interface aqFileInfo { }
-    interface aqFolderInfo { }
-    interface aqObjField { }
-    interface aqObjEvent { }
-    interface aqObjMethod { }
+    /** Provides detailed information about any drive of the computer, no matter whether the drive is physical or logical.  */
+    interface aqDriveInfo {
+        /** Returns the letter of the given drive. */
+        DriveLetter: string;
+        /** Indicates the type of the specified drive: fixed, removable, network and so on. */
+        DriveType: int;
+        /** Returns the collection of files in the drive’s root folder. */
+        Files: aqObjIterator<aqFileInfo>;
+        /** Returns the name of a disk’s file system. */
+        FileSystem: string;
+        /** Returns the collection of drive folders. */
+        Folders: aqObjIterator<aqFolderInfo>;
+        /** Returns the amount of free space on the given drive (in bytes). */
+        FreeSpace: double;
+        /** Returns the unique serial number of a disk. */
+        SerialNumber: double;
+        /** Returns the drive’s total capacity (in bytes). */
+        TotalSize: double;
+    }
+
+    /** Common interface for objects that could be used in aqObjIterator. */
+    interface IIterable {}
+
+    /** Provides various information about a file */
+    interface aqFileInfo extends IIterable {
+        /** Returns the file’s attributes. See aqFileSystem.fa* constants.
+         * To check if a file has a specific attribute set, perform the bitwise AND check on the Attribute property value
+         * and the value corresponding to the desired attribute (see the example below).
+         * Alternatively, you can use the aqFileSystem.CheckAttributes method.
+        */
+        Attributes: int;
+        /** Returns an aqFileCertificateInfo object that provides information about the file’s authentication certificate. */
+        CertificateInfo: aqFileCertificateInfo;
+        /** Returns the file’s creation date. */
+        DateCreated: DateTime;
+        /** Returns the date the file was last accessed. */
+        DateLastAccessed: DateTime;
+        /** Returns the date the file was last modified. */
+        DateLastModified: DateTime;
+        /** Returns the drive where the file is located. */
+        Drive: string;
+        /** Specifies whether the file exists. */
+        Exists: boolean;
+        /** Returns the file’s name and extension. */
+        Name: string;
+        /** Returns the file's name without the extension. */
+        NameWithoutExtension: string;
+        /** Returns the object that describes the file’s parent folder. */
+        ParentFolder: aqFolderInfo;
+        /** Returns the full path to the file. */
+        Path: string;
+        /** Returns the file name in the 8.3 format. */
+        ShortName: string;
+        /** Returns the path to the file in the 8.3 format. */
+        ShortPath: string;
+        /** Returns the file size in bytes. */
+        Size: int;
+        /** Returns an aqFileVersionInfo object that provides version information about the file. */
+        VersionInfo: aqFileVersionInfo;
+    }
+
+    interface aqFolderInfo extends IIterable { }
+    interface aqObjField extends IIterable { }
+    interface aqObjEvent extends IIterable { }
+    interface aqObjMethod extends IIterable { }
+    interface aqFileCertificateInfo { }
+
+    /**
+     * Provides various version information about a file.
+     * To get this object in your tests, use the aqFileInfo.VersionInfo property.
+     * Note, that version information can be included only in binary files
+     * (for example, executables, DLLs and so on); text files do not have version information.
+     */
+    interface aqFileVersionInfo {
+        /** Returns the code page identifier of a particular version information block. */
+        CodePage: int;
+        /** Returns the comments on the file. */
+        Comments: string;
+        /** Returns the name of the company that produced the file. */
+        CompanyName: string;
+        /** Returns the build part of the file’s version number. */
+        FileBuildVersion: int;
+        /** Returns the file description. */
+        FileDescription: string;
+        /** Returns the module attributes. */
+        FileFlags: int;
+        /** Returns the file version number. */
+        FileFullVersion: string;
+        /** Returns the major part of the file’s version number. */
+        FileMajorVersion: int;
+        /** Returns the minor part of the file’s version number. */
+        FileMinorVersion: int;
+        /** Returns the revision part of the file’s version number. */
+        FileRevisionVersion: int;
+        /** Allows you to get additional information about a device driver, font file or virtual device file.
+         * This property returns 0 for a file of another type (for example, an executable).
+         * Returned value is one of the Win32API's VFT2_* constants.
+         * If the file is a virtual device (that is, if FileType is VFT_VXD),
+         * the property returns the virtual-device identifier included in the virtual-device control block.
+         * If the file is an application, a dynamic-link library, a static-link library or a file of an unknown type
+         * (that is, if FileType is either VFT_APP, VFT_DLL, VFT_STATIC_LIB or VFT_UNKNOWN), the property returns 0.*/
+        FileSubType: int;
+        /** Indicates the general type of the file. Returns one of the Win32API.VFT_* constants. */
+        FileType: int;
+        /** Returns the file’s internal name. If none exists, the property returns the file’s original name (the OriginalFilename value) without the extension.
+         * @param Index A file can contain multiple version information blocks translated in different languages.
+         * This parameter specifies a zero-based index of the desired version information translation, among those included in the file.
+         * The default value is 0, which means the default version information block.
+         * To get the total number of version information translations in a file, use the Languages property. */
+        InternalName(Index?: int): string;
+        /** Returns the language of a particular version information block.
+         * @param Index A zero-based index of the desired version information block. Default is 0.
+         * To get the total number of version information translations in the file, use the Languages property. */
+        Language(Index?: int): string;
+        /** Returns the number of version information translations included in the file. */
+        Languages: int;
+        /** Returns the copyright notice for the file. */
+        LegalCopyright(Index?: int): string;
+        /** Returns the legal trademarks for the file. */
+        LegalTrademarks(Index?: int): string;
+        /** Returns the file’s original name. */
+        OriginalFilename(Index?: int): string;
+        /** Indicates the operating system that the file was designed for. */
+        OSFile: int;
+        /** Returns the private build information for the file. */
+        PrivateBuild(Index?: int): string;
+        /** Returns the build number of the product that the file is associated with. */
+        ProductBuildVersion: int;
+        /** Returns the version of the product that the file is associated with. */
+        ProductFullVersion: int;
+        /** Returns the major version number of the product that the file is associated with. */
+        ProductMajorVersion: int;
+        /** Returns the minor version number of the product that the file is associated with. */
+        ProductMinorVersion: int;
+        /** Returns the name of the product that the file is associated with. */
+        ProductName(Index?: int): string;
+        /** Returns the revision number of the product that the file is associated with. */
+        ProductRevisionVersion: int;
+        /** Returns the special build information for the file. */
+        SpecialBuild(Index?: int): string;
+    }
+
+    /** Provides a common interface for operations performed over several similar objects.
+     * This object is returned by a number of scripting methods and properties */
+    interface aqObjIterator <Type extends IIterable> {
+        /** Returns the number of items in the collection. */
+        Count: int;
+
+        /** Indicates whether an object follows the current one. */
+        HasNext(): boolean;
+        /** Returns an item with the specified index. */
+        Item(Index: int): Type;
+        /** Returns the next object in the collection. */
+        Next(): Type;
+        /** Moves to the first object in the collection. */
+        Reset(): void;
+        /** Increases the index indicating the iterator’s position by the specified number and returns the object by the result index. */
+        Skip(SkipCount: int): Type;
+    }
 }
 
 /*
@@ -2107,6 +2304,10 @@ declare namespace TestComplete {
 declare const aqConvert: TestComplete.aqConvert;
 declare const aqDateTime: TestComplete.aqDateTime;
 declare const aqEnvironment: TestComplete.aqEnvironment;
+/**
+ * Allows to manage files as well as read from and write to text and binary files.
+ * This object complements the aqFileSystem object, but unlike the latter it lets you deal with files only.
+ */
 declare const aqFile: TestComplete.aqFile;
 declare const aqFileSystem: TestComplete.aqFileSystem;
 declare const aqObject: TestComplete.aqObject;
