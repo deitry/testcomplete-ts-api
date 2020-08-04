@@ -950,33 +950,48 @@ declare namespace TestComplete {
         readonly vcmOff: string;
     }
 
+    /** Provides a scripting interface used to change the text or visibility of the TestComplete indicator. */
     interface Indicator {
+        /** Returns the text being shown by the indicator. */
         Text: string;
 
-        /** Specifies a new text for the indicator. */
-        PushText(Value: string): void;
-
+        /** Removes all of the strings from the stack and reverts the indicator text to the default one */
+        Clear(): void;
+        /** Hides the indicator from the screen. */
+        Hide(): void;
         /** Restores the indicator text */
         PopText(): void;
-
-        /** Removes all of the strings from the stack and reverts the
-        indicator text to the default one */
-        Clear(): void;
-
+        /** Specifies a new text for the indicator. */
+        PushText(Value: string): void;
+        /** Shows the indicator in the top-right corner of the screen. */
         Show(): void;
-        Hide(): void;
     }
 
+    /** Used to store font and color settings that can be applied to messages and folders in the Test Log. */
     interface LogAttributes {
+        /** Specifies the background color of a test log message or folder. */
         BackColor: int;
+        /** Specifies whether the text of a test log message or folder will be displayed in bold font. */
         Bold: boolean;
+        /** Specifies whether the extended text of a test log message will be displayed in the HTML format or as plain text. */
         ExtendedMessageAsPlainText: boolean;
+        /** Specifies the font color of a test log message or folder. */
         FontColor: int;
+        /** Specifies whether the text of a test log message or folder will be displayed in italic. */
         Italic: boolean;
+        /** Specifies whether the text of a test log message or folder will be displayed strikeout. */
         StrikeOut: boolean;
+        /** Specifies whether the text of a test log message or folder will be displayed underlined. */
         Underline: boolean;
     }
 
+    /**
+     * use the CallStackSettings object to specify whether the test engine will collect information
+     * about the test execution sequence for messages posted to the test log.
+     * After the test run is over, you can view the collected call sequence in the Call Stack panel
+     * of the test log and learn the sequence of script routines and keyword tests
+     * that led to the execution of the test (or routine) that posted the message to the log.
+     */
     interface CallStackSettings {
         // Enables or disables the call stack tracing for checkpoint messages.
         EnableStackOnCheckpoint: boolean;
@@ -2320,6 +2335,7 @@ declare const BuiltIn: TestComplete.BuiltIn;
 declare const Browsers: TestComplete.Browsers;
 declare const Consts: TestComplete.Consts;
 declare const DDT: TestComplete.DDT;
+/** Provides a scripting interface used to change the text or visibility of the TestComplete indicator. */
 declare const Indicator: TestComplete.Indicator;
 declare const JavaClasses: TestComplete.JavaClasses;
 /**
