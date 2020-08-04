@@ -689,17 +689,47 @@ declare namespace TestComplete {
         $get(PropertyName: string, ...Param: any[]): any;
     }
 
-    interface Variables extends IDispatch {
+    /**
+     * The Variables object provides access to a collection of project, project suite, network suite, or keyword test variables.
+     */
+    interface Variables {
+        /** Returns a variable specified by its name. */
         VariableByName(Name: string): Variant;
+        /** Returns the total number of variables in the collection. */
         VariableCount: int;
-        VariableExists(Name: string): boolean;
+
+        /** Adds a new variable to the collection.
+         * If the variable with the specified name already exists in the collection, an error occurs.
+         * @param VariableName The variable name. This name will be used to address the variable in scripts,
+         * so it must match the naming rules of the scripting language you use.
+         * @param VariableType One of the following string values:
+         * - "Boolean" - The variable can store boolean values.
+         * - "Double" - The variable can store floating-point values and dates.
+         * - "Integer" - The variable can store integer values.
+         * - "Object" - The variable can store object references.
+         * - "String" - The variable can store string values.
+         * - "Password" - The variable can store encrypted string values.
+         * - "Table" - The variable can store a two-dimensional table of values
+         * (a scripting interface to a table variable is provided by the TableVariable object).
+         * - "DB Table" (note the space between the words) - The variable can be linked to an external data source,
+         * such as a database table or recordset, an Excel spreadsheet or CSV file, and returns values from that source
+         * (a scripting interface to a database table variable is provided by the DBTableVariable object).
+         */
         AddVariable(VariableName: string, VariableType: string): void;
-        RemoveVariable(VariableName: string): void;
-        GetVariableName(Index: int): string;
-        GetVariableType(Variable: Variant): string;
-        GetVariableDescription(Variable: Variant): string;
+        /** Returns the variable category. */
         GetVariableCategory(Variable: Variant): string;
+        /** Returns the default value of a variable. */
         GetVariableDefaultValue(Variable: Variant): Variant;
+        /** Returns the variable description. */
+        GetVariableDescription(Variable: Variant): string;
+        /** Returns the name of the variable specified by its index in the variable collection. */
+        GetVariableName(Index: int): string;
+        /** Returns the name of the variable type. */
+        GetVariableType(Variable: Variant): string;
+        /** Removes the specified variable from the collection. */
+        RemoveVariable(VariableName: string): void;
+        /** Checks to see if a variable with the specified name exists in the given collection. */
+        VariableExists(Name: string): boolean;
     }
 
     /** ProjectSuitVariables and ProjectVariables can be overridden to add your
