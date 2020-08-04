@@ -5402,27 +5402,50 @@
     const VFF_CURNEDEST: number;
     const VFF_FILEINUSE: number;
     const VFFF_ISSHAREDFILE: number;
-    const VFT_APP: number;
-    const VFT_DLL: number;
-    const VFT_DRV: number;
-    const VFT_FONT: number;
-    const VFT_STATIC_LIB: number;
-    const VFT_UNKNOWN: number;
-    const VFT_VXD: number;
-    const VFT2_DRV_COMM: number;
-    const VFT2_DRV_DISPLAY: number;
-    const VFT2_DRV_INSTALLABLE: number;
-    const VFT2_DRV_KEYBOARD: number;
-    const VFT2_DRV_LANGUAGE: number;
-    const VFT2_DRV_MOUSE: number;
-    const VFT2_DRV_NETWORK: number;
-    const VFT2_DRV_PRINTER: number;
-    const VFT2_DRV_SOUND: number;
-    const VFT2_DRV_SYSTEM: number;
-    const VFT2_FONT_RASTER: number;
-    const VFT2_FONT_TRUETYPE: number;
-    const VFT2_FONT_VECTOR: number;
-    const VFT2_UNKNOWN: number;
+    /** An executable file. Value = 1 */
+    const VFT_APP: int;
+    /** A dynamic-link library (DLL). Value = 2 */
+    const VFT_DLL: int;
+    /** A device driver. Use the FileSubType property to get the driver description. Value = 3 */
+    const VFT_DRV: int;
+    /** A font file. Use the FileSubType property to get the font description. Value = 4 */
+    const VFT_FONT: int;
+    /** A static-link library. Value = 7 */
+    const VFT_STATIC_LIB: int;
+    /** Unknown file type. Value = 0 */
+    const VFT_UNKNOWN: int;
+    /** A virtual device file. Use the FileSubType property to get the virtual device identifier. Value = 5 */
+    const VFT_VXD: int;
+    /** A communications driver. Value = 10 */
+    const VFT2_DRV_COMM: int;
+    /** A display driver. Value = 4 */
+    const VFT2_DRV_DISPLAY: int;
+    /** An installable driver. Value = 8 */
+    const VFT2_DRV_INSTALLABLE: int;
+    /** A keyboard driver. Value = 2 */
+    const VFT2_DRV_KEYBOARD: int;
+    /** A language driver. Value = 3 */
+    const VFT2_DRV_LANGUAGE: int;
+    /** A mouse driver. Value = 5 */
+    const VFT2_DRV_MOUSE: int;
+    /** A network driver. Value = 6 */
+    const VFT2_DRV_NETWORK: int;
+    /** A printer driver. Value = 1 */
+    const VFT2_DRV_PRINTER: int;
+    /** A sound driver. Value = 9 */
+    const VFT2_DRV_SOUND: int;
+    /** A system driver. Value = 7 */
+    const VFT2_DRV_SYSTEM: int;
+    /** A versioned printer driver. Value = 12 */
+    const VFT2_DRV_VERSIONED_PRINTER: int;
+    /** A raster font. Value = 1 */
+    const VFT2_FONT_RASTER: int;
+    /** A TrueType font. Value = 3 */
+    const VFT2_FONT_TRUETYPE: int;
+    /** A vector font. Value = 2 */
+    const VFT2_FONT_VECTOR: int;
+    /** Unknown driver or font type. Value = 0 */
+    const VFT2_UNKNOWN: int;
     const VIETNAMESE_CHARSET: number;
     const VIEW_E_DRAW: number;
     const VIEW_E_FIRST: number;
