@@ -120,46 +120,130 @@ declare namespace TestComplete {
         scrollIntoViewIfNeeded(align: boolean): void;
     }
 
-    /** TestComplete objects initially generated using the TypeScriptUtils class
-     * and hand edited as child property objects are defined.
+    /**
+     * The OSInfo object holds the operating system information: the operating system name, version and edition,
+     * service pack version, .NET Framework count and versions, system folder paths and so on.
      */
-
-    interface Sys extends Element {
-        ChildCount: int;
-        Clipboard: Variant;
-        CPU: string;
-        CPUCount: int;
-        CPUUsage: int;
-        readonly Desktop: Desktop;
-        DomainName: string;
-        Exists: boolean;
+    interface OSInfo {
+        /** The edition of the operating system: Professional, Enterprise, Server and so on. */
+        Edition: string;
+        /** The full name of the operating system. It includes the company name, the operating system name and information about the installed service packs. */
         FullName: string;
-        HostName: string;
-        Id: int;
-        MappedName: string;
-        MemUsage: int;
+        /** Indicates whether you are working under an operating system that includes Windows Media Center. */
+        MediaCenter: boolean;
+        /** The short name of the operating system. */
         Name: string;
-        OSInfo: any;
-        Parent: any;
+        /** The number of different versions of Microsoft .NET Framework common language runtimes (CLRs) installed on the local computer. */
+        NetCoreCount: int;
+        /** Returns the version of a .NET Framework CLR by its index. */
+        NetCoreVersion: string;
+        /** Indicates whether TestComplete is running in a remote session. */
+        RemoteSession: boolean;
+        /** The version of the installed service pack. */
+        ServicePackVersion: string;
+        /** Returns the path to the Windows system folder. */
+        SystemDirectory: string;
+        /** Indicates whether TestComplete is running on the Windows XP Tablet PC Edition operating system. */
+        TabletPC: boolean;
+        /** Returns the path to the Windows temporary folder. */
+        TempDirectory: string;
+        /** Operating system version. */
+        Version: string;
+        /** Indicates whether TestComplete is running on a Virtual PC virtual machine. */
+        VirtualPC: boolean;
+        /** Indicates whether TestComplete is running on a VMware virtual machine. */
+        VMWare: boolean;
+        /** Indicates whether TestComplete is running on a 64-bit version of the Windows operating system. */
+        Windows64bit: boolean;
+        /** The directory in which the operating system is installed. */
+        WindowsDirectory: string;
+    }
+
+    /**
+     *
+     */
+    interface Sys extends Element {
+        /** Returns the number of child objects of the given object. */
+        ChildCount: int;
+        /** Puts text or images to the clipboard or retrieves the clipboard data. */
+        Clipboard: Variant;
+        /** Stores the model and frequency of the computer’s processor(s). */
+        CPU: string;
+        /** Returns the number of CPUs installed on your computer. */
+        CPUCount: int;
+        /** Returns the current approximate percentage of CPU time used by the operating system and all running processes.  */
+        CPUUsage: int;
+        /** Returns the desktop as the Desktop object. */
+        readonly Desktop: Desktop;
+        /** Returns the name of the domain to which the current computer belongs. */
+        DomainName: string;
+        /** Tells you whether an object exists in the system. */
+        Exists: boolean;
+        /** Specifies the full name that uniquely identifies the object in TestComplete. */
+        FullName: string;
+        /** The name of the current computer. */
+        HostName: string;
+        /** Returns the object’s identifier. */
+        Id: int;
+        /** Returns the custom name that is mapped to the original object name and is used to address the object in scripts. */
+        MappedName: string;
+        /** Returns the integral size of memory occupied by the processes which are children of the sys object. */
+        MemUsage: int;
+        /** Returns the object name. */
+        Name: string;
+        /** Returns a child object stored in the Name Mapping repository (by its index). */
+        NamedChild(Index: int): Object;
+        /** Returns the number of child objects of an object stored in the Name Mapping repository. */
+        NamedChildCount: int;
+        /** Returns the information on the currently installed operating system as OSInfo object. */
+        OSInfo: OSInfo;
+        /** Returns the parent object of the given object. */
+        Parent: Object;
+        /** The name of the user under whose account you are currently working. */
         UserName: string;
 
+        /** Returns an OLE server by its name and the name of the machine on which it is running.
+         * To specify the OLE server running on the local machine, do not specify the MachineName parameter.
+         * NOTE: You cannot use TestComplete as a client application for in-process OLE objects, the bitness of which is different than the bitness of TestComplete.
+         * NOTE: TestComplete does not release instances of OLE objects created via the Sys.OleObject method at design time,
+         * that is, when this method is used to explore the object in the Object Browser or to get code completion for the object’s methods and properties.
+         * For example, creating a Word.Application object launches Microsoft Word and it keeps running after you have finished working with the object in the Object Browser or the Code Editor.
+         * To release the used OLE object instance, you need to manually close the process that the object is running in or to execute the script code that would release that object.
+         * @param OleObject ProgID or CLSID of the OLE server you want to access.
+         * For example, "Word.Application" or "{000209FF-0000-0000-C000-000000000046}".
+         * @param MachineName Specifies the name of the machine on which the specified OLE server is running.
+         * To get the OLE server running on the local machine, leave the value of this parameter empty. */
         OleObject(OleObject: string, MachineName?: string): OleObject;
+        /**
+         * Lets you access a running web browser application.
+         * You can use it to access a specific web browser, for example, Sys.Browser("iexplore"), or an arbitrary browser as in Sys.Browser()
+         * @param BrowserName Browser process name. Possible values are:
+         * - `*`: Default. The asterisk wildcard matches the currently used browser, that is,
+         * the one that was launched previously using the Run Browser keyword test operation or the BrowserInfo.Run scripting method.
+         * - `iexplore` - Microsoft Internet Explorer
+         * - `edge` - Microsoft Edge
+         * - `firefox` - Mozilla Firefox
+         * - `chrome` - Google Chrome
+         * @param BrowserIndex The browser process index (1-based) among other browser processes with the same name.
+         */
         Browser(BrowserName?: string, BrowserIndex?: int): BrowserProcess;
         BrowserWindow(Index: int): Window;
-        Child(Index: int): any;
+        /** Returns a child object by its index. */
+        Child(Index: int): Object;
 
+        /** Searches for a child object that has the specified property values. */
         Find(
             PropNames: Array<any>,
             PropValues: Array<string>,
             Depth?: int /* 1 */,
             RefreshTree?: boolean /* true */): any;
-
+        /** Returns an array of child objects that have the specified property values. */
         FindAll(
             PropNames: Array<any>,
             PropValues: Array<string>,
             Depth?: int /* 1 */,
             RefreshTree?: boolean /* true */): any;
-
+        /** Returns an array of child objects that have the specified property values. */
         FindAllChildren(
             PropNames: Array<any>,
             PropValues: Array<string>,
@@ -188,25 +272,42 @@ declare namespace TestComplete {
             Depth?: int /* 1 */,
             RefreshTree?: boolean /* true */,
             Timeout?: int /* 0 */): any;
-
+        /** Returns a child object by its identifier. */
         FindId(Id: int, RefreshTree: boolean): any;
+        /** Highlights a visible onscreen object with a flashing color rectangle. */
         HighlightObject(Object: any, HighlightCount: int, Color: int): void;
+        /** Sends key presses to the currently active window. */
         Keys(Keys: string): void;
+        /** Returns the object displayed at the specified coordinates on the screen.  */
         ObjectFromPoint(X: int, Y: int, FindTransparent: boolean): any;
+        /** Returns a Process object by its application name and index.  */
         Process(ProcessName: string, GroupIndex: int): Process;
+        /** Refreshes the child object list. */
         Refresh(): void;
+        /** Instructs TestComplete to re-identify the mapped object using the identification information specified in Name Mapping. */
+        RefreshMappingInfo(): void;
+        /** Deletes the specified child mapped object from Name Mapping. */
+        RemoveNamedChild(Index: int): void;
+        /** Restarts the computer. */
         Restart(): void;
+        /** Shuts down the computer. */
         Shutdown(): void;
+        /** Waits until the specified Browser object becomes available during the timeout period. */
         WaitBrowser(BrowserName?: string, Timeout?: int, BrowserIndex?: int): BrowserProcess;
+        /** Waits until the specified child object becomes available during the timeout period. */
         WaitChild(ChildName: string, WaitTime: int): any;
+        /** Waits until a child object with the specified mapped name becomes available during the timeout period. */
+        WaitNamedChild(MappedChildName: string, WaitTime?: int): any;
 
         /**
          * Delays script execution until the specified process appears in the list of processes or the specified time limit is reached.
          * To determine whether the returned object is an extant process, call Exists.
          */
         WaitProcess(ProcessName: string, WaitTime?: int /* 0 */, ProcessIndex?: int /* 1 */): any;
+        /** Waits until the specified object property achieves the specified value during the timeout period. */
         WaitProperty(PropertyName: string, PropertyValue: any, WaitTime: int): boolean;
-        WindowFromHandle(Handle: int): any;
+        /** Returns a window by its handle. */
+        WindowFromHandle(Handle: int): Window;
     }
 
     interface Desktop extends Element {
@@ -898,6 +999,9 @@ declare namespace TestComplete {
         Enumerator(Collection: any): any;
     }
 
+    /** Provides symbolic names for the TestComplete global constants.
+     * The descriptions for the constants are given in the descriptions of those methods
+     * where the corresponding constants are applied. */
     interface Consts {
         readonly crlAlways: int;
         readonly crlNever: int;
@@ -2333,6 +2437,7 @@ declare const aqTestCase: TestComplete.aqTestCase;
 declare const aqUtils: TestComplete.aqUtils;
 declare const BuiltIn: TestComplete.BuiltIn;
 declare const Browsers: TestComplete.Browsers;
+/** Provides symbolic names for the TestComplete global constants . The descriptions for the constants are given in the descriptions of those methods where the corresponding constants are applied. */
 declare const Consts: TestComplete.Consts;
 declare const DDT: TestComplete.DDT;
 /** Provides a scripting interface used to change the text or visibility of the TestComplete indicator. */
