@@ -160,7 +160,8 @@ declare namespace TestComplete {
     }
 
     /**
-     *
+     * The Sys object “represents” the system in your tests -- everything outside TestComplete.
+     * Its methods and properties allow you to control test execution, interact with active windows, simulate key presses, and so on.
      */
     interface Sys extends Element {
         /** Returns the number of child objects of the given object. */
@@ -198,7 +199,7 @@ declare namespace TestComplete {
         /** Returns the information on the currently installed operating system as OSInfo object. */
         OSInfo: OSInfo;
         /** Returns the parent object of the given object. */
-        Parent: Object;
+        Parent: Element;
         /** The name of the user under whose account you are currently working. */
         UserName: string;
 
@@ -229,7 +230,7 @@ declare namespace TestComplete {
         Browser(BrowserName?: string, BrowserIndex?: int): BrowserProcess;
         BrowserWindow(Index: int): Window;
         /** Returns a child object by its index. */
-        Child(Index: int): Object;
+        Child(Index: int): RuntimeObject;
 
         /** Searches for a child object that has the specified property values. */
         Find(
@@ -2456,6 +2457,10 @@ declare const ProjectSuite: TestComplete.ProjectSuite;
 declare const Runner: TestComplete.Runner;
 declare const slPacker: TestComplete.slPacker;
 declare const Storages: TestComplete.Storages;
+/**
+ * The Sys object “represents” the system in your tests -- everything outside TestComplete.
+ * Its methods and properties allow you to control test execution, interact with active windows, simulate key presses, and so on.
+ */
 declare const Sys: TestComplete.Sys;
 // declare const TestedApps: TestComplete.TestedApps;
 declare const Utils: TestComplete.Utils;
