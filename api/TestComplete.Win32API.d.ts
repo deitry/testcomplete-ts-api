@@ -5577,21 +5577,35 @@
     const VK_UP: int;
     const VK_ZOOM: int;
 
-    const VOS__BASE: number;
-    const VOS__PM16: number;
-    const VOS__PM32: number;
-    const VOS__WINDOWS16: number;
-    const VOS__WINDOWS32: number;
-    const VOS_DOS: number;
-    const VOS_DOS_WINDOWS16: number;
-    const VOS_DOS_WINDOWS32: number;
-    const VOS_NT: number;
-    const VOS_NT_WINDOWS32: number;
-    const VOS_OS216: number;
-    const VOS_OS216_PM16: number;
-    const VOS_OS232: number;
-    const VOS_OS232_PM32: number;
-    const VOS_UNKNOWN: number;
+    const VOS__BASE: int;
+    /** 16-bit Presentation Manager. */
+    const VOS__PM16: int;
+    /** 32-bit Presentation Manager. */
+    const VOS__PM32: int;
+    /** 16-bit Microsoft Windows. */
+    const VOS__WINDOWS16: int;
+    /** 32-bit Windows. */
+    const VOS__WINDOWS32: int;
+    /** Microsoft DOS. */
+    const VOS_DOS: int;
+    /** 16-bit Windows running on MS-DOS. */
+    const VOS_DOS_WINDOWS16: int;
+    /** 32-bit Windows running on MS-DOS. */
+    const VOS_DOS_WINDOWS32: int;
+    /** Windows NT. */
+    const VOS_NT: int;
+    /** Windows NT. */
+    const VOS_NT_WINDOWS32: int;
+    /** 16-bit OS/2. */
+    const VOS_OS216: int;
+    /** 16-bit Presentation Manager running on 16-bit OS/2. */
+    const VOS_OS216_PM16: int;
+    /** 32-bit OS/2. */
+    const VOS_OS232: int;
+    /** 32-bit Presentation Manager running on 32-bit OS/2. */
+    const VOS_OS232_PM32: int;
+    /** Unknown operating system. */
+    const VOS_UNKNOWN: int;
     const VREFRESH: number;
     const VS_FF_DEBUG: number;
     const VS_FF_INFOINFERRED: number;
