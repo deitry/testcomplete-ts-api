@@ -979,16 +979,51 @@ declare namespace TestComplete {
         Contains(Name: string): boolean;
     }
 
-    /** TestComplete Utility objects */
+    /* TestComplete Utility objects */
 
+    interface ImageConfiguration { }
+
+    /**
+     * Provides a scripting interface to an image, which you can use in your testing process.
+     */
     interface Picture {
+        /** Returns the handle of the given image. */
         Handle: int;
+        /** Specifies the color of the image pixel.
+         * @returns Integer value. Its low-order byte holds the value of the red component,
+         * the subsequent bytes hold values of green and blue components respectively.
+         * @see https://support.smartbear.com/testcomplete/docs/scripting/colors.html */
+        Pixels(X: int, Y: int): int;
+        /** Lets you get or set the width and height of the given image. */
         Size: any;
-        Pixels: int;
 
-        SaveToFile(FileName: string, Configuration: any): boolean;
-        LoadFromFile(FileName: string): boolean;
-        SaveToClipboard(): void;
+        /** Compares the given image with another image and returns True or False depending on whether they are identical or not. */
+        Compare(
+            Picture: Picture,
+            Transparent?: boolean /* false */,
+            PixelTolerance?: int /* 0 */,
+            Mouse?: boolean /* true */,
+            ColorTolerance?: int /* 0 */,
+            Mask?: Picture): boolean;
+        /** Creates an ImageConfiguration object which you can use to specify image settings
+         * that are used to post the image to the test log or to save the image to a file.
+         * @param ImageFormat One of the strings:
+         * - "BMP" - BMP image configuration
+         * - "JPEG" - JPEG image configuration
+         * - "PNG" - PNG image configuration
+         * - "TIFF" - TIFF image configuration
+         * - "GIF" - GIF image configuration
+         * - "ICO" - ICO image configuration*/
+        CreatePictureConfiguration(ImageFormat: string): ImageConfiguration;
+        /** Compares the given image with another image and returns the image that indicates the difference between the compared images. */
+        Difference(
+            Picture: Picture,
+            Transparent?: boolean /* false */,
+            PixelTolerance?: int /* 0 */,
+            Mouse?: boolean /* true */,
+            ColorTolerance?: int /* 0 */,
+            Mask?: Picture): Picture;
+        /** Returns a definite rectangular area of the given image. */
         Find(
             PictureForSearch: Picture,
             Left?: int /* 0 */,
@@ -998,23 +1033,16 @@ declare namespace TestComplete {
             Mouse?: boolean /* true */,
             ColorTolerance?: int /* 0 */,
             Mask?: Picture): any;
-        Compare(
-            Picture: Picture,
-            Transparent?: boolean /* false */,
-            PixelTolerance?: int /* 0 */,
-            Mouse?: boolean /* true */,
-            ColorTolerance?: int /* 0 */,
-            Mask?: Picture): boolean;
-        Difference(
-            Picture: Picture,
-            Transparent?: boolean /* false */,
-            PixelTolerance?: int /* 0 */,
-            Mouse?: boolean /* true */,
-            ColorTolerance?: int /* 0 */,
-            Mask?: Picture): Picture;
+        /** Returns a new Picture object containing the specified rectangular region of the given picture. */
         GetRect(X: int, Y: int, Width: int, Height: int): any;
+        /** Loads the given image from a file. */
+        LoadFromFile(FileName: string): boolean;
+        /** Copies the given image to the Clipboard. */
+        SaveToClipboard(): void;
+        /** Saves the given image to a file. */
+        SaveToFile(FileName: string, Configuration: ImageConfiguration): boolean;
+        /** Resizes the picture to the specified size. */
         Stretch(Width: int, Height: int, UseHalftones: boolean): void;
-        CreatePictureConfiguration(ImageFormat: string): any;
     }
 
     interface Utils {
@@ -1355,9 +1383,10 @@ declare namespace TestComplete {
         AddTime(InputDate: DateTime, Days: int, Hours: int, Minutes: int, Seconds: int): DateTime;
         TimeInterval(InputTime1: DateTime, InputTime2: DateTime): DateTime;
         /**
-         * -1 if Date1 is earlier than Date2
-         * 0 if dates equal
-         * 1 if Date1 is later than Date2
+         * @returns
+         * - `-1` if Date1 is earlier than Date2
+         * - `0` if dates equal
+         * - `1` if Date1 is later than Date2
         */
         Compare(Date1: DateTime, DateTime: DateTime): int;
         AddMinutes(InputDate: DateTime, Minutes: int): DateTime;
