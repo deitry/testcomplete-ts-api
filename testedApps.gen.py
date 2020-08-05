@@ -24,7 +24,16 @@ def parseXML(xmlFile: str, destinationFile: TextIO):
                     activeMode = runModeParams.attrib['activeRunMode']
                     for param in runModeParams.findall('param'):
                         if param.attrib['name'] == activeMode:
-                            doc = f'    /** `{path.abspath(param.attrib["filePath"]) + path.sep}{param.attrib["fileName"]}'
+                            folder = param.attrib["filePath"]
+                            hasVars = folder.find('$(') >= 0
+
+                            if not hasVars:
+                                folder = path.abspath(folder)
+
+                            if not folder.endswith(path.sep):
+                                folder += path.sep
+
+                            doc = f'    /** `{folder}{param.attrib["fileName"]}'
                             params = param.attrib["parameters"]
                             if params:
                                 doc += ' ' + params
