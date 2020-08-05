@@ -247,8 +247,14 @@ def generateElementDeclaration(
     mappedName = el.attrib.get('Name', '')
     obj = allObjects[guid]
 
+    # add a doc comment with original name of element - this maybe useful
+    result = '/**\n'
+    if mappedName != obj.name:
+        result += f' * - Original element name: `{obj.name}`\n'
+    result += f' * - Element GUID: `{guid}`\n'
+    result += ' */\n'
     # in aliases we use not a real obj name but name of alias
-    result = el.attrib['Name'] + ": "
+    result += mappedName + ": "
 
     if (not obj.type) or obj.type == "Element":
         obj.type = inferTypeFromName(mappedName)
