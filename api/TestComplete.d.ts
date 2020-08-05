@@ -1723,13 +1723,22 @@ declare namespace TestComplete {
             CaseSensitive?: boolean /* true */): boolean;
     }
 
+    /**
+     * The aqUtils object provides various helper routines that let you extend tests with additional functionality.
+     */
     interface aqUtils {
-        Delay(ms: int, Str?: string): void;
+        /** Generates a simple tone using the PC speakers. */
         Beep(Freq: int, Duration: int): void;
-        SysErrorMessage(ErrorCode: int): string;
-        Win32Check(ExitCode: boolean): boolean;
-        IsValidIdent(Ident: string): boolean;
+        /** Delays the test execution for the specified time period in milliseconds. */
+        Delay(ms: int, Str?: string): void;
+        /** Returns the path to the specified COM server. */
         GetCOMServerPath(Server: string, Is64bit: boolean): string;
+        /** Indicates whether the specified string is a valid JavaScript, JScript, Python, C++Script, C#Script or DelphiScript identifier. */
+        IsValidIdent(Ident: string): boolean;
+        /** Converts the specified OS error code into the corresponding error message string. */
+        SysErrorMessage(ErrorCode: int): string;
+        /** Checks a Windows API call’s return value and raises an appropriate exception when this call fails. */
+        Win32Check(ExitCode: boolean): boolean;
     }
 
     /** Lets to perform various operations on string values */
@@ -2542,7 +2551,12 @@ declare const aqEnvironment: TestComplete.aqEnvironment;
  * This object complements the aqFileSystem object, but unlike the latter it lets you deal with files only.
  */
 declare const aqFile: TestComplete.aqFile;
+/**
+ * Lets you work with the computer’s file system: obtain information about drives,
+ * folders and files as well as to add, modify and remove files and folders.
+ */
 declare const aqFileSystem: TestComplete.aqFileSystem;
+/** Provides unified methods for operating objects’ members at run time. */
 declare const aqObject: TestComplete.aqObject;
 declare const aqPerformance: TestComplete.aqPerformance;
 /** Lets to perform various operations on string values */
@@ -2591,7 +2605,13 @@ declare const Tables: TestComplete.Tables;
 declare const WebTesting: TestComplete.WebTesting;
 declare const XML: TestComplete.XML;
 
+/**
+ * Delays the test execution for the specified time period in milliseconds.
+ *
+ * NOTE: This is the method of aqUtils object. Consider using it with stating aqUtils.
+ */
 declare function Delay(count: int): void;
+
 /**
  * @param {boolean} [CaseSensitive = true]
  */
@@ -2601,7 +2621,6 @@ declare function CheckProperty(
     Condition: int,
     Value: any,
     CaseSensitive?: boolean): boolean;
-
 
 /**
  * Use the getActiveXObject function to get a reference to an OLE object
