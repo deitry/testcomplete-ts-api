@@ -1210,7 +1210,12 @@ declare namespace TestComplete {
         FolderImgCount: int;
         /** Returns the number of files and file links posted to the specified log folder by the current test item. */
         FolderFileAndLinkCount: int;
-        /** Provides scripting interfaces to settings that enables or disables the call stack tracing for methods that post messages to the log. */
+        /**
+         * Provides scripting interfaces to settings that enables or disables
+         * the call stack tracing for methods that post messages to the log.
+         *
+         * NOTE: Property is readonly itself, but specific settings of object are read/write
+         */
         readonly CallStackSettings: CallStackSettings;
         /** Returns the number of checkpoint messages posted to the log by the current test item. */
         CheckpointCount: int;
@@ -2069,25 +2074,89 @@ declare namespace TestComplete {
         readonly varVariant: int;
         readonly varWord: int;
 
+        /** Creates an array of Variant elements. */
         CreateVariantArray(Param1: int, Param2: int): any;
+        /** Creates a two-dimensional array of Variant elements. */
         CreateVariantArray2(Param1: int, Param2: int, Param3: int, Param4: int): any;
+        /** Creates a three-dimensional array of Variant elements. */
         CreateVariantArray3(
             Param1: int, Param2: int, Param3: int, Param4: int,
             Param5: int, Param6: int): any;
+        /** Returns the ordinal value of an ordinal-type expression. */
         GetOrd(Param1: any): any;
+        /** Displays a window with an edit box and two buttons: OK and Cancel.
+         * Use this function to quickly get a value from the user. */
         InputBox(Caption: string, Prompt: string, Default: string): string;
+        /**
+         * Displays a window that lets the user specify a value that can be used in script.
+         *
+         * NOTE: It is supported for VBScript and DelphiScript only.
+         */
         InputQuery(Param1: string, Param2: string, Param3: string): boolean;
-        Log(Param1: int): int;
-        MessageDlg(Param1: string, Param2: int, Param3: int, Param4: int): int;
+        /** Returns the natural logarithm of a number. */
+        Log(Param1: number): number;
+        /**
+         * Displays a dialog box.
+         * @param Message The message to be displayed.
+         * @param BoxType It can be any of the following constants:
+         * - `mtWarning` - The message box will contain the exclamation point icon.
+         * - `mtError` - The message box will contain the red stop icon.
+         * - `mtInformation` - The message box will contain the information icon.
+         * - `mtConfirmation` - The message box will contain the question mark icon.
+         * - `mtCustom` - The message box will not contain any bitmap.
+         * @param Buttons Specifies the buttons to be displayed in the message box.
+         * This parameter can be any combination of the following values:
+         * - `mbYes` - "Yes" button
+         * - `mbNo` - "No" button
+         * - `mbOK` - "OK" button
+         * - `mbCancel` - "Cancel" button
+         * - `mbAbort` - "Ignore" button
+         * - `mbRetry` - "Retry" button
+         * - `mbIgnore` - "Ignore" button
+         * - `mbAll` - "All" button
+         * - `mbYesToAll` - "Yes to All" button
+         * - `mbNoToAll` - "No to All" button
+         * - `mbHelp` - "Help" button
+         * - `mbYesNoCancel` - "Yes", "No" and "Cancel" buttons
+         * - `mbOKCancel` - "OK" and "Cancel" buttons
+         * - `mbAbortRetryIgnore` - "Abort", "Retry" and "Ignore" buttons
+         * NOTE: To specify the Param3 parameter, you should create a set value using the MkSet function (see the example below).
+         * Use of MkSet is obligatory. You are not allowed to skip it.
+         * @param Param4 Reserved
+         * @returns one of the constants that indicates which button the user pressed in the message box:
+         * - `mrYes`
+         * - `mrAll`
+         * - `mrYesToAll`
+         * - `mrNo`
+         * - `mrAbort`
+         * - `mrNoToAll`
+         * - `mrOK`
+         * - `mrRetry`
+         * - `mrCancel`
+         * - `mrIgnore`
+         * @example
+         * var i;
+         * i = MkSet(mbYes, mbYesToAll, mbNo, mbCancel);
+         * i = MessageDlg("Message text", mtConfirmation, i, 0);
+         */
+        MessageDlg(Message: string, BoxType: int, Buttons: int, Param4: int): int;
+        /** Returns a number of command-line arguments passed to TestComplete at startup. */
         ParamCount(): int;
+        /** Returns a TestComplete command-line argument specified by its index. */
         ParamStr(Param1: int): string;
+        /** Sends an e-mail message using the Simple Mail Transfer Protocol (SMTP). */
         SendMail(
             Param1: string, Param2: string, Param3: string, Param4: string,
             Param5: string, Param6: string, Param7: string): boolean;
+        /** Displays a simple message box with the specified string and the OK button. */
         ShowMessage(Param1: string): void;
+        /** Returns the high bound of the specified dimension of a Variant array. */
         VarArrayHighBound(Param1: any, Param2: int): int;
+        /** Returns the low bound of the specified dimension of a Variant array. */
         VarArrayLowBound(Param1: any, Param2: int): int;
+        /** Resizes a Variant array. It is supported for VBScript and DelphiScript. */
         VarArrayRedim(Param1: any, Param2: int): void;
+        /** Sets the OLEVariant value to empty. */
         VarClear(Param1: any): void;
     }
 
@@ -2551,6 +2620,8 @@ declare namespace TestComplete {
         /** Increases the index indicating the iterator’s position by the specified number and returns the object by the result index. */
         Skip(SkipCount: int): Type;
     }
+
+    interface Set {}
 }
 
 /*
@@ -2585,6 +2656,7 @@ declare const aqUtils: TestComplete.aqUtils;
  * display message dialogs or prompt for user input.
  *
  * NOTE: Most of routines of this object are obsolete and replaced with analogs from aqNNN objects.
+ * Obsolete members are not included into interface.
  */
 declare const BuiltIn: TestComplete.BuiltIn;
 declare const Browsers: TestComplete.Browsers;
@@ -2645,3 +2717,12 @@ declare function CheckProperty(
  * To specify the OLE server running on a local machine, do not specify the MachineName parameter.
  */
 declare function getActiveXObject(OleObject: string, MachineName?: string): any;
+/**
+ * Creates a set of the given members.
+ * Sets in TestComplete are implemented as collections of bits, similar to Standard Pascal.
+ * @param Params Specifies the member names or member values to be contained in the set.
+ * NOTE: A set can have no more than 32 members.
+ */
+declare function MkSet(...Params: any): TestComplete.Set;
+/** Checks whether a particular set has a definite member. */
+declare function InSet(Member: any, SetName: TestComplete.Set): boolean;
