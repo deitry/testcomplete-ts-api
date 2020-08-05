@@ -12,7 +12,7 @@ declare type double = number;
 
 declare namespace TestComplete {
 
-    type Variant = any;
+    type Variant = string | int | double | DateTime;
 
     /* Generic abstractions */
 
@@ -63,8 +63,11 @@ declare namespace TestComplete {
         /**
          * Pauses the test execution until the specified object property
          * achieves the specified value or until the specified timeout elapses
+         * @param {int} [WaitTime = -1] The number of milliseconds to wait for the specified property value.
+         * If WaitTime is 0, the method does not wait and returns immediately.
+         * If WaitTime is -1, the waiting time is specified by the Auto-wait timeout project property.
          */
-        WaitProperty(PropertyName: string, PropertyValue: any, WaitTime?: int): boolean;
+        WaitProperty(PropertyName: string, PropertyValue: Variant, WaitTime?: int): boolean;
     }
 
     /** Any onscreen object */
@@ -304,8 +307,15 @@ declare namespace TestComplete {
         /**
          * Delays script execution until the specified process appears in the list of processes or the specified time limit is reached.
          * To determine whether the returned object is an extant process, call Exists.
+         * @param {int} [Timeout = 0] Milliseconds to delay the script execution in order to allow the process to start.
+         * If Timeout is 0, the method searches for the desired process once and then returns immediately.
+         * If Timeout is -1, the waiting time is infinite.
+         * @param {int} [ProcessIndex = 1] The index of the process instance among those started by the same executable.
+         * The first process has index 1, the second - 2, etc. 1 is the default value.
+         * If you obtain several processes with the same name and the process with the lowest index is terminated,
+         * the indexes of other processes will be decreased by one.
          */
-        WaitProcess(ProcessName: string, WaitTime?: int /* 0 */, ProcessIndex?: int /* 1 */): any;
+        WaitProcess(ProcessName: string, Timeout?: int /* 0 */, ProcessIndex?: int /* 1 */): Process;
         /** Waits until the specified object property achieves the specified value during the timeout period. */
         WaitProperty(PropertyName: string, PropertyValue: any, WaitTime: int): boolean;
         /** Returns a window by its handle. */
