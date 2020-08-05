@@ -24,11 +24,11 @@ def parseXML(xmlFile: str, destinationFile: TextIO):
                     activeMode = runModeParams.attrib['activeRunMode']
                     for param in runModeParams.findall('param'):
                         if param.attrib['name'] == activeMode:
-                            doc = f'    /** {path.abspath(param.attrib["filePath"]) + path.sep}{param.attrib["fileName"]}'
+                            doc = f'    /** `{path.abspath(param.attrib["filePath"]) + path.sep}{param.attrib["fileName"]}'
                             params = param.attrib["parameters"]
                             if params:
                                 doc += ' ' + params
-                            doc += ' */\n'
+                            doc += '` */\n'
                             destinationFile.write(doc)
 
                 destinationFile.write(
