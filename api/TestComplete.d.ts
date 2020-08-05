@@ -2299,22 +2299,96 @@ declare namespace TestComplete {
         }
     }
 
+    /**
+     * This object has a mechanism that allows you to work with sections and options
+     * stored in the system registry, INI, XML and binary files.
+     */
     interface Section {
+        /** Specifies the section’s name. */
         readonly Name: string;
+        /** Returns the number of options in the current section. */
         readonly OptionCount: int;
+        /** Returns the number of direct subsections in the current section. */
         readonly SectionCount: int;
 
-        GetOption(OptionName: string, DefaultValue: any): any;
-        SetOption(OptionName: string, NewValue: any): void;
+        /** Deletes the current section and all its subsections, keys and values. */
+        Clear(): void;
+        /** Deletes a subsection from the current section. */
+        DeleteSubSection(SectionName: string): void;
+        /** Deletes a subsection specified by its index from the current section. */
+        DeleteSubSectionByIndex(Index: int): void
+        /** Returns the value of an option in the current section. */
+        GetOption(OptionName: string, DefaultValue: Variant): Variant;
+        /** Returns the value of an option specified by its index. */
+        GetOptionByIndex(Index: int, DefaultValie: Variant): Variant;
+        /** Returns the name of an option in the current section. */
+        GetOptionName(Index: int): string;
+        /** Returns the names of all options in the current section. */
+        GetOptionNames(): string;
+        /** Returns the name of a subsection in the current section. */
+        GetSectionName(Index: int): string;
+        /** Returns the names of all subsections in the current section. */
+        GetSectionNames(): string;
+        /** Returns the Section object for a subsection of the current section. */
+        GetSubSection(SectionName: string): Section;
+        /** Returns the Section object for a subsection specified by its index. */
+        GetSubSectionByIndex(Index: int): Section;
+        /** Obtains whether an option belongs to the option list of the current section. */
+        OptionExists(OptionName: string): boolean;
+        /** Deletes an option from the current section. */
+        RemoveOption(OptionName: string): void;
+        /** Deletes an option specified by its index from the current section. */
+        RemoveOptionByIndex(Index: int): void;
+        /** Sets a new value for an option of the current section. */
+        SetOption(OptionName: string, NewValue: Variant): void;
+        /** Sets a new value for an option specified by its index. */
+        SetOptionByIndex(Index: int, NewValue: Variant): void;
+        /** Obtains whether a section belongs to the subsection list of the current section. */
+        SubSectionExists(SectionName: string): boolean;
+
     }
 
+    interface FileSection extends Section;
+
+    /**
+     * The Storages object is only available if the Storages plugin is installed.
+     *
+     * NOTE: The Storages object can successfully read only those binary and XML
+     * files that were created via its methods. Also, the Storages object lets you
+     * read and change registry values of the REG_DWORD, REG_SZ and REG_EXPAND_SZ types only.
+     * The REG_BINARY and REG_MULTI_SZ value types are not supported.
+     */
     interface Storages {
-        Registry(Key: string, RootKey: int, RegistryType: Win32API.Registry, ReadOnly?: boolean /* false */): Section;
+        /**
+         * Returns the Section object corresponding to the specified registry key.
+         *
+         * NOTE: The returned Section object lets you obtain and change registry values
+         * of the REG_DWORD, REG_SZ and REG_EXPAND_SZ type only.
+         * The REG_BINARY and REG_MULTI_SZ value types are not supported.
+         *
+         * @param Key Specifies the full path to the desired key from the root key.
+         * If the key does not exist, the method will create it.
+         * @param {Win32API.Registry} [RootKey = HKEY_CURRENT_USER]
+         * @param {int} [RegistryType = 0] This parameter is significant
+         * if you use TestComplete on a 64-bit operating system.
+         * It specifies which registry view, 32-bit or 64-bit, the method will access.
+         * You can use one of the following constants:
+         * - `AQRT_32_BIT` - `0` - 32-bit registry (default)
+         * - `AQRT_64_BIT` - `1` - 64-bit registry
+         * @param {boolean} [ReadOnly = false] If this parameter's value is True,
+         * the Registry key will be opened in read-only mode.
+         * Otherwise, it is opened in read-write mode.
+         *
+         * @example
+         * let key = Storages.Registry("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", HKEY_CURRENT_USER);
+         */
+        Registry(Key: string, RootKey?: Win32API.Registry, RegistryType?: int, ReadOnly?: boolean): Section;
     }
 
     /**
      * Modificator keys values.
-     * NOTE: no actual values given in TestComplete help book. Adding ones to comply with TypeScript checks */
+     * NOTE: no actual values given in TestComplete help book. Adding ones to comply with TypeScript checks
+     */
     enum ShiftKey {
         skShift = 0, // shift key is pressed
         skAlt = 1, // alt key is pressed
@@ -2719,9 +2793,6 @@ declare const aqUtils: TestComplete.aqUtils;
 /**
  * Contains named constants and helper routines for manipulating various data,
  * display message dialogs or prompt for user input.
- *
- * NOTE: Most of routines of this object are obsolete and replaced with analogs from aqNNN objects.
- * Obsolete members are not included into interface.
  */
 declare const BuiltIn: TestComplete.BuiltIn;
 declare const Browsers: TestComplete.Browsers;
