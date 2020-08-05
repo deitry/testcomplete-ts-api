@@ -1396,13 +1396,19 @@ declare namespace TestComplete {
      * This object complements the aqFileSystem object, but unlike the latter it lets you deal with files only.
      */
     interface aqFile {
-        readonly faWrite: int; /* 10 */
-        readonly faRead: int; /* 11 */
-        readonly faReadWrite: int; /* 12 */
+        /** @default 10 */
+        readonly faWrite: int;
+        /** @default 11 */
+        readonly faRead: int;
+        /** @default 12 */
+        readonly faReadWrite: int;
 
-        readonly ctANSI: int; /* 20 */
-        readonly ctUnicode: int; /* 21 */ // UTF-16
-        readonly ctUTF8: int; /* 22 */
+        /** @default 20 */
+        readonly ctANSI: int;
+        /** @default 21 */ // UTF-16
+        readonly ctUnicode: int;
+        /** @default 22 */
+        readonly ctUTF8: int;
 
         /** Returns the time when the specified file was created. */
         GetCreationTime(PathToFile: string): any;
@@ -1510,12 +1516,27 @@ declare namespace TestComplete {
         CopyFile(PathToExistingFile: string,PathToNewFile: string,RenameOnCollision?: boolean /* true */): boolean;
         /** Copies the specified folder(s) to another location. */
         CopyFolder(Source: string,Destination: string,RenameOnCollision?: boolean /* true */): boolean;
-        /** Creates a new folder. */
+        /**
+         * Creates a new folder.
+         * @param Path Specifies the fully qualified path where a new folder should be created.
+         * If the path includes folders that do not exist, they will be created as well.
+         */
         CreateFolder(Path: string): int;
         /** Deletes the specified file(s). */
         DeleteFile(PathToFile: string): boolean;
-        /** Deletes the specified folder(s). */
-        DeleteFolder(Path: string, RemoveNonEmpty?: boolean /* false */): boolean;
+        /**
+         * Deletes the specified folder(s).
+         * @param Path The fully qualified path to the folder to be deleted.
+         * To delete several folders, use wildcards (* and ?) to specify the mask.
+         * Note, that wildcards are only allowed in the last component of the path.
+         * The path may or may not include a trailing backslash (\).
+         * An empty string or `undefined` means the current working folder,
+         * which can be read and set by using the aqFileSystem.GetCurrentFolder and aqFileSystem.SetCurrentFolder methods, respectively.
+         * @param {boolean} [RemoveNonEmpty = false] Specifies whether the method should remove non-empty folders.
+         * If the parameter is False, the method removes a folder only if it does not contain any files.
+         * If the parameter is True, the method removes non-empty folders as well.
+         */
+        DeleteFolder(Path: string, RemoveNonEmpty?: boolean): boolean;
         /** Discards connection to the specified network folder. */
         DisconnectNetworkDrive(Name: string, Force: boolean, Remember: boolean): int;
         /** Removes the trailing path delimiter from the specified path. */
@@ -1580,64 +1601,120 @@ declare namespace TestComplete {
         Item(Index: int): T;
     }
 
+    /**
+     * Provides unified methods for operating objects’ members at run time.
+     */
     interface aqObject {
-        readonly varEmpty: int; /* 0x0000 */
-        readonly varNull: int; /* 0x0001 */
-        readonly varSmallInt: int; /* 0x0002 */
-        readonly varInteger: int; /* 0x0003 */
-        readonly varSingle: int; /* 0x0004 */
-        readonly varDouble: int; /* 0x0005 */
-        readonly varCurrency: int; /* 0x0006 */
-        readonly varDate: int; /* 0x0007 */
-        readonly varOleStr: int; /* 0x0008 */
-        readonly varDispatch: int; /* 0x0009 */
-        readonly varError: int; /* 0x000A */
-        readonly varBoolean: int; /* 0x000B */
-        readonly varVariant: int; /* 0x000C */
-        readonly varUnknown: int; /* 0x000D */
-        readonly varShortInt: int; /* 0x0010 */
-        readonly varByte: int; /* 0x0011 */
-        readonly varWord: int; /* 0x0012 */
-        readonly varLongWord: int; /* 0x0013 */
-        readonly varInt64: int; /* 0x0014 */
-        readonly varStrArg: int; /* 0x0048 */
-        readonly varString: int; /* 0x0100 */
-        readonly varAny: int; /* 0x0101 */
-        readonly varArray: int; /* 0x2000 */
-        readonly varByRef: int; /* 0x4000 */
+        /** @default 0x0000 */
+        readonly varEmpty: int;
+        /** @default 0x0001 */
+        readonly varNull: int;
+        /** @default 0x0002 */
+        readonly varSmallInt: int;
+        /** @default 0x0003 */
+        readonly varInteger: int;
+        /** @default 0x0004 */
+        readonly varSingle: int;
+        /** @default 0x0005 */
+        readonly varDouble: int;
+        /** @default 0x0006 */
+        readonly varCurrency: int;
+        /** @default 0x0007 */
+        readonly varDate: int;
+        /** @default 0x0008 */
+        readonly varOleStr: int;
+        /** @default 0x0009 */
+        readonly varDispatch: int;
+        /** @default 0x000A */
+        readonly varError: int;
+        /** @default 0x000B */
+        readonly varBoolean: int;
+        /** @default 0x000C */
+        readonly varVariant: int;
+        /** @default 0x000D */
+        readonly varUnknown: int;
+        /** @default 0x0010 */
+        readonly varShortInt: int;
+        /** @default 0x0011 */
+        readonly varByte: int;
+        /** @default 0x0012 */
+        readonly varWord: int;
+        /** @default 0x0013 */
+        readonly varLongWord: int;
+        /** @default 0x0014 */
+        readonly varInt64: int;
+        /** @default 0x0048 */
+        readonly varStrArg: int;
+        /** @default 0x0100 */
+        readonly varString: int;
+        /** @default 0x0101 */
+        readonly varAny: int;
+        /** @default 0x2000 */
+        readonly varArray: int;
+        /** @default 0x4000 */
+        readonly varByRef: int;
 
-        EmptyVariant: any;
-        EmptyObject: any;
+        /** Returns an empty object. */
+        readonly EmptyObject: Object;
+        /** Returns an empty Variant value. */
+        readonly EmptyVariant: any;
 
+        /** Returns the data type of the specified Variant value. */
         GetVarType(VarParam: any): int;
+        /** Indicates whether the specified object has a member with the given name. */
         IsSupported(IObject: any, MemberName: string): boolean;
+        /** Returns the value of an object’s property. */
         GetPropertyValue(IObject: any, PropertyName: string): any;
+        /** Assigns a new value to an object’s property. */
         SetPropertyValue(IObject: any, PropertyName: string, Value: any): any;
+        /** Calls the specified method of a particular object. */
         CallMethod(IObject: any, MethodName: string): any;
+        /** Generates a certain event of a particular object. */
         RaiseEvent(IObject: any, EventName: string): boolean;
 
-        /** Lists all the properties of the desired object */
-        GetProperties(
-            SourceObject: any,
-            ShowHidden?: boolean /* false */): ObjectIterator<aqObjProperty>;
-        GetFields(SourceObject: any, ShowHidden?: boolean): ObjectIterator<aqObjField>;
-        GetMethods(SourceObject: any, ShowHidden?: boolean): ObjectIterator<aqObjEvent>;
+        /** Returns the collection of events of the given object. */
         GetEvents(SourceObject: any, ShowHidden?: boolean): ObjectIterator<aqObjEvent>;
+        /** Returns the collection of fields of the given object.  */
+        GetFields(SourceObject: any, ShowHidden?: boolean): ObjectIterator<aqObjField>;
+        /** Returns the collection of methods of the given object. */
+        GetMethods(SourceObject: any, ShowHidden?: boolean): ObjectIterator<aqObjEvent>;
+        /**
+         * Lists all the properties of the desired object
+         * @param {boolean} [ShowHidden = false]
+         */
+        GetProperties(SourceObject: any, ShowHidden?: boolean): ObjectIterator<aqObjProperty>;
+        /**
+         * Verifies an object’s property value according to the specified condition.
+         * @param {boolean} [CaseSensitive = true]
+         * @param {int} [MessageType = lmWarning]
+         */
         CompareProperty(
             Property: any,
             Condition: int,
             Value: any,
-            CaseSensitive?: boolean /* true */,
-            MessageType?: int /* lmWarning */): boolean;
+            CaseSensitive?: boolean,
+            MessageType?: int): boolean;
+        /**
+         * Saves information about the specified object to a file.
+         * @param {boolean} [SaveRecursive = false]
+         * @param {boolean} [SaveAllProperties = false]
+         * @param {boolean} [SaveFields = false]
+         * @param {boolean} [SaveMethods = false]
+         * @param {int} [Depth = 2]
+         */
         SaveObjectSnapshotToFile(
             AObject: any,
             FileName: string,
-            SaveRecursive?: boolean /* false */,
-            SaveAllProperties?: boolean /* false */,
+            SaveRecursive?: boolean,
+            SaveAllProperties?: boolean,
             AdditionalProperties?: string,
-            SaveFields?: boolean /* false */,
-            SaveMethods?: boolean /* false */,
-            Depth?: int /* 2 */): boolean;
+            SaveFields?: boolean,
+            SaveMethods?: boolean,
+            Depth?: int): boolean;
+        /**
+         * Verifies an object’s property value according to the specified condition.
+         * @param {boolean} [CaseSensitive = true]
+         */
         CheckProperty(
             Object: any,
             Property: string,
@@ -1776,6 +1853,12 @@ declare namespace TestComplete {
         cbGrayed = 2,
     }
 
+    /**
+     * Contains named constants and helper routines for manipulating various data,
+     * display message dialogs or prompt for user input.
+     *
+     * NOTE: Most of routines of this object are obsolete and replaced with analogs from aqNNN objects.
+     */
     interface BuiltIn {
         // CheckBox state:
         readonly cbUnchecked: CheckBoxState.cbChecked;
@@ -2466,6 +2549,12 @@ declare const aqPerformance: TestComplete.aqPerformance;
 declare const aqString: TestComplete.aqString;
 declare const aqTestCase: TestComplete.aqTestCase;
 declare const aqUtils: TestComplete.aqUtils;
+/**
+ * Contains named constants and helper routines for manipulating various data,
+ * display message dialogs or prompt for user input.
+ *
+ * NOTE: Most of routines of this object are obsolete and replaced with analogs from aqNNN objects.
+ */
 declare const BuiltIn: TestComplete.BuiltIn;
 declare const Browsers: TestComplete.Browsers;
 /** Provides symbolic names for the TestComplete global constants . The descriptions for the constants are given in the descriptions of those methods where the corresponding constants are applied. */
@@ -2503,12 +2592,15 @@ declare const WebTesting: TestComplete.WebTesting;
 declare const XML: TestComplete.XML;
 
 declare function Delay(count: int): void;
+/**
+ * @param {boolean} [CaseSensitive = true]
+ */
 declare function CheckProperty(
     Object: TestComplete.RuntimeObject,
     Property: string,
     Condition: int,
     Value: any,
-    CaseSensitive?: boolean /* true */): boolean;
+    CaseSensitive?: boolean): boolean;
 
 
 /**
