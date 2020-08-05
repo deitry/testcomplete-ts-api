@@ -74,10 +74,25 @@ def parseXML(xmlFile: str, destinationFile: TextIO):
                     else:
                         varType = typeAttrib
 
-                    if description:
-                        destinationFile.write(f'        /** {description} */\n')
+                    variableValue = ''
 
-                    # TODO: variables values
+                    for valueChild in variable.findall('DefValue'):
+                        # attrib will have its name based on type, like `StrValue`.
+                        # Because there is only one attrib, parse them 'all'
+                        for defValue in valueChild.attrib.values():
+                            variableValue = defValue
+
+                    if description or variableValue:
+                        destinationFile.write(f'        /**\n')
+                    if description:
+                        destinationFile.write(f'         * {description}\n')
+                    if description and variableValue:
+                        destinationFile.write(f'         *\n')
+                    if variableValue:
+                        destinationFile.write(f'         * @default `{variableValue}`\n')
+                    if description or variableValue:
+                        destinationFile.write(f'         */\n')
+
                     # TODO: optional readonly - to not change variables during tests
                     destinationFile.write(f'        {name}: {varType};\n')
 
