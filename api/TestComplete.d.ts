@@ -642,12 +642,18 @@ declare namespace TestComplete {
      * to its test items and to the local variables defined in this project
      */
     interface Project {
-        FileName: string;
-        Path: string;
+        /** Returns the path to the folder that holds the configuration files of the current project. */
         ConfigPath: string;
+        /** Returns the name of the current project's .mds file. */
+        FileName: string;
+        /** Returns the LogResults object that provides access to the project’s logs. */
+        Logs: LogResults;
+        /** Returns the path to the current project's .mds file. */
+        Path: string;
+        /** Returns the TestItems object which provides access to the project’s test items. */
         TestItems: ProjectTestItems;
-        Logs: any;
-        Variables: ProjectVariables;
+        /** Returns the collection of local variables defined in the current project. */
+        Variables: Variables;
     }
 
     /**
@@ -760,36 +766,11 @@ declare namespace TestComplete {
         Description: string;
     }
 
-    interface ProjectTestItem {
-        Parent: ProjectTestItem;
-        ItemCount: int;
-        TestItem(Index: int): ProjectTestItem;
-        Name: string;
-        Description: string;
-        Enabled: boolean;
-        Count: int;
-        Iteration: int;
-        ElementToBeRun: TestItemElement;
-        Timeout: int;
-        StopOnError: int;
-        StopOnException: int;
-    }
-
     interface ProjectSuiteTestItems {
         ItemCount: int;
         TestItem(Index: string): ProjectSuiteTestItem;
         Current: ProjectSuiteTestItem;
     }
-
-    interface ProjectTestItems {
-        ItemCount: int;
-        TestItem(Index: int): ProjectTestItem;
-        Current: ProjectTestItem;
-    }
-
-    /*
-     * project items: tested apps, stores, i.e. parent items in the project explorer.
-     */
 
     /**
      * Holds one item from the application list.
@@ -2348,7 +2329,7 @@ declare namespace TestComplete {
 
     }
 
-    interface FileSection extends Section;
+    interface FileSection extends Section {}
 
     /**
      * The Storages object is only available if the Storages plugin is installed.
@@ -2760,6 +2741,126 @@ declare namespace TestComplete {
     }
 
     interface Set {}
+
+    /**
+     * The TestItem object provides access to a test item defined in your project and allows you to get the test item’s property values.
+     * Note that all of the TestItem object properties are read-only and cannot be changed during the test run.
+     * To set up the project’s test items, use the Test Items page of the project editor.
+     */
+    interface ProjectTestItem {
+        /** Returns the number of times the test item is to be run. */
+        Count: int;
+        /** Returns the test item’s description. */
+        Description: string;
+        /** Returns a TestItemElement object corresponding to the test run by the test item. */
+        ElementToBeRun: TestItemElement;
+        /** Returns whether the test item is to be executed during the project run. */
+        Enabled: boolean;
+        /** Returns the total number of child test items. */
+        ItemCount: int;
+        /** Returns the current iteration of the test item run. */
+        Iteration: int;
+        /** Returns the test item’s name. */
+        Name: string;
+        /** Returns the parent test item. */
+        Parent: ProjectTestItem
+        /** Specifies what TestComplete will do when an error occurs during a test run.
+         * Possible options: the test run will be stopped, the error will be ignored, the test item where the error occurred will be skipped.
+         * - `epvNone` - `0` - Proceed with project execution as if no errors have occurred.
+         * Corresponds to the Continue running value of the test item’s On Error column on the Test Items page.
+         * - `epvStopProject` - `1` - Stop the whole project run.
+         * Corresponds to the Stop project value of the test item’s On Error column on the Test Items page.
+         * - `epvStopTestItem` - `2` - Stop the current test item run (including all its iterations and child items)
+         * and proceed with subsequent sibling items. Corresponds to the Stop current item value of the test item’s On Error column on the Test Items page.
+         * - `epvProjectDefault` - `3` - Corresponds to the Use project’s 'On error' property value of the test item’s On Error column on the Test Items page.
+         * The item uses the project’s Error handling > On Error property value. It can be Continue running, Stop current item, or Stop project.
+         */
+        readonly StopOnError: int;
+        /** Specifies what TestComplete will do when an exception occurs during a test run.
+         * Possible options: the test will be stopped, the exception will be ignored, the test item where the error occurred will be skipped.
+         * - `epvNone` - `0` - Proceed with the test run as if no exception has occurred.
+         * Corresponds to the Continue running value of the test item’s On exception column on the Test Items page.
+         * - `epvProject` - `1` - Stop the execution of the whole project.
+         * Corresponds to the Stop project value of the test item’s On exception column on the Test Items page.
+         * - `epvTestItem` - `2` - Stop the execution of the current test item (including its child items
+         * and further iterations of the current item), and proceed with the execution of the subsequent sibling items.
+         * Corresponds to the Stop current item value of the test item’s On exception column on the Test Items page.
+         */
+        readonly StopOnException: int;
+        /** Returns the child test item specified by its index. */
+        TestItem(Index: int): ProjectTestItem;
+        /** Returns the test item’s timeout value, in minutes. */
+        Timeout: int;
+    }
+
+    /**
+     * The TestItem object provides access to a test item defined in your project
+     * and allows you to get the test item’s property values. Note that all
+     * of the TestItem object properties are read-only and cannot be changed during the test run.
+     * To set up the project’s test items, use the Test Items page of the project editor.
+     */
+    interface ProjectTestItems {
+        /** Returns the test item that is currently running. */
+        readonly Current: ProjectTestItem;
+        /** Returns the total number of top-level test items. */
+        readonly ItemCount: int;
+        /** Returns a top-level test item by its index. */
+        TestItem(Index: int): ProjectTestItem;
+    }
+
+    interface LogData {}
+    interface LogTableData extends LogData {}
+    interface TextLogData extends LogData {}
+    interface PictureLogData extends LogData {}
+
+    /**
+     * provides a scripting interface to a project’s log item. Log items are displayed in the test log panel.
+     * They are organized in a tree-like structure. At that, each log item of any level
+     * (topmost log items as well as child items) are represented as the LogItem object.
+     *
+     * The LogItem object also contains properties that let you access a log item’s dataset,
+     * that is, results displayed for the given log item in additional log panels.
+     * To obtain the log item’s dataset, use the Data property.
+     */
+    interface LogItem {
+        /** Returns the child log item by its index. */
+        Child(Index: int): LogItem;
+        /** Returns the total number of child log items of the current log item. */
+        ChildCount: int;
+        /** Returns the log item’s dataset by its index. */
+        Data(Index: int): LogData;
+        /** Returns the total number of datasets in the given log item. */
+        DataCount: int;
+        /** Returns the log item’s caption. */
+        Name: string;
+        /**
+         * Returns the log item’s status.
+         *
+         * One of the following constants that specify the log item status:
+         * - `lsOk` - `0` - The log item contains only informative messages.
+         * - `lsWarning` - `1` - The log item contains warning and informative messages and does not contain error messages.
+         * - `lsError` - `2` - The log item contains one or more error messages.
+         */
+        Status: int;
+    }
+
+    /**
+     * provides a scripting interface to a project’s logs that are displayed under the
+     * Project_Suite_Name Logs | Project_Name Logs node in the Project Explorer panel.
+     * These are top-level log items that can hold result of test runs for a whole project,
+     * its test items or project item’s elements (for instance, single script routines, low-level procedures, and so on).
+     *
+     * The LogResults object maintains the list of a project’s top-level log items and contains properties
+     * that let you iterate through log items and access single top-level log items from scripts.
+     * This helps you process test results in a specific manner, for instance, to export them to a custom file format.
+     */
+    interface LogResults
+    {
+        /** Returns the project’s top-level log item by its index. */
+        LogItem(Index: int): LogItem;
+        /** Returns the total number of project’s top-level log items. */
+        LogItemsCount(): int;
+    }
 }
 
 /*

@@ -1,5 +1,6 @@
-"""Auto-generate project.d.ts from TestComplete's config"""
+"""Auto-generate project.d.ts from TestComplete's config."""
 
+from os import path
 from typing import TextIO
 from sys import argv
 from xml.etree import ElementTree
@@ -10,7 +11,7 @@ def printHeader(destinationFile: TextIO, baseFile: str):
     destinationFile.write(f'''/**
  * Declaration of Project variables.
  * NOTE: Auto-generated from {baseFile}
- */\n
+ */
 ''')
 
 
@@ -84,16 +85,34 @@ def parseXML(xmlFile: str, destinationFile: TextIO):
 def generateFile(sourceXmlPath: str, destinationDTs: str):
     with open(destinationDTs, 'w') as generatedFile:
         printHeader(generatedFile, sourceXmlPath)
-        generatedFile.write('declare namespace Project {\n')
-        generatedFile.write('    interface _Variables extends TestComplete.ProjectVariables {\n')
+        generatedFile.write('declare namespace TestComplete.Generated {\n')
+        generatedFile.write('    interface Variables extends TestComplete.ProjectVariables {\n')
 
         parseXML(sourceXmlPath, generatedFile)
 
         generatedFile.write('    }\n\n')
-        generatedFile.write('    const Variables: _Variables;\n')
-        generatedFile.write('    const Path: string;\n')
-        generatedFile.write('    const ConfigPath: string;\n')
-        generatedFile.write('}\n')
+        generatedFile.write('    interface Project extends TestComplete.Project {\n')
+        generatedFile.write(f'        /**\n')
+        generatedFile.write(f'         * Returns the name of the current project\'s .mds file.\n')
+        generatedFile.write(f'         *\n')
+        generatedFile.write(f'         * @constant `{path.basename(sourceXmlPath)}`\n')
+        generatedFile.write(f'         */\n')
+        generatedFile.write(f'        readonly FileName: string;\n')
+        generatedFile.write(f'        /**\n')
+        generatedFile.write(f'         * The full path to the folder that contains the file of the current TestComplete project.\n')
+        generatedFile.write(f'         *\n')
+        generatedFile.write(f'         * @constant `{path.dirname(path.abspath(sourceXmlPath))}`\n')
+        generatedFile.write(f'         */\n')
+        generatedFile.write(f'        readonly Path: string;\n')
+        generatedFile.write('        /** Returns the collection of local variables defined in the current project. */\n')
+        generatedFile.write('        readonly Variables: Variables;\n')
+        generatedFile.write('    }\n')
+        generatedFile.write('}\n\n')
+        generatedFile.write('/**')
+        generatedFile.write(' * Provides interface to current project parameters.\n')
+        generatedFile.write(' * NOTE: Auto-generated from ./Revizto5Tests/Revizto5Tests.mds.\n')
+        generatedFile.write(' */\n')
+        generatedFile.write('declare const Project: TestComplete.Generated.Project;\n')
 
 
 if __name__ == '__main__':
