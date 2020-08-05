@@ -1548,9 +1548,9 @@ declare namespace TestComplete {
         /** Converts the given relative file name into a fully qualified path name using Universal Naming Convention. */
         ExpandUNCFileName(InPath: string): string;
         /** Searches a folder for files matching the specified pattern. */
-        FindFiles( Path: string, SearchPattern: string, SearchInSubDirs?: boolean /* false */): ObjectIterator<aqFileInfo>;
+        FindFiles( Path: string, SearchPattern: string, SearchInSubDirs?: boolean /* false */): aqObjIterator<aqFileInfo>;
         /** Searches a folder for subfolders matching the specified pattern. */
-        FindFolders(Path: string,SearchPattern: string,SearchInSubDirs?: boolean /* false */): ObjectIterator<aqFolderInfo>;
+        FindFolders(Path: string,SearchPattern: string,SearchInSubDirs?: boolean /* false */): aqObjIterator<aqFolderInfo>;
         /** Returns the fully qualified name of the current folder. */
         GetCurrentFolder(): string;
         /** Retrieves detailed information about the specified drive volume. */
@@ -1587,18 +1587,6 @@ declare namespace TestComplete {
         RenameFolder(OldPath: string, NewPath: string): boolean;
         /** Sets the specified folder as the current folder. */
         SetCurrentFolder(DirStr: string): boolean;
-    }
-
-    // T == aqFileInfo | aqFolderInfo | aqDriveInfo |
-    //      aqObjEvent | aqObjField | aqObjMethod | aqObjProperty
-    interface ObjectIterator<T> {
-        readonly Count: int;
-
-        HasNext(): boolean;
-        Next(): T;
-        Reset(): void;
-        Skip(SkipCount: int): T;
-        Item(Index: int): T;
     }
 
     /**
@@ -1673,16 +1661,16 @@ declare namespace TestComplete {
         RaiseEvent(IObject: any, EventName: string): boolean;
 
         /** Returns the collection of events of the given object. */
-        GetEvents(SourceObject: any, ShowHidden?: boolean): ObjectIterator<aqObjEvent>;
+        GetEvents(SourceObject: any, ShowHidden?: boolean): aqObjIterator<aqObjEvent>;
         /** Returns the collection of fields of the given object.  */
-        GetFields(SourceObject: any, ShowHidden?: boolean): ObjectIterator<aqObjField>;
+        GetFields(SourceObject: any, ShowHidden?: boolean): aqObjIterator<aqObjField>;
         /** Returns the collection of methods of the given object. */
-        GetMethods(SourceObject: any, ShowHidden?: boolean): ObjectIterator<aqObjEvent>;
+        GetMethods(SourceObject: any, ShowHidden?: boolean): aqObjIterator<aqObjEvent>;
         /**
          * Lists all the properties of the desired object
          * @param {boolean} [ShowHidden = false]
          */
-        GetProperties(SourceObject: any, ShowHidden?: boolean): ObjectIterator<aqObjProperty>;
+        GetProperties(SourceObject: any, ShowHidden?: boolean): aqObjIterator<aqObjProperty>;
         /**
          * Verifies an object’s property value according to the specified condition.
          * @param {boolean} [CaseSensitive = true]
