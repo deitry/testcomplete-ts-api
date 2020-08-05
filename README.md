@@ -18,13 +18,13 @@ git clone https://github.com/deitry/testcomplete-ts-api ./tools/
 
 ```powershell
 # name mappings
-python3.exe ./tools/nameMapping.gen.py "./NameMapping/NameMapping.tcNM" "./tools/api/nameMapping.d.ts"
+python3.exe ./tools/scripts/nameMapping.gen.py "./NameMapping/NameMapping.tcNM" "./tools/api/nameMapping.d.ts"
 
 # project variables
-python3.exe ./tools/project.gen.py "./ProjectName.mds" "./tools/api/project.d.ts"
+python3.exe ./tools/scripts/project.gen.py "./ProjectName.mds" "./tools/api/project.d.ts"
 
 # tested apps
-python3.exe ./tools/testedApps.gen.py "./TestedApps/TestedApps.tcTAs" "./tools/api/testedApps.d.ts"
+python3.exe ./tools/scripts/testedApps.gen.py "./TestedApps/TestedApps.tcTAs" "./tools/api/testedApps.d.ts"
 ```
 
 If you have several projects in your project suite, consider moving generated modules in according `./Script/lib/` folder for each project.
