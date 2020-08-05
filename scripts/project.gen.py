@@ -25,7 +25,7 @@ def typeByName(typeName: str) -> str:
         return 'int'
 
     if typeName == 'Double':
-        return 'number'
+        return 'double'
 
     if typeName == 'Boolean':
         return 'boolean'
@@ -89,7 +89,15 @@ def parseXML(xmlFile: str, destinationFile: TextIO):
                     if description and variableValue:
                         destinationFile.write(f'         *\n')
                     if variableValue:
-                        destinationFile.write(f'         * @default `{variableValue}`\n')
+                        destinationFile.write('         * @default ')
+                        if varType == "int" or varType == "double":
+                            destinationFile.write(variableValue)
+                        elif varType == "boolean":
+                            destinationFile.write(variableValue.lower())
+                        else:  # string
+                            destinationFile.write(f'"{variableValue}"')
+
+                        destinationFile.write('\n')
                     if description or variableValue:
                         destinationFile.write(f'         */\n')
 
