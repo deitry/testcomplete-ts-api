@@ -95,6 +95,7 @@ def parseXML(xmlFile: str, destinationFile: TextIO):
                         elif varType == "boolean":
                             destinationFile.write(variableValue.lower())
                         else:  # string
+                            variableValue = variableValue.replace('\\', '\\\\')
                             destinationFile.write(f'"{variableValue}"')
 
                         destinationFile.write('\n')
