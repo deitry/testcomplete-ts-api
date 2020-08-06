@@ -5,10 +5,13 @@
  */
 
 
-// interface int extends number {};
-declare type int = number;
-declare type float = number;
-declare type double = number;
+/** Synthetic type for integer numbers. */
+declare type int = number & {};
+// NOTE: without `& {}` int reveals in hovers as number
+/** Synthetic type for floating-point numbers */
+declare type float = number & {};
+/** Synthetic type for double precision floating-point numbers */
+declare type double = number & {};
 
 declare namespace TestComplete {
 
@@ -2612,13 +2615,21 @@ declare namespace TestComplete {
     interface Options {
         /** This group provides access to the Playback project properties. */
         readonly Run: {
-            /** Use case-sensitive parameters option.  */
+            /** Use case-sensitive parameters option. */
             readonly CaseSensitive: boolean;
 
             /** Click on focused control option in the On Unexpected Window group. */
             readonly ClickOnButton: boolean;
 
-            /** Delay between events option. */
+            /**
+             * Delay between events option.
+             *
+             * Milliseconds to wait after the test simulates any user action
+             * (click, keystroke, window command, and so on) during playback.
+             * The default is 0; any positive integer can be specified to slow down test execution.
+             *
+             * @default 0
+             */
             Delay: int;
 
             /** Show a notification when an unhandled script exception occurs option */
