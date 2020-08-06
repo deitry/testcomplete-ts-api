@@ -2314,7 +2314,13 @@ declare namespace aqString {
     function GetChar(InputString: string, Position: int): string;
     /** Removes a number of characters from the input string. */
     function Remove(InputString: string, StartPosition: int, Length: int): string;
-    /** Searches for a substring within the given string. */
+    /**
+     * Searches for a substring within the given string.
+     * If the input string holds several occurrences of a substring, the method returns the position of the first matching substring.
+     * To search for another occurrence, set a different starting point via the StartPosition parameter.
+     *
+     * @returns If the substring was found, the method returns the number of the first matching character, otherwise, it returns -1.
+     */
     function Find(
         InputString: string,
         SubString: string,
