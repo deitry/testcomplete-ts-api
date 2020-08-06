@@ -6,7 +6,9 @@ declare namespace TestComplete {
 
     interface Button extends Element {
         /** Method will not act on objects that are not buttons */
-        ClickButton(state?: int | boolean /* cbChecked */): void;
+        // TODO: it seems there is no argument
+        // https://support.smartbear.com/testcomplete/docs/reference/test-objects/members/button/clickbutton-action-button-control.html
+        ClickButton(State: cbChecked | cbUnchecked | cbGrayed): void;
     }
 
     interface Menu extends Element {

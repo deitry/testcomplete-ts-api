@@ -4,8 +4,9 @@
  * when getting OleObject
  */
 
-declare namespace TestComplete {
-    interface OleHttpObject {
+
+declare namespace TestComplete.Ole {
+    interface HttpObject {
         readyState: int;
         responseText: string;
         Status: int;
@@ -65,7 +66,7 @@ declare namespace TestComplete {
      *
      * TODO: more methods here: https://docs.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/windows-scripting/ahcz2kh6(v=vs.84)
      */
-    interface OleShell {
+    interface WshShell {
         /** Retrieves or changes the current active directory. */
         CurrentDirectory: string;
         /** Optional. Specifies the location of the environment variable. */
@@ -112,7 +113,7 @@ declare namespace TestComplete {
         Run(strCommand: string, intWindowStyle?: int, bWaitOnReturn?: boolean): int;
     }
 
-    type OleObject = OleHttpObject & OleShell;
+    type OleObject = HttpObject & WshShell;
 }
 
 interface WshEnvironment {
@@ -135,4 +136,4 @@ interface WshEnvironment {
 }
 
 /** Provides access to the native Windows Shell. It is similar to the Sys.OleObject["WScript.Shell"] object and fully inherits its features. */
-declare const WshShell: TestComplete.OleShell;
+declare const WshShell: TestComplete.Ole.WshShell;

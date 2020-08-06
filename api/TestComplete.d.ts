@@ -4,10 +4,9 @@
  * - Allows intellisense in external editors such as VS Code
  */
 
-
+// NOTE: without `& {}` `int` reveals in hovers as `number`
 /** Synthetic type for integer numbers. */
 declare type int = number & {};
-// NOTE: without `& {}` int reveals in hovers as number
 /** Synthetic type for floating-point numbers */
 declare type float = number & {};
 /** Synthetic type for double precision floating-point numbers */
@@ -97,8 +96,8 @@ declare namespace TestComplete {
 
         Refresh(): void;
         Picture(): Picture;
-        Click(ClientX?: int, ClientY?: int, Shift?: boolean /* skNoShift */): void;
-        DblClick(ClientX?: int, ClientY?: int, Shift?: boolean /* skNoShift */): void;
+        Click(ClientX?: int, ClientY?: int, Shift?: ShiftStateEnum /** skNoShift */): void;
+        DblClick(ClientX?: int, ClientY?: int, Shift?: ShiftStateEnum /* skNoShift */): void;
         HoverMouse(ClientX?: int, ClientY?: int): void;
         Keys(input: string): void;
 
@@ -225,7 +224,7 @@ declare namespace TestComplete {
          * For example, "Word.Application" or "{000209FF-0000-0000-C000-000000000046}".
          * @param MachineName Specifies the name of the machine on which the specified OLE server is running.
          * To get the OLE server running on the local machine, leave the value of this parameter empty. */
-        OleObject(OleObject: string, MachineName?: string): OleObject;
+        OleObject(OleObject: string, MachineName?: string): Ole.OleObject;
         /**
          * Lets you access a running web browser application.
          * You can use it to access a specific web browser, for example, Sys.Browser("iexplore"), or an arbitrary browser as in Sys.Browser()
@@ -455,15 +454,6 @@ declare namespace TestComplete {
         WindowToScreen(X: int, Y: int): any;
         WinFormsObject(Name: any, WndCaption: any, Index: any): any;
         WPFObject(Name: any, Caption: any, Index: any): any;
-    }
-
-    /** Name mapping */
-
-    interface NameMapping {
-        TimeOutWarning: boolean;
-        ConfigurationCount: int;
-        CurrentConfigurationName: string;
-        ConfigurationNames(Index: int): any;
     }
 
     interface Aliases {
@@ -752,7 +742,7 @@ declare namespace TestComplete {
          * such as a database table or recordset, an Excel spreadsheet or CSV file, and returns values from that source
          * (a scripting interface to a database table variable is provided by the DBTableVariable object).
          */
-        AddVariable(VariableName: string, VariableType: string): void;
+        AddVariable(VariableName: string, VariableType: "Boolean" | "Double" | "Integer" | "Object" | "String" | "Password" | "Table" | "DBTable" ): void;
         /** Returns the variable category. */
         GetVariableCategory(Variable: Variant): string;
         /** Returns the default value of a variable. */
@@ -1026,7 +1016,7 @@ declare namespace TestComplete {
          * - "TIFF" - TIFF image configuration
          * - "GIF" - GIF image configuration
          * - "ICO" - ICO image configuration*/
-        CreatePictureConfiguration(ImageFormat: string): ImageConfiguration;
+        CreatePictureConfiguration(ImageFormat: "BMP" | "JPEG" | "PNG" | "TIFF" | "GIF" | "ICO"): ImageConfiguration;
         /** Compares the given image with another image and returns the image that indicates the difference between the compared images. */
         Difference(
             Picture: Picture,
@@ -1239,7 +1229,7 @@ declare namespace TestComplete {
         Message(
             MessageText: any,
             AdditionalInformation?: any,
-            Priority?: int, /* pmNormal */
+            Priority?: PriorityEnum, /* pmNormal */
             Attrib?: LogAttributes | null,
             Picture?: Picture | Element | string,
             FolderId?: int): void;
@@ -1247,7 +1237,7 @@ declare namespace TestComplete {
         Warning(
             MessageText: any,
             AdditionalInformation?: any,
-            Priority?: any, /* pmNormal */
+            Priority?: PriorityEnum, /* pmNormal */
             Attrib?: LogAttributes | null,
             Picture?: Picture | Element | string,
             FolderId?: int): void;
@@ -1261,7 +1251,7 @@ declare namespace TestComplete {
         Error(
             MessageText: any,
             AdditionalInformation?: any,
-            Priority?: any, /* pmNormal */
+            Priority?: PriorityEnum, /* pmNormal */
             Attrib?: LogAttributes | null,
             Picture?: Picture | Element | string,
             FolderId?: int): void;
@@ -1269,7 +1259,7 @@ declare namespace TestComplete {
         Event(
             MessageText: any,
             AdditionalInformation?: any,
-            Priority?: any, /* pmNormal */
+            Priority?: PriorityEnum, /* pmNormal */
             Attrib?: LogAttributes | null,
             Picture?: Picture | Element | string,
             FolderId?: int): void;
@@ -1278,7 +1268,7 @@ declare namespace TestComplete {
             Picture: Picture | Element,
             MessageText?: any,
             AdditionalInformation?: any,
-            Priority?: any, /* pmNormal */
+            Priority?: PriorityEnum, /* pmNormal */
             Attrib?: LogAttributes | null,
             FolderId?: int): string;
         /** Posts a file to the test log. */
@@ -1286,7 +1276,7 @@ declare namespace TestComplete {
             FileName: string,
             MessageText?: any,
             AdditionalInformation?: any,
-            Priority?: int, /* pmNormal */
+            Priority?: PriorityEnum, /* pmNormal */
             Attrib?: LogAttributes | null,
             FolderId?: int): string;
         /** Posts a reference to a file or to any other resource to the test log. */
@@ -1294,7 +1284,7 @@ declare namespace TestComplete {
             Link: string,
             MessageText?: any,
             AdditionalInformation?: any,
-            Priority?: int, /* pmNormal */
+            Priority?: PriorityEnum, /* pmNormal */
             Attrib?: LogAttributes | null,
             FolderId?: int): void;
         /**
@@ -1309,7 +1299,7 @@ declare namespace TestComplete {
         CreateFolder(
             MessageText: any,
             AdditionalInformation?: any,
-            Priority?: any, /* pmNormal */
+            Priority?: PriorityEnum, /* pmNormal */
             Attrib?: LogAttributes | null,
             OwnerFolderId?: int): int;
         /** Returns the number of folders created in the log by the current test item. */
@@ -1335,14 +1325,14 @@ declare namespace TestComplete {
         AppendFolder(
             MessageText: any,
             AdditionalInformation?: any,
-            Priority?: any, /* pmNormal */
+            Priority?: PriorityEnum, /* pmNormal */
             Attrib?: LogAttributes | null,
             OwnerFolderId?: int): int;
         /** Posts a checkpoint message to the test log. */
         Checkpoint(
             MessageText: any,
             AdditionalInformation?: any,
-            Priority?: any, /* pmNormal */
+            Priority?: PriorityEnum, /* pmNormal */
             Attrib?: LogAttributes | null,
             Picture?: Picture | Element | string,
             FolderId?: int): void;
@@ -1367,7 +1357,7 @@ declare namespace TestComplete {
          * @param iGroup Specifies whether to use thousand separators and group the resulting value by thousands.
          * The acceptable values are `0` (`false`), `-1` (`true`) and `-2` (use a system value specific to the locale).
          */
-        CurrencyToFormatStr(C: any, iNumDigits: int, iLncLead: int | boolean, iUseParens: int | boolean, iGroup: int | boolean): string;
+        CurrencyToFormatStr(C: any, iNumDigits: int, iLncLead: 0 | -1 | -2 | boolean, iUseParens: 0 | -1 | -2 | boolean, iGroup: 0 | -1 | -2 | boolean): string;
         /** Converts a currency value to a string. */
         CurrencyToStr(C: Currency): string;
         /**
@@ -1468,7 +1458,7 @@ declare namespace TestComplete {
          * - `0` if dates equal
          * - `1` if Date1 is later than Date2
         */
-        Compare(Date1: DateTime, DateTime: DateTime): int;
+        Compare(Date1: DateTime, DateTime: DateTime): -1 | 0 | 1;
         AddMinutes(InputDate: DateTime, Minutes: int): DateTime;
         AddHours(InputDate: DateTime, Hours: int): DateTime;
         AddSeconds(InputDate: DateTime, Seconds: int): DateTime;
@@ -1838,78 +1828,6 @@ declare namespace TestComplete {
         Win32Check(ExitCode: boolean): boolean;
     }
 
-    /** Lets to perform various operations on string values */
-    interface aqString {
-        /** Leading spaces will be trimmed. Value = 1 */
-        readonly stLeading: int;
-        /** Trailing spaces will be trimmed. Value = 2 */
-        readonly stTrailing: int;
-        /** Both leading and trailing spaces will be trimmed. Value = 3 */
-        readonly stAll: int;
-
-        /** Specifies a character used to separate individual values in a list. */
-        QuoteSymbol: string;
-        /** Specifies a symbol used as a quotation mark. */
-        ListSeparator: string;
-
-        /** Removes spaces and control characters from the specified string.
-         * `Space` is one of the `aqString.stLeading`, `aqString.stTrailing`, `aqString.stAll` */
-        Trim(InputString: string, Space: int): string;
-        /** Concatenates two specified strings. */
-        Concat(String1: string, String2: string): string;
-        /** Encloses the specified string in quotes. */
-        Quote(InputString: string): string;
-        /** Converts a quoted string to an unquoted string. */
-        Unquote(InputString: string): string;
-        /** Returns the number of characters in a string. */
-        GetLength(SourceString: string): int;
-        /** Converts the specified string to upper case. */
-        ToUpper(InputString: string): string;
-        /** Converts the specified string to lower case. */
-        ToLower(InputString: string): string;
-        /** Inserts one string to another at the specified position. */
-        Insert(InputString: string, InsertString: string, InsertPosition: int): string;
-        /** Retrieves a substring from the input string. */
-        SubString(InputString: string, StartPosition: int, Length: int): string;
-        /** Retrieves a single character from the input string. */
-        GetChar(InputString: string, Position: int): string;
-        /** Removes a number of characters from the input string. */
-        Remove(InputString: string, StartPosition: int, Length: int): string;
-        /** Searches for a substring within the given string. */
-        Find(
-            InputString: string,
-            SubString: string,
-            StartPosition?: int,
-            CaseSensitive?: boolean /* true */): int;
-        /** Searches for the last occurrence of the substring within the given string. */
-        FindLast(
-            InputString: string,
-            SubString: string,
-            CaseSensitive?: boolean /* true */): int;
-        /** Compares two specified strings. */
-        Compare(String1: string, String2: string, CaseSensitive: boolean): int;
-        /** Replaces all the occurrences of one substring with another substring. */
-        Replace(
-            InputString: string,
-            StringToReplace: string,
-            SubsString: string,
-            CaseSensitive?: boolean /* true */): string;
-        /** Checks whether a string contains a substring that matches the specified regular expression. */
-        StrMatches(ExprStr: string, Str: string): boolean;
-        /** Returns the number of items in the string list. */
-        GetListLength(List: string): int;
-        /** Returns an individual item from the list passed through the input string. */
-        GetListItem(List: string, Index: int): string;
-        /** Adds a new item to a string list. */
-        AddListItem(List: string, NewItem: string, Index: int): string;
-        /** Removes an item with the given index from a string list. */
-        DeleteListItem(List: string, Index: int): string;
-        /** Changes the value of the string list item with the given index. */
-        ChangeListItem(List: string, NewItem: string, Index: int): string;
-        /** Generates a formatted string. */
-        Format(Format: string): string;
-    }
-
     interface aqPerformance {
         Value(CounterName: string): int;
         Start(CounterName: string, WarnIfExists?: boolean): void;
@@ -1924,14 +1842,6 @@ declare namespace TestComplete {
         lmMessage = 1,
         lmWarning = 2,
         lmError = 3,
-    }
-
-    enum Priority {
-        pmLowest = 100,
-        pmLower = 200,
-        pmNormal = 300,
-        pmHigher = 400,
-        pmHighest = 500,
     }
 
     enum CompareCondition {
@@ -1951,288 +1861,6 @@ declare namespace TestComplete {
         cmpNotMatches = 13,
         cmpIn = 14,
         cmpNotIn = 15,
-    }
-
-    enum CheckBoxState {
-        cbUnchecked = 0,
-        cbChecked = 1,
-        cbGrayed = 2,
-    }
-
-    /**
-     * Contains named constants and helper routines for manipulating various data,
-     * display message dialogs or prompt for user input.
-     *
-     * NOTE: Most of routines of this object are obsolete and replaced with analogs from aqNNN objects.
-     */
-    interface BuiltIn {
-        // CheckBox state:
-        readonly cbUnchecked: CheckBoxState.cbChecked;
-        readonly cbChecked: CheckBoxState.cbUnchecked;
-        readonly cbGrayed: CheckBoxState.cbGrayed;
-
-        // Colors:
-        readonly cl3DDkShadow: int;
-        readonly cl3DLight: int;
-        readonly clActiveBorder: int;
-        readonly clActiveCaption: int;
-        readonly clAppWorkSpace: int;
-        readonly clAqua: int;
-        readonly clBackground: int;
-        readonly clBlack: int;
-        readonly clBlue: int;
-        readonly clBtnFace: int;
-        readonly clBtnHighlight: int;
-        readonly clBtnShadow: int;
-        readonly clBtnText: int;
-        readonly clCaptionText: int;
-        readonly clCream: int;
-        readonly clDefault: int;
-        readonly clDkGray: int;
-        readonly clFuchsia: int;
-        readonly clGradientActiveCaption: int;
-        readonly clGradientInactiveCaption: int;
-        readonly clGray: int;
-        readonly clGrayText: int;
-        readonly clGreen: int;
-        readonly clHighlight: int;
-        readonly clHighlightText: int;
-        readonly clHotLight: int;
-        readonly clInactiveBorder: int;
-        readonly clInactiveCaption: int;
-        readonly clInactiveCaptionText: int;
-        readonly clInfoBk: int;
-        readonly clInfoText: int;
-        readonly clLime: int;
-        readonly clLtGray: int;
-        readonly clMaroon: int;
-        readonly clMedGray: int;
-        readonly clMenu: int;
-        readonly clMenuBar: int;
-        readonly clMenuHighlight: int;
-        readonly clMenuText: int;
-        readonly clMoneyGreen: int;
-        readonly clNavy: int;
-        readonly clNone: int;
-        readonly clOlive: int;
-        readonly clPurple: int;
-        readonly clRed: int;
-        readonly clScrollBar: int;
-        readonly clSilver: int;
-        readonly clSkyBlue: int;
-        readonly clSystemColor: int;
-        readonly clTeal: int;
-        readonly clWhite: int;
-        readonly clWindow: int;
-        readonly clWindowFrame: int;
-        readonly clWindowText: int;
-        readonly clYellow: int;
-
-        readonly cmpContains: CompareCondition.cmpContains;
-        readonly cmpEndsWith: CompareCondition.cmpEndsWith;
-        readonly cmpEqual: CompareCondition.cmpEqual;
-        readonly cmpGreater: CompareCondition.cmpGreater;
-        readonly cmpGreaterOrEqual: CompareCondition.cmpGreaterOrEqual;
-        readonly cmpIn: CompareCondition.cmpIn;
-        readonly cmpLess: CompareCondition.cmpLess;
-        readonly cmpLessOrEqual: CompareCondition.cmpLessOrEqual;
-        readonly cmpMatches: CompareCondition.cmpMatches;
-        readonly cmpNotContains: CompareCondition.cmpNotContains;
-        readonly cmpNotEndsWith: CompareCondition.cmpNotEndsWith;
-        readonly cmpNotEqual: CompareCondition.cmpNotEqual;
-        readonly cmpNotIn: CompareCondition.cmpNotIn;
-        readonly cmpNotMatches: CompareCondition.cmpNotMatches;
-        readonly cmpNotStartsWith: CompareCondition.cmpNotStartsWith;
-        readonly cmpStartsWith: CompareCondition.cmpStartsWith;
-
-        readonly ctBoolean: int;
-        readonly ctDateTime: int;
-        readonly ctFloat: int;
-        readonly ctHyperlink: int;
-        readonly ctImage: int;
-        readonly ctInteger: int;
-        readonly ctString: int;
-
-        ExtendedColorsCount: int;
-
-        readonly ldtPicture: int;
-        readonly ldtTable: int;
-        readonly ldtText: int;
-
-        readonly lesCurrentProject: int;
-        readonly lesCurrentTestItem: int;
-        readonly lesFull: int;
-
-        readonly lmError: int;
-        readonly lmMessage: int;
-        readonly lmNone: int;
-        readonly lmWarning: int;
-
-        readonly lsHTML: int;
-        readonly lsMHT: int;
-        readonly lsXML: int;
-        readonly ltfHTML: int;
-        readonly ltfPlain: int;
-        readonly ltfURL: int;
-        readonly ltfXML: int;
-
-        readonly mbAbort: int;
-        readonly mbAbortIgnore: int;
-        readonly mbAbortRetryIgnore: int;
-        readonly mbAll: int;
-        readonly mbCancel: int;
-        readonly mbHelp: int;
-        readonly mbIgnore: int;
-        readonly mbNo: int;
-        readonly mbNoToAll: int;
-        readonly mbOK: int;
-        readonly mbOKCancel: int;
-        readonly mbRetry: int;
-        readonly mbYes: int;
-        readonly mbYesAllNoAllCancel: int;
-        readonly mbYesNoCancel: int;
-        readonly mbYesToAll: int;
-
-        readonly mrAbort: int;
-        readonly mrAll: int;
-        readonly mrCancel: int;
-        readonly mrIgnore: int;
-        readonly mrNo: int;
-        readonly mrNone: int;
-        readonly mrNoToAll: int;
-        readonly mrOk: int;
-        readonly mrRetry: int;
-        readonly mrYes: int;
-        readonly mrYesToAll: int;
-
-        readonly mtConfirmation: int;
-        readonly mtCustom: int;
-        readonly mtError: int;
-        readonly mtInformation: int;
-        readonly mtWarning: int;
-
-        // Priority levels:
-        readonly pmLowest: Priority.pmLowest;
-        readonly pmLower: Priority.pmLower;
-        readonly pmNormal: Priority.pmNormal;
-        readonly pmHigher: Priority.pmHigher;
-        readonly pmHighest: Priority.pmHighest;
-
-        readonly propAccessRead: int;
-        readonly propAccessWrite: int;
-
-        StandardColorsCount: int;
-
-        readonly varAny: int;
-        readonly varArray: int;
-        readonly varBoolean: int;
-        readonly varByRef: int;
-        readonly varByte: int;
-        readonly varCurrency: int;
-        readonly varDate: int;
-        readonly varDispatch: int;
-        readonly varDouble: int;
-        readonly varEmpty: int;
-        readonly varError: int;
-        readonly varInt64: int;
-        readonly varInteger: int;
-        readonly varLongWord: int;
-        readonly varNull: int;
-        readonly varOleStr: int;
-        readonly varShortInt: int;
-        readonly varSingle: int;
-        readonly varSmallint: int;
-        readonly varStrArg: int;
-        readonly varString: int;
-        readonly varTypeMask: int;
-        readonly varUnknown: int;
-        readonly varVariant: int;
-        readonly varWord: int;
-
-        /** Creates an array of Variant elements. */
-        CreateVariantArray(Param1: int, Param2: int): any;
-        /** Creates a two-dimensional array of Variant elements. */
-        CreateVariantArray2(Param1: int, Param2: int, Param3: int, Param4: int): any;
-        /** Creates a three-dimensional array of Variant elements. */
-        CreateVariantArray3(
-            Param1: int, Param2: int, Param3: int, Param4: int,
-            Param5: int, Param6: int): any;
-        /** Returns the ordinal value of an ordinal-type expression. */
-        GetOrd(Param1: any): any;
-        /** Displays a window with an edit box and two buttons: OK and Cancel.
-         * Use this function to quickly get a value from the user. */
-        InputBox(Caption: string, Prompt: string, Default: string): string;
-        /**
-         * Displays a window that lets the user specify a value that can be used in script.
-         *
-         * NOTE: It is supported for VBScript and DelphiScript only.
-         */
-        InputQuery(Param1: string, Param2: string, Param3: string): boolean;
-        /** Returns the natural logarithm of a number. */
-        Log(Param1: number): number;
-        /**
-         * Displays a dialog box.
-         * @param Message The message to be displayed.
-         * @param BoxType It can be any of the following constants:
-         * - `mtWarning` - The message box will contain the exclamation point icon.
-         * - `mtError` - The message box will contain the red stop icon.
-         * - `mtInformation` - The message box will contain the information icon.
-         * - `mtConfirmation` - The message box will contain the question mark icon.
-         * - `mtCustom` - The message box will not contain any bitmap.
-         * @param Buttons Specifies the buttons to be displayed in the message box.
-         * This parameter can be any combination of the following values:
-         * - `mbYes` - "Yes" button
-         * - `mbNo` - "No" button
-         * - `mbOK` - "OK" button
-         * - `mbCancel` - "Cancel" button
-         * - `mbAbort` - "Ignore" button
-         * - `mbRetry` - "Retry" button
-         * - `mbIgnore` - "Ignore" button
-         * - `mbAll` - "All" button
-         * - `mbYesToAll` - "Yes to All" button
-         * - `mbNoToAll` - "No to All" button
-         * - `mbHelp` - "Help" button
-         * - `mbYesNoCancel` - "Yes", "No" and "Cancel" buttons
-         * - `mbOKCancel` - "OK" and "Cancel" buttons
-         * - `mbAbortRetryIgnore` - "Abort", "Retry" and "Ignore" buttons
-         * NOTE: To specify the Param3 parameter, you should create a set value using the MkSet function (see the example below).
-         * Use of MkSet is obligatory. You are not allowed to skip it.
-         * @param Param4 Reserved
-         * @returns one of the constants that indicates which button the user pressed in the message box:
-         * - `mrYes`
-         * - `mrAll`
-         * - `mrYesToAll`
-         * - `mrNo`
-         * - `mrAbort`
-         * - `mrNoToAll`
-         * - `mrOK`
-         * - `mrRetry`
-         * - `mrCancel`
-         * - `mrIgnore`
-         * @example
-         * var i;
-         * i = MkSet(mbYes, mbYesToAll, mbNo, mbCancel);
-         * i = MessageDlg("Message text", mtConfirmation, i, 0);
-         */
-        MessageDlg(Message: string, BoxType: int, Buttons: int, Param4: int): int;
-        /** Returns a number of command-line arguments passed to TestComplete at startup. */
-        ParamCount(): int;
-        /** Returns a TestComplete command-line argument specified by its index. */
-        ParamStr(Index: int): string;
-        /** Sends an e-mail message using the Simple Mail Transfer Protocol (SMTP). */
-        SendMail(
-            Param1: string, Param2: string, Param3: string, Param4: string,
-            Param5: string, Param6: string, Param7: string): boolean;
-        /** Displays a simple message box with the specified string and the OK button. */
-        ShowMessage(Param1: string): void;
-        /** Returns the high bound of the specified dimension of a Variant array. */
-        VarArrayHighBound(Param1: any, Param2: int): int;
-        /** Returns the low bound of the specified dimension of a Variant array. */
-        VarArrayLowBound(Param1: any, Param2: int): int;
-        /** Resizes a Variant array. It is supported for VBScript and DelphiScript. */
-        VarArrayRedim(Param1: any, Param2: int): void;
-        /** Sets the OLEVariant value to empty. */
-        VarClear(Param1: any): void;
     }
 
     interface Runner {
@@ -2380,7 +2008,7 @@ declare namespace TestComplete {
          * @param Key Specifies the full path to the desired key from the root key.
          * If the key does not exist, the method will create it.
          * @param {Win32API.Registry} [RootKey = HKEY_CURRENT_USER]
-         * @param {int} [RegistryType = 0] This parameter is significant
+         * @param {int} [RegistryType = AQRT_32_BIT] This parameter is significant
          * if you use TestComplete on a 64-bit operating system.
          * It specifies which registry view, 32-bit or 64-bit, the method will access.
          * You can use one of the following constants:
@@ -2393,18 +2021,7 @@ declare namespace TestComplete {
          * @example
          * let key = Storages.Registry("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", HKEY_CURRENT_USER);
          */
-        Registry(Key: string, RootKey?: Win32API.Registry, RegistryType?: int, ReadOnly?: boolean): Section;
-    }
-
-    /**
-     * Modificator keys values.
-     * NOTE: no actual values given in TestComplete help book. Adding ones to comply with TypeScript checks
-     */
-    enum ShiftKey {
-        skShift = 0, // shift key is pressed
-        skAlt = 1, // alt key is pressed
-        skCtrl = 2, // ctrl key is pressed
-        skNoShift = 3, // neither ctrl, shift nor alt key pressed
+        Registry(Key: string, RootKey?: Win32API.Registry, RegistryType?: AQRT_32_BIT | AQRT_64_BIT, ReadOnly?: boolean): Section;
     }
 
     /** Object that represent single test case */
@@ -2702,10 +2319,10 @@ declare namespace TestComplete {
     /** Provides various information about a file */
     interface aqFileInfo extends IIterable {
         /** Returns the file’s attributes. See aqFileSystem.fa* constants.
-         * To check if a file has a specific attribute set, perform the bitwise AND check on the Attribute property value
-         * and the value corresponding to the desired attribute (see the example below).
+         * To check if a file has a specific attribute set, perform the bitwise AND check
+         * on the Attribute property value and the value corresponding to the desired attribute.
          * Alternatively, you can use the aqFileSystem.CheckAttributes method.
-        */
+         */
         Attributes: int;
         /** Returns an aqFileCertificateInfo object that provides information about the file’s authentication certificate. */
         CertificateInfo: aqFileCertificateInfo;
@@ -2937,7 +2554,7 @@ declare namespace TestComplete {
          * - `lsWarning` - `1` - The log item contains warning and informative messages and does not contain error messages.
          * - `lsError` - `2` - The log item contains one or more error messages.
          */
-        Status: int;
+        Status: 0 | 1 | 2;
     }
 
     /**
@@ -2956,6 +2573,385 @@ declare namespace TestComplete {
         /** Returns the total number of project’s top-level log items. */
         LogItemsCount(): int;
     }
+
+    // Simulate type enums. Used to simplify stating this as param type.
+    // Will be expanded in hovers
+
+    type PriorityEnum = pmLowest | pmLower | pmNormal | pmHigher | pmHighest;
+    type ShiftStateEnum = skShift | skAlt | skCtrl | skNoShift;
+}
+
+/** Lets to perform various operations on string values */
+declare namespace aqString {
+    /** Leading spaces will be trimmed. */
+    type stLeading = 1;
+    const stLeading: stLeading;
+
+    /** Trailing spaces will be trimmed. */
+    type stTrailing = 2;
+    const stTrailing: stTrailing;
+    /** Both leading and trailing spaces will be trimmed. */
+    type stAll = 3;
+    const stAll: stAll;
+
+    /** Specifies a character used to separate individual values in a list. */
+    var QuoteSymbol: string;
+    /** Specifies a symbol used as a quotation mark. */
+    var ListSeparator: string;
+
+    /** Removes spaces and control characters from the specified string. */
+    function Trim(InputString: string, Space: stLeading | stTrailing | stAll): string;
+    /** Concatenates two specified strings. */
+    function Concat(String1: string, String2: string): string;
+    /** Encloses the specified string in quotes. */
+    function Quote(InputString: string): string;
+    /** Converts a quoted string to an unquoted string. */
+    function Unquote(InputString: string): string;
+    /** Returns the number of characters in a string. */
+    function GetLength(SourceString: string): int;
+    /** Converts the specified string to upper case. */
+    function ToUpper(InputString: string): string;
+    /** Converts the specified string to lower case. */
+    function ToLower(InputString: string): string;
+    /** Inserts one string to another at the specified position. */
+    function Insert(InputString: string, InsertString: string, InsertPosition: int): string;
+    /** Retrieves a substring from the input string. */
+    function SubString(InputString: string, StartPosition: int, Length: int): string;
+    /** Retrieves a single character from the input string. */
+    function GetChar(InputString: string, Position: int): string;
+    /** Removes a number of characters from the input string. */
+    function Remove(InputString: string, StartPosition: int, Length: int): string;
+    /** Searches for a substring within the given string. */
+    function Find(
+        InputString: string,
+        SubString: string,
+        StartPosition?: int,
+        CaseSensitive?: boolean /* true */): int;
+    /** Searches for the last occurrence of the substring within the given string. */
+    function FindLast(
+        InputString: string,
+        SubString: string,
+        CaseSensitive?: boolean /* true */): int;
+    /** Compares two specified strings. */
+    function Compare(String1: string, String2: string, CaseSensitive: boolean): int;
+    /** Replaces all the occurrences of one substring with another substring. */
+    function Replace(
+        InputString: string,
+        StringToReplace: string,
+        SubsString: string,
+        CaseSensitive?: boolean /* true */): string;
+    /** Checks whether a string contains a substring that matches the specified regular expression. */
+    function StrMatches(ExprStr: string, Str: string): boolean;
+    /** Returns the number of items in the string list. */
+    function GetListLength(List: string): int;
+    /** Returns an individual item from the list passed through the input string. */
+    function GetListItem(List: string, Index: int): string;
+    /** Adds a new item to a string list. */
+    function AddListItem(List: string, NewItem: string, Index: int): string;
+    /** Removes an item with the given index from a string list. */
+    function DeleteListItem(List: string, Index: int): string;
+    /** Changes the value of the string list item with the given index. */
+    function ChangeListItem(List: string, NewItem: string, Index: int): string;
+    /** Generates a formatted string. */
+    function Format(Format: string): string;
+}
+
+/**
+ * Contains named constants and helper routines for manipulating various data,
+ * display message dialogs or prompt for user input.
+ *
+ * NOTE: Most of routines of this object are obsolete and replaced with analogs from aqNNN objects.
+ */
+declare namespace BuiltIn {
+    // CheckBox state:
+    const cbUnchecked: cbUnchecked;
+    const cbChecked: cbChecked;
+    const cbGrayed: cbGrayed;
+
+    // Colors:
+    const cl3DDkShadow: int;
+    const cl3DLight: int;
+    const clActiveBorder: int;
+    const clActiveCaption: int;
+    const clAppWorkSpace: int;
+    const clAqua: int;
+    const clBackground: int;
+    const clBlack: int;
+    const clBlue: int;
+    const clBtnFace: int;
+    const clBtnHighlight: int;
+    const clBtnShadow: int;
+    const clBtnText: int;
+    const clCaptionText: int;
+    const clCream: int;
+    const clDefault: int;
+    const clDkGray: int;
+    const clFuchsia: int;
+    const clGradientActiveCaption: int;
+    const clGradientInactiveCaption: int;
+    const clGray: int;
+    const clGrayText: int;
+    const clGreen: int;
+    const clHighlight: int;
+    const clHighlightText: int;
+    const clHotLight: int;
+    const clInactiveBorder: int;
+    const clInactiveCaption: int;
+    const clInactiveCaptionText: int;
+    const clInfoBk: int;
+    const clInfoText: int;
+    const clLime: int;
+    const clLtGray: int;
+    const clMaroon: int;
+    const clMedGray: int;
+    const clMenu: int;
+    const clMenuBar: int;
+    const clMenuHighlight: int;
+    const clMenuText: int;
+    const clMoneyGreen: int;
+    const clNavy: int;
+    const clNone: int;
+    const clOlive: int;
+    const clPurple: int;
+    const clRed: int;
+    const clScrollBar: int;
+    const clSilver: int;
+    const clSkyBlue: int;
+    const clSystemColor: int;
+    const clTeal: int;
+    const clWhite: int;
+    const clWindow: int;
+    const clWindowFrame: int;
+    const clWindowText: int;
+    const clYellow: int;
+
+    const cmpContains: TestComplete.CompareCondition.cmpContains;
+    const cmpEndsWith: TestComplete.CompareCondition.cmpEndsWith;
+    const cmpEqual: TestComplete.CompareCondition.cmpEqual;
+    const cmpGreater: TestComplete.CompareCondition.cmpGreater;
+    const cmpGreaterOrEqual: TestComplete.CompareCondition.cmpGreaterOrEqual;
+    const cmpIn: TestComplete.CompareCondition.cmpIn;
+    const cmpLess: TestComplete.CompareCondition.cmpLess;
+    const cmpLessOrEqual: TestComplete.CompareCondition.cmpLessOrEqual;
+    const cmpMatches: TestComplete.CompareCondition.cmpMatches;
+    const cmpNotContains: TestComplete.CompareCondition.cmpNotContains;
+    const cmpNotEndsWith: TestComplete.CompareCondition.cmpNotEndsWith;
+    const cmpNotEqual: TestComplete.CompareCondition.cmpNotEqual;
+    const cmpNotIn: TestComplete.CompareCondition.cmpNotIn;
+    const cmpNotMatches: TestComplete.CompareCondition.cmpNotMatches;
+    const cmpNotStartsWith: TestComplete.CompareCondition.cmpNotStartsWith;
+    const cmpStartsWith: TestComplete.CompareCondition.cmpStartsWith;
+
+    const ctBoolean: int;
+    const ctDateTime: int;
+    const ctFloat: int;
+    const ctHyperlink: int;
+    const ctImage: int;
+    const ctInteger: int;
+    const ctString: int;
+
+    var ExtendedColorsCount: int;
+
+    const ldtPicture: int;
+    const ldtTable: int;
+    const ldtText: int;
+
+    const lesCurrentProject: int;
+    const lesCurrentTestItem: int;
+    const lesFull: int;
+
+    const lmError: int;
+    const lmMessage: int;
+    const lmNone: int;
+    const lmWarning: int;
+
+    const lsHTML: int;
+    const lsMHT: int;
+    const lsXML: int;
+    const ltfHTML: int;
+    const ltfPlain: int;
+    const ltfURL: int;
+    const ltfXML: int;
+
+    const mbAbort: mbAbort;
+    const mbAbortIgnore: mbAbortIgnore;
+    const mbAbortRetryIgnore: mbAbortRetryIgnore;
+    const mbAll: mbAll;
+    const mbCancel: mbCancel;
+    const mbHelp: mbHelp;
+    const mbIgnore: mbIgnore;
+    const mbNo: mbNo;
+    const mbNoToAll: mbNoToAll;
+    const mbOK: mbOK;
+    const mbOKCancel: mbOKCancel;
+    const mbRetry: mbRetry;
+    const mbYes: mbYes;
+    const mbYesAllNoAllCancel: mbYesAllNoAllCancel;
+    const mbYesNoCancel: mbYesNoCancel;
+    const mbYesToAll: mbYesToAll;
+    // values below may not represent actual values
+    type mbAbort = 0;
+    type mbAbortIgnore = 1;
+    type mbAbortRetryIgnore = 2;
+    type mbAll = 3;
+    type mbCancel = 4;
+    type mbHelp = 5;
+    type mbIgnore = 6;
+    type mbNo = 7;
+    type mbNoToAll = 8;
+    type mbOK = 9;
+    type mbOKCancel = 10;
+    type mbRetry = 11;
+    type mbYes = 12;
+    type mbYesAllNoAllCancel = 13;
+    type mbYesNoCancel = 14;
+    type mbYesToAll = 15;
+
+    const mrAbort: mrAbort;
+    const mrAll: mrAll;
+    const mrCancel: mrCancel;
+    const mrIgnore: mrIgnore;
+    const mrNo: mrNo;
+    const mrNone: mrNone;
+    const mrNoToAll: mrNoToAll;
+    const mrOk: mrOk;
+    const mrRetry: mrRetry;
+    const mrYes: mrYes;
+    const mrYesToAll: mrYesToAll;
+
+    const mtConfirmation: mtConfirmation;
+    const mtCustom: mtCustom;
+    const mtError: mtError;
+    const mtInformation: mtInformation;
+    const mtWarning: mtWarning;
+
+    // Priority levels:
+    const pmLowest: pmLowest;
+    const pmLower: pmLower;
+    const pmNormal: pmNormal;
+    const pmHigher: pmHigher;
+    const pmHighest: pmHighest;
+
+    const propAccessRead: int;
+    const propAccessWrite: int;
+
+    var StandardColorsCount: int;
+
+    const varAny: int;
+    const varArray: int;
+    const varBoolean: int;
+    const varByRef: int;
+    const varByte: int;
+    const varCurrency: int;
+    const varDate: int;
+    const varDispatch: int;
+    const varDouble: int;
+    const varEmpty: int;
+    const varError: int;
+    const varInt64: int;
+    const varInteger: int;
+    const varLongWord: int;
+    const varNull: int;
+    const varOleStr: int;
+    const varShortInt: int;
+    const varSingle: int;
+    const varSmallint: int;
+    const varStrArg: int;
+    const varString: int;
+    const varTypeMask: int;
+    const varUnknown: int;
+    const varVariant: int;
+    const varWord: int;
+
+    /** Creates an array of Variant elements. */
+    function CreateVariantArray(Param1: int, Param2: int): any;
+    /** Creates a two-dimensional array of Variant elements. */
+    function CreateVariantArray2(Param1: int, Param2: int, Param3: int, Param4: int): any;
+    /** Creates a three-dimensional array of Variant elements. */
+    function CreateVariantArray3(
+        Param1: int, Param2: int, Param3: int, Param4: int,
+        Param5: int, Param6: int): any;
+    /** Returns the ordinal value of an ordinal-type expression. */
+    function GetOrd(Param1: any): any;
+    /** Displays a window with an edit box and two buttons: OK and Cancel.
+     * Use this function to quickly get a value from the user. */
+    function InputBox(Caption: string, Prompt: string, Default: string): string;
+    /**
+     * Displays a window that lets the user specify a value that can be used in script.
+     *
+     * NOTE: It is supported for VBScript and DelphiScript only.
+     */
+    function InputQuery(Param1: string, Param2: string, Param3: string): boolean;
+    /** Returns the natural logarithm of a number. */
+    function Log(Param1: number): number;
+    /**
+     * Displays a dialog box.
+     * @param Message The message to be displayed.
+     * @param BoxType It can be any of the following constants:
+     * - `mtWarning` - The message box will contain the exclamation point icon.
+     * - `mtError` - The message box will contain the red stop icon.
+     * - `mtInformation` - The message box will contain the information icon.
+     * - `mtConfirmation` - The message box will contain the question mark icon.
+     * - `mtCustom` - The message box will not contain any bitmap.
+     * @param Buttons Specifies the buttons to be displayed in the message box.
+     * This parameter can be any combination of the following values:
+     * - `mbYes` - "Yes" button
+     * - `mbNo` - "No" button
+     * - `mbOK` - "OK" button
+     * - `mbCancel` - "Cancel" button
+     * - `mbAbort` - "Ignore" button
+     * - `mbRetry` - "Retry" button
+     * - `mbIgnore` - "Ignore" button
+     * - `mbAll` - "All" button
+     * - `mbYesToAll` - "Yes to All" button
+     * - `mbNoToAll` - "No to All" button
+     * - `mbHelp` - "Help" button
+     * - `mbYesNoCancel` - "Yes", "No" and "Cancel" buttons
+     * - `mbOKCancel` - "OK" and "Cancel" buttons
+     * - `mbAbortRetryIgnore` - "Abort", "Retry" and "Ignore" buttons
+     * NOTE: To specify the Buttons parameter, you should create a set value using the MkSet function (see the example below).
+     * Use of MkSet is obligatory. You are not allowed to skip it.
+     * @param Reserved Parameter is reserved. You may pass `0`.
+     *
+     * @returns one of the constants that indicates which button the user pressed in the message box:
+     * - `mrYes`
+     * - `mrAll`
+     * - `mrYesToAll`
+     * - `mrNo`
+     * - `mrAbort`
+     * - `mrNoToAll`
+     * - `mrOK`
+     * - `mrRetry`
+     * - `mrIgnore`
+     * - `mrCancel`
+     * @example
+     * var i;
+     * i = MkSet(mbYes, mbYesToAll, mbNo, mbCancel);
+     * i = MessageDlg("Message text", mtConfirmation, i, 0);
+     */
+    function MessageDlg(
+        Message: string,
+        BoxType: mtWarning | mtError | mtInformation | mtConfirmation | mtCustom,
+        Buttons: TestComplete.Set,
+        Reserved: int): mrYes | mrAll | mrYesToAll | mrNo | mrAbort | mrNoToAll | mrOk | mrRetry | mrCancel | mrIgnore;
+    /** Returns a number of command-line arguments passed to TestComplete at startup. */
+    function ParamCount(): int;
+    /** Returns a TestComplete command-line argument specified by its index. */
+    function ParamStr(Index: int): string;
+    /** Sends an e-mail message using the Simple Mail Transfer Protocol (SMTP). */
+    function SendMail(
+        Param1: string, Param2: string, Param3: string, Param4: string,
+        Param5: string, Param6: string, Param7: string): boolean;
+    /** Displays a simple message box with the specified string and the OK button. */
+    function ShowMessage(Param1: string): void;
+    /** Returns the high bound of the specified dimension of a Variant array. */
+    function VarArrayHighBound(Param1: any, Param2: int): int;
+    /** Returns the low bound of the specified dimension of a Variant array. */
+    function VarArrayLowBound(Param1: any, Param2: int): int;
+    /** Resizes a Variant array. It is supported for VBScript and DelphiScript. */
+    function VarArrayRedim(Param1: any, Param2: int): void;
+    /** Sets the OLEVariant value to empty. */
+    function VarClear(Param1: any): void;
 }
 
 /*
@@ -2982,15 +2978,8 @@ declare const aqFileSystem: TestComplete.aqFileSystem;
 /** Provides unified methods for operating objects’ members at run time. */
 declare const aqObject: TestComplete.aqObject;
 declare const aqPerformance: TestComplete.aqPerformance;
-/** Lets to perform various operations on string values */
-declare const aqString: TestComplete.aqString;
 declare const aqTestCase: TestComplete.aqTestCase;
 declare const aqUtils: TestComplete.aqUtils;
-/**
- * Contains named constants and helper routines for manipulating various data,
- * display message dialogs or prompt for user input.
- */
-declare const BuiltIn: TestComplete.BuiltIn;
 declare const Browsers: TestComplete.Browsers;
 /** Provides symbolic names for the TestComplete global constants . The descriptions for the constants are given in the descriptions of those methods where the corresponding constants are applied. */
 declare const Consts: TestComplete.Consts;
@@ -3004,7 +2993,16 @@ declare const JavaClasses: TestComplete.JavaClasses;
  * or have them organized as a tree whose nodes are folders that can include test log items and other folders.
  */
 declare const Log: TestComplete.Log;
-declare const NameMapping: TestComplete.NameMapping;
+// declare const NameMapping: TestComplete.NameMapping;
+
+/** Name mapping */
+declare namespace NameMapping {
+    var TimeOutWarning: boolean;
+    var ConfigurationCount: int;
+    var CurrentConfigurationName: string;
+    function ConfigurationNames(Index: int): any;
+}
+
 declare const Options: TestComplete.Options;
 // declare const Project: TestComplete.Project;
 declare const ProjectSuite: TestComplete.ProjectSuite;
