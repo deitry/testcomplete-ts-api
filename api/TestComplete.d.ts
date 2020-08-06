@@ -285,8 +285,21 @@ declare namespace TestComplete {
         Keys(Keys: string): void;
         /** Returns the object displayed at the specified coordinates on the screen.  */
         ObjectFromPoint(X: int, Y: int, FindTransparent: boolean): any;
-        /** Returns a Process object by its application name and index.  */
-        Process(ProcessName: string, GroupIndex: int): Process;
+        /**
+         * Returns a Process object by its application name and index.
+         *
+         * If the process is not found, the method returns an empty object and posts
+         * the message “The process … was not found” to the test log. You can call Exists
+         * to determine whether the returned object is a process in the system.
+         * To obtain the process object without posting any messages to the test log, use Sys.WaitProcess or WaitChild.
+         *
+         * NOTE: The Process method does not launch the specified process.
+         * It simply searches for it among all processes that currently exist in the system.
+         *
+         * @param {int} [ProcessIndex = 1]
+         * @see Sys.WaitProcess
+         */
+        Process(ProcessName: string, ProcessIndex?: int): Process;
         /** Refreshes the child object list. */
         Refresh(): void;
         /** Instructs TestComplete to re-identify the mapped object using the identification information specified in Name Mapping. */
@@ -830,7 +843,7 @@ declare namespace TestComplete {
             Count?: int,
             IgnoreRunning?: boolean,
             Timeout?: int,
-            ): Process;
+        ): Process;
 
         /** Attempts to close the application normally and returns whether the attempt succeeded. */
         Close(): boolean;
@@ -903,7 +916,7 @@ declare namespace TestComplete {
         Items(ObjectName: string): any;
     }
 
-    interface Rect {}
+    interface Rect { }
 
     interface Regions {
         Add(FileName: string, Name: string, ACopyFile: boolean): boolean;
@@ -1330,7 +1343,7 @@ declare namespace TestComplete {
         SaveToDisk(): void;
     }
 
-    interface Currency {}
+    interface Currency { }
 
     interface aqConvert {
         /**
@@ -1602,9 +1615,9 @@ declare namespace TestComplete {
         /** Indicates whether the specified file or folder has certain attribute(s). */
         CheckAttributes(Path: string, Attribute: int): boolean;
         /** Copy one or several files to a new location */
-        CopyFile(PathToExistingFile: string,PathToNewFile: string,RenameOnCollision?: boolean /* true */): boolean;
+        CopyFile(PathToExistingFile: string, PathToNewFile: string, RenameOnCollision?: boolean /* true */): boolean;
         /** Copies the specified folder(s) to another location. */
-        CopyFolder(Source: string,Destination: string,RenameOnCollision?: boolean /* true */): boolean;
+        CopyFolder(Source: string, Destination: string, RenameOnCollision?: boolean /* true */): boolean;
         /**
          * Creates a new folder.
          * @param Path Specifies the fully qualified path where a new folder should be created.
@@ -1637,9 +1650,9 @@ declare namespace TestComplete {
         /** Converts the given relative file name into a fully qualified path name using Universal Naming Convention. */
         ExpandUNCFileName(InPath: string): string;
         /** Searches a folder for files matching the specified pattern. */
-        FindFiles( Path: string, SearchPattern: string, SearchInSubDirs?: boolean /* false */): aqObjIterator<aqFileInfo>;
+        FindFiles(Path: string, SearchPattern: string, SearchInSubDirs?: boolean /* false */): aqObjIterator<aqFileInfo>;
         /** Searches a folder for subfolders matching the specified pattern. */
-        FindFolders(Path: string,SearchPattern: string,SearchInSubDirs?: boolean /* false */): aqObjIterator<aqFolderInfo>;
+        FindFolders(Path: string, SearchPattern: string, SearchInSubDirs?: boolean /* false */): aqObjIterator<aqFolderInfo>;
         /** Returns the fully qualified name of the current folder. */
         GetCurrentFolder(): string;
         /** Retrieves detailed information about the specified drive volume. */
@@ -1665,13 +1678,13 @@ declare namespace TestComplete {
         /** Ensures that the specified path ends with a trailing path delimiter. */
         IncludeTrailingBackSlash(PathToFolder: string): string;
         /** Establishes connection to the specified network folder. */
-        MapNetworkDrive(LocalName: string,Path: string,User: string,Password: string,Remember: boolean): int;
+        MapNetworkDrive(LocalName: string, Path: string, User: string, Password: string, Remember: boolean): int;
         /** Moves the specified file(s) to a new location. */
         MoveFile(PathToExistingFile: string, PathToNewFile: string, RenameOnCollision?: boolean /* true */): boolean;
         /** Moves the specified folder(s) to another location. */
-        MoveFolder(Source: string,Destination: string,RenameOnCollision?: boolean /* true */): boolean;
+        MoveFolder(Source: string, Destination: string, RenameOnCollision?: boolean /* true */): boolean;
         /** Renames the specified file. */
-        RenameFile(OldPath: string,NewPath: string,RenameOnCollision?: boolean /* true */): boolean;
+        RenameFile(OldPath: string, NewPath: string, RenameOnCollision?: boolean /* true */): boolean;
         /** Renames the specified folder or moves it to another folder. */
         RenameFolder(OldPath: string, NewPath: string): boolean;
         /** Sets the specified folder as the current folder. */
@@ -2339,7 +2352,7 @@ declare namespace TestComplete {
 
     }
 
-    interface FileSection extends Section {}
+    interface FileSection extends Section { }
 
     /**
      * The Storages object is only available if the Storages plugin is installed.
@@ -2472,8 +2485,8 @@ declare namespace TestComplete {
         IsActive(): boolean,
     }
 
-    interface TestedAppSimpleParams extends TestedAppBaseParams {}
-    interface TestedAppDebugParams extends TestedAppBaseParams {}
+    interface TestedAppSimpleParams extends TestedAppBaseParams { }
+    interface TestedAppDebugParams extends TestedAppBaseParams { }
 
     /** A tested application can be run in RunAs mode.
      * In this mode, TestComplete launches the tested application under a user account
@@ -2488,7 +2501,7 @@ declare namespace TestComplete {
         /** Specifies the password of the desired user account. */
         UserName: string,
     }
-    interface TestedAppProfileParams extends TestedAppBaseParams {}
+    interface TestedAppProfileParams extends TestedAppBaseParams { }
 
     /**
      * Provides a scripting interface to parameters of applications defined in your project.
@@ -2498,10 +2511,7 @@ declare namespace TestComplete {
      */
     interface TestedAppParams {
         /** Provides a scripting interface to the parameters of the currently selected run mode. */
-        ActiveParams: TestedAppSimpleParams
-                    | TestedAppDebugParams
-                    | TestedAppProfileParams
-                    | TestedAppRunAsParams;
+        ActiveParams: TestedAppSimpleParams | TestedAppDebugParams | TestedAppProfileParams | TestedAppRunAsParams;
 
         /** Provides a scripting interface to Debug run mode parameters. */
         DebugParams: TestedAppDebugParams,
@@ -2553,20 +2563,54 @@ declare namespace TestComplete {
         AppDomain(Name: string, ClrVersion?: string): AppDomain;
         Form(Caption: string): Form;
 
-        /** Closes the specified application process by sending
-        the WM_SYSCOMMAND message with the SC_CLOSE parameter to the main window of the process. */
-        Close(WaitTimeOut?: int /* 60000 */): void;
+        /**
+         * Closes the specified application process by sending the `WM_SYSCOMMAND` message
+         * with the `SC_CLOSE` parameter to the main window of the process. When called for multi-process
+         * web browsers, the method closes the main process of the browser as well as its auxiliary processes.
+         *
+         * The method also checks whether the process is showing a window that asks you to save the changes.
+         * If it is, the method stops waiting for the process. In this case,
+         * it will not close it and post an informative message to the test log.
+         *
+         * If `Close` fails to stop the process, use `Terminate`. Specifies a timeout, in milliseconds,
+         * to wait for the process to close. The test execution will pause for the specified time
+         * or until the process closes. When the method is called for the `Browser` object,
+         * it pauses the test execution for the specified time or until the main and child processes are closed.
+         *
+         * @param {int} [WaitTimeOut = 60000]
+         *
+         * @see `Process.Terminate`
+         */
+        Close(WaitTimeOut?: int): void;
 
-        /** Tries to terminate all instances of the given application that were launched by TestComplete */
+        /**
+         * Tries to terminate all instances of the given application that were launched by TestComplete.
+         *
+         * NOTE: When a process is closed by the Windows `TerminateProcess` function,
+         * destructors and other finalization code of the application are not called.
+         * So, you should use the `Terminate` method when `Close` cannot stop the application.
+         *
+         * @see `Process.Close`
+         */
         Terminate(): boolean;
     }
 
     enum ObjectSearchStrategyType {
+        /**
+         * Search as deep as possible in each branch of the object tree before moving to the next branch.
+         * This is the default setting for projects created in TestComplete versions up to 11.
+         */
         searchDepthFirst = "Depth-first",
+        /**
+         * Search level by level: start at a given object, search its direct child objects,
+         * then move to the next level child objects, and so on.
+         * This is the default setting for projects created in TestComplete 14.
+         */
         searchBreadthFirst = "Breadth-first",
     }
 
     interface Options {
+        /** This group provides access to the Playback project properties. */
         readonly Run: {
             /** Use case-sensitive parameters option.  */
             readonly CaseSensitive: boolean;
@@ -2583,9 +2627,36 @@ declare namespace TestComplete {
             /** Ignore overlapping window option in the On Overlapping Window group */
             readonly IgnoreOverWindow: boolean
 
+            /**
+             * Specifies the order in which TestComplete traverses the object tree
+             * when searching for an object using the Find methods (Find, FindEx, FindChild, and FindChildEx).
+             */
             ObjectSearchStrategy: ObjectSearchStrategyType;
 
-            /** Auto-wait timeout option. */
+            /**
+             * Auto-wait timeout option.
+             *
+             * When a test gets a reference to a process or window object, or when it activates an object
+             * (for example, opening a minimized window), the object may not be available immediately.
+             * Similarly, when a test changes the onscreen state of a window (for example, an open window is minimized),
+             * or when attempts to close an unexpected window, the change may not occur instantaneously.
+             *
+             * Auto-wait timeout is the number of milliseconds TestComplete waits for an object to become available
+             * or for the object state to change before posting a timeout error message to the test log.
+             * If the object becomes available or the desired change occurs within the delay allowed, the test proceeds immediately.
+             * If the timeout elapses, the error message is posted to the test log. What happens next
+             * depends on the On error and On object recognition error properties.
+             *
+             * Auto-wait timeout affects the following test methods that return references to new objects:
+             * - Sys.Process
+             * - Sys.Browser
+             * - Process.Window
+             * - Window.Window
+             * - Mobile.Device
+             * - Mobile.Device.Process
+             *
+             * @default 10000
+             */
             Timeout: int;
         }
     }
@@ -2611,7 +2682,7 @@ declare namespace TestComplete {
     }
 
     /** Common interface for objects that could be used in aqObjIterator. */
-    interface IIterable {}
+    interface IIterable { }
 
     /** Provides various information about a file */
     interface aqFileInfo extends IIterable {
@@ -2734,7 +2805,7 @@ declare namespace TestComplete {
 
     /** Provides a common interface for operations performed over several similar objects.
      * This object is returned by a number of scripting methods and properties */
-    interface aqObjIterator <Type extends IIterable> {
+    interface aqObjIterator<Type extends IIterable> {
         /** Returns the number of items in the collection. */
         Count: int;
 
@@ -2750,7 +2821,7 @@ declare namespace TestComplete {
         Skip(SkipCount: int): Type;
     }
 
-    interface Set {}
+    interface Set { }
 
     /**
      * The TestItem object provides access to a test item defined in your project and allows you to get the test item’s property values.
@@ -2818,10 +2889,10 @@ declare namespace TestComplete {
         TestItem(Index: int): ProjectTestItem;
     }
 
-    interface LogData {}
-    interface LogTableData extends LogData {}
-    interface TextLogData extends LogData {}
-    interface PictureLogData extends LogData {}
+    interface LogData { }
+    interface LogTableData extends LogData { }
+    interface TextLogData extends LogData { }
+    interface PictureLogData extends LogData { }
 
     /**
      * provides a scripting interface to a project’s log item. Log items are displayed in the test log panel.
@@ -2864,8 +2935,7 @@ declare namespace TestComplete {
      * that let you iterate through log items and access single top-level log items from scripts.
      * This helps you process test results in a specific manner, for instance, to export them to a custom file format.
      */
-    interface LogResults
-    {
+    interface LogResults {
         /** Returns the project’s top-level log item by its index. */
         LogItem(Index: int): LogItem;
         /** Returns the total number of project’s top-level log items. */
