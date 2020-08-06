@@ -69,6 +69,10 @@ declare namespace TestComplete {
          * @param {int} [WaitTime = -1] The number of milliseconds to wait for the specified property value.
          * If WaitTime is 0, the method does not wait and returns immediately.
          * If WaitTime is -1, the waiting time is specified by the Auto-wait timeout project property.
+         *
+         * @returns If the property achieves the specified value within the timeout, the method returns `true`.
+         * Otherwise, if the timeout elapses before the property achieves the specified value, the method returns `false`.
+         * Also, `false` if the object does not have the specified property.
          */
         WaitProperty(PropertyName: string, PropertyValue: Variant, WaitTime?: int): boolean;
     }
