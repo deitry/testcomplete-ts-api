@@ -173,7 +173,7 @@ declare namespace TestComplete {
      * The Sys object “represents” the system in your tests -- everything outside TestComplete.
      * Its methods and properties allow you to control test execution, interact with active windows, simulate key presses, and so on.
      */
-    interface Sys extends Element {
+    interface Sys extends Element, IDispatch {
         /** Returns the number of child objects of the given object. */
         ChildCount: int;
         /** Puts text or images to the clipboard or retrieves the clipboard data. */
@@ -693,33 +693,52 @@ declare namespace TestComplete {
      * test objects obtained from applications (Aliases.browser), COM objects, and others.
      */
     interface IDispatch {
-        // $set overrides are needed to make Value parameter mandatory
-
         /**
          * Assigns a value to an object’s property given the property name as a string.
+         * If the property with the given name was not found, an error occurs.
+         *
+         * `$set` works similar to `aqObject.SetPropertyValue`, but is easier to use in JavaScript.
          */
-        $set(PropertyName: string, Value: any): void;
+        $set(PropertyName: string, Value: Variant): void;
         /**
          * Assigns a value to an object’s property given the property name as a string.
+         * If the property with the given name was not found, an error occurs.
+         *
+         * `$set` works similar to `aqObject.SetPropertyValue`, but is easier to use in JavaScript.
          */
-        $set(PropertyName: string, Param: any, Value: any): void;
+        $set(PropertyName: string, Param: Variant, Value: Variant): void;
         /**
          * Assigns a value to an object’s property given the property name as a string.
-         * Last param in `...Params` is a value of property being setted whereas all others are property parameters.
+         * If the property with the given name was not found, an error occurs.
+         *
+         * `$set` works similar to `aqObject.SetPropertyValue`, but is easier to use in JavaScript.
+         *
+         * NOTE: Last param in `...Params` is a value of property being setted whereas all others are property parameters.
          */
-        $set(PropertyName: string, Param1: any, Param2: any, ...Params: any[]): void;
+        $set(PropertyName: string, Param1: Variant, Param2: Variant, ...Params: Variant[]): void;
 
         /**
          * Get an object’s property value given the property name as a string.
-         * $get works similar to aqObject.GetPropertyValue, but is easier to use in JavaScript.
+         * If the property with the given name was not found, an error occurs.
+         *
+         * `$get` works similar to `aqObject.GetPropertyValue`, but is easier to use in JavaScript.
+         *
+         * Applies to `IDispatch` objects, for example, TestComplete scripting objects (`Sys`, `Log`),
+         * test objects obtained from applications (`Aliases.browser`), COM objects, and others.
          */
-        $get(PropertyName: string, ...Param: any[]): any;
+        $get(PropertyName: string, ...Param: Variant[]): Variant;
+
+        /**
+         * In JavaScript code, you can use $call to call an object’s method given the method name as a string.
+         * `$call` works similar to `aqObject.CallMethod`, but is easier to use in JavaScript.
+         */
+        $call(MethodName: string, ...Param: Variant[]): Variant;
     }
 
     /**
      * The Variables object provides access to a collection of project, project suite, network suite, or keyword test variables.
      */
-    interface Variables {
+    interface Variables extends IDispatch {
         /** Returns a variable specified by its name. */
         VariableByName(Name: string): Variant;
         /** Returns the total number of variables in the collection. */
@@ -730,15 +749,15 @@ declare namespace TestComplete {
          * @param VariableName The variable name. This name will be used to address the variable in scripts,
          * so it must match the naming rules of the scripting language you use.
          * @param VariableType One of the following string values:
-         * - "Boolean" - The variable can store boolean values.
-         * - "Double" - The variable can store floating-point values and dates.
-         * - "Integer" - The variable can store integer values.
-         * - "Object" - The variable can store object references.
-         * - "String" - The variable can store string values.
-         * - "Password" - The variable can store encrypted string values.
-         * - "Table" - The variable can store a two-dimensional table of values
+         * - `"Boolean"` - The variable can store boolean values.
+         * - `"Double"` - The variable can store floating-point values and dates.
+         * - `"Integer"` - The variable can store integer values.
+         * - `"Object"` - The variable can store object references.
+         * - `"String"` - The variable can store string values.
+         * - `"Password"` - The variable can store encrypted string values.
+         * - `"Table"` - The variable can store a two-dimensional table of values
          * (a scripting interface to a table variable is provided by the TableVariable object).
-         * - "DB Table" (note the space between the words) - The variable can be linked to an external data source,
+         * - `"DB Table"` (note the space between the words) - The variable can be linked to an external data source,
          * such as a database table or recordset, an Excel spreadsheet or CSV file, and returns values from that source
          * (a scripting interface to a database table variable is provided by the DBTableVariable object).
          */
@@ -941,7 +960,7 @@ declare namespace TestComplete {
             Mouse?: boolean /* false */,
             ReportDifference?: boolean /* true */,
             PixelTolerance?: int /* 0 */,
-            MessageType?: any /* lmWarning */): boolean;
+            MessageType?: LogMessageTypeEnum /* lmWarning */): boolean;
 
         /** Searches pixel-by-pixel for one image */
         Find(
@@ -1181,7 +1200,7 @@ declare namespace TestComplete {
      * The test log, which you can view via the Test Log, can store its items as a plain list
      * or have them organized as a tree whose nodes are folders that can include test log items and other folders.
      */
-    interface Log {
+    interface Log extends IDispatch {
         /** Returns the number of information messages posted to the log by the current test item. */
         MsgCount: int;
         /** Returns the number of warning messages posted to the log by the current test item. */
@@ -1689,128 +1708,6 @@ declare namespace TestComplete {
     }
 
     /**
-     * Provides unified methods for operating objects’ members at run time.
-     */
-    interface aqObject {
-        /** @default 0x0000 */
-        readonly varEmpty: int;
-        /** @default 0x0001 */
-        readonly varNull: int;
-        /** @default 0x0002 */
-        readonly varSmallInt: int;
-        /** @default 0x0003 */
-        readonly varInteger: int;
-        /** @default 0x0004 */
-        readonly varSingle: int;
-        /** @default 0x0005 */
-        readonly varDouble: int;
-        /** @default 0x0006 */
-        readonly varCurrency: int;
-        /** @default 0x0007 */
-        readonly varDate: int;
-        /** @default 0x0008 */
-        readonly varOleStr: int;
-        /** @default 0x0009 */
-        readonly varDispatch: int;
-        /** @default 0x000A */
-        readonly varError: int;
-        /** @default 0x000B */
-        readonly varBoolean: int;
-        /** @default 0x000C */
-        readonly varVariant: int;
-        /** @default 0x000D */
-        readonly varUnknown: int;
-        /** @default 0x0010 */
-        readonly varShortInt: int;
-        /** @default 0x0011 */
-        readonly varByte: int;
-        /** @default 0x0012 */
-        readonly varWord: int;
-        /** @default 0x0013 */
-        readonly varLongWord: int;
-        /** @default 0x0014 */
-        readonly varInt64: int;
-        /** @default 0x0048 */
-        readonly varStrArg: int;
-        /** @default 0x0100 */
-        readonly varString: int;
-        /** @default 0x0101 */
-        readonly varAny: int;
-        /** @default 0x2000 */
-        readonly varArray: int;
-        /** @default 0x4000 */
-        readonly varByRef: int;
-
-        /** Returns an empty object. */
-        readonly EmptyObject: Object;
-        /** Returns an empty Variant value. */
-        readonly EmptyVariant: any;
-
-        /** Returns the data type of the specified Variant value. */
-        GetVarType(VarParam: any): int;
-        /** Indicates whether the specified object has a member with the given name. */
-        IsSupported(IObject: any, MemberName: string): boolean;
-        /** Returns the value of an object’s property. */
-        GetPropertyValue(IObject: any, PropertyName: string): any;
-        /** Assigns a new value to an object’s property. */
-        SetPropertyValue(IObject: any, PropertyName: string, Value: any): any;
-        /** Calls the specified method of a particular object. */
-        CallMethod(IObject: any, MethodName: string): any;
-        /** Generates a certain event of a particular object. */
-        RaiseEvent(IObject: any, EventName: string): boolean;
-
-        /** Returns the collection of events of the given object. */
-        GetEvents(SourceObject: any, ShowHidden?: boolean): aqObjIterator<aqObjEvent>;
-        /** Returns the collection of fields of the given object.  */
-        GetFields(SourceObject: any, ShowHidden?: boolean): aqObjIterator<aqObjField>;
-        /** Returns the collection of methods of the given object. */
-        GetMethods(SourceObject: any, ShowHidden?: boolean): aqObjIterator<aqObjEvent>;
-        /**
-         * Lists all the properties of the desired object
-         * @param {boolean} [ShowHidden = false]
-         */
-        GetProperties(SourceObject: any, ShowHidden?: boolean): aqObjIterator<aqObjProperty>;
-        /**
-         * Verifies an object’s property value according to the specified condition.
-         * @param {boolean} [CaseSensitive = true]
-         * @param {int} [MessageType = lmWarning]
-         */
-        CompareProperty(
-            Property: any,
-            Condition: int,
-            Value: any,
-            CaseSensitive?: boolean,
-            MessageType?: int): boolean;
-        /**
-         * Saves information about the specified object to a file.
-         * @param {boolean} [SaveRecursive = false]
-         * @param {boolean} [SaveAllProperties = false]
-         * @param {boolean} [SaveFields = false]
-         * @param {boolean} [SaveMethods = false]
-         * @param {int} [Depth = 2]
-         */
-        SaveObjectSnapshotToFile(
-            AObject: any,
-            FileName: string,
-            SaveRecursive?: boolean,
-            SaveAllProperties?: boolean,
-            AdditionalProperties?: string,
-            SaveFields?: boolean,
-            SaveMethods?: boolean,
-            Depth?: int): boolean;
-        /**
-         * Verifies an object’s property value according to the specified condition.
-         * @param {boolean} [CaseSensitive = true]
-         */
-        CheckProperty(
-            Object: any,
-            Property: string,
-            Condition: int,
-            Value: any,
-            CaseSensitive?: boolean /* true */): boolean;
-    }
-
-    /**
      * The aqUtils object provides various helper routines that let you extend tests with additional functionality.
      */
     interface aqUtils {
@@ -1835,13 +1732,6 @@ declare namespace TestComplete {
             MaxExecTime: int,
             OperationName?: string /* MaxExecTime */,
             CounterName?: string /* DefaultCounter */): boolean;
-    }
-
-    enum MessageType {
-        lmNone = 0,
-        lmMessage = 1,
-        lmWarning = 2,
-        lmError = 3,
     }
 
     enum CompareCondition {
@@ -2578,21 +2468,22 @@ declare namespace TestComplete {
     // Will be expanded in hovers
 
     type PriorityEnum = pmLowest | pmLower | pmNormal | pmHigher | pmHighest;
-    type ShiftStateEnum = skShift | skAlt | skCtrl | skNoShift;
+    type ShiftStateEnum = skNoShift | skShift | skAlt | skCtrl;
+    type LogMessageTypeEnum = lmNone | lmMessage | lmWarning | lmError;
 }
 
 /** Lets to perform various operations on string values */
 declare namespace aqString {
     /** Leading spaces will be trimmed. */
-    type stLeading = 1;
     const stLeading: stLeading;
+    type stLeading = 1 & {Tag: "TrimType"};
 
     /** Trailing spaces will be trimmed. */
-    type stTrailing = 2;
     const stTrailing: stTrailing;
+    type stTrailing = 2 & {Tag: "TrimType"};
     /** Both leading and trailing spaces will be trimmed. */
-    type stAll = 3;
     const stAll: stAll;
+    type stAll = 3 & {Tag: "TrimType"};
 
     /** Specifies a character used to separate individual values in a list. */
     var QuoteSymbol: string;
@@ -2760,10 +2651,10 @@ declare namespace BuiltIn {
     const lesCurrentTestItem: int;
     const lesFull: int;
 
-    const lmError: int;
-    const lmMessage: int;
-    const lmNone: int;
-    const lmWarning: int;
+    const lmError: lmError;
+    const lmMessage: lmMessage;
+    const lmNone: lmNone;
+    const lmWarning: lmWarning;
 
     const lsHTML: int;
     const lsMHT: int;
@@ -2954,6 +2845,104 @@ declare namespace BuiltIn {
     function VarClear(Param1: any): void;
 }
 
+/**
+ * Provides unified methods for operating objects’ members at run time.
+ */
+declare namespace aqObject {
+    const varEmpty = 0x0000;
+    const varNull = 0x0001;
+    const varSmallInt = 0x0002;
+    const varInteger = 0x0003;
+    const varSingle = 0x0004;
+    const varDouble = 0x0005;
+    const varCurrency = 0x0006;
+    const varDate = 0x0007;
+    const varOleStr = 0x0008;
+    const varDispatch = 0x0009;
+    const varError = 0x000A;
+    const varBoolean = 0x000B;
+    const varVariant = 0x000C;
+    const varUnknown = 0x000D;
+    const varShortInt = 0x0010;
+    const varByte = 0x0011;
+    const varWord = 0x0012;
+    const varLongWord = 0x0013;
+    const varInt64 = 0x0014;
+    const varStrArg = 0x0048;
+    const varString = 0x0100;
+    const varAny = 0x0101;
+    const varArray = 0x2000;
+    const varByRef = 0x4000;
+
+    /** Returns an empty object. */
+    const EmptyObject: Object;
+    /** Returns an empty Variant value. */
+    const EmptyVariant: TestComplete.Variant;
+
+    /** Returns the data type of the specified Variant value. */
+    function GetVarType(VarParam: TestComplete.Variant): int;
+    /** Indicates whether the specified object has a member with the given name. */
+    function IsSupported(IObject: any, MemberName: string): boolean;
+    /** Returns the value of an object’s property. */
+    function GetPropertyValue(IObject: any, PropertyName: string): TestComplete.Variant;
+    /** Assigns a new value to an object’s property. */
+    function SetPropertyValue(IObject: any, PropertyName: string, Value: TestComplete.Variant): void;
+    /** Calls the specified method of a particular object. */
+    function CallMethod(IObject: any, MethodName: string): any;
+    /** Generates a certain event of a particular object. */
+    function RaiseEvent(IObject: any, EventName: string): boolean;
+
+    /** Returns the collection of events of the given object. */
+    function GetEvents(SourceObject: any, ShowHidden?: boolean): TestComplete.aqObjIterator<TestComplete.aqObjEvent>;
+    /** Returns the collection of fields of the given object.  */
+    function GetFields(SourceObject: any, ShowHidden?: boolean): TestComplete.aqObjIterator<TestComplete.aqObjField>;
+    /** Returns the collection of methods of the given object. */
+    function GetMethods(SourceObject: any, ShowHidden?: boolean): TestComplete.aqObjIterator<TestComplete.aqObjEvent>;
+    /**
+     * Lists all the properties of the desired object
+     * @param {boolean} [ShowHidden = false]
+     */
+    function GetProperties(SourceObject: any, ShowHidden?: boolean): TestComplete.aqObjIterator<TestComplete.aqObjProperty>;
+    /**
+     * Verifies an object’s property value according to the specified condition.
+     * @param {boolean} [CaseSensitive = true]
+     * @param {int} [MessageType = lmWarning]
+     */
+    function CompareProperty(
+        Property: any,
+        Condition: int,
+        Value: any,
+        CaseSensitive?: boolean,
+        MessageType?: TestComplete.LogMessageTypeEnum): boolean;
+    /**
+     * Saves information about the specified object to a file.
+     * @param {boolean} [SaveRecursive = false]
+     * @param {boolean} [SaveAllProperties = false]
+     * @param {boolean} [SaveFields = false]
+     * @param {boolean} [SaveMethods = false]
+     * @param {int} [Depth = 2]
+     */
+    function SaveObjectSnapshotToFile(
+        AObject: any,
+        FileName: string,
+        SaveRecursive?: boolean,
+        SaveAllProperties?: boolean,
+        AdditionalProperties?: string,
+        SaveFields?: boolean,
+        SaveMethods?: boolean,
+        Depth?: int): boolean;
+    /**
+     * Verifies an object’s property value according to the specified condition.
+     * @param {boolean} [CaseSensitive = true]
+     */
+    function CheckProperty(
+        Object: any,
+        Property: string,
+        Condition: int,
+        Value: any,
+        CaseSensitive?: boolean/* true */): boolean;
+}
+
 /*
  * Declarations
  * These allow you to use TestComplete keywords in TypeScript, e.g.
@@ -2975,8 +2964,6 @@ declare const aqFile: TestComplete.aqFile;
  * folders and files as well as to add, modify and remove files and folders.
  */
 declare const aqFileSystem: TestComplete.aqFileSystem;
-/** Provides unified methods for operating objects’ members at run time. */
-declare const aqObject: TestComplete.aqObject;
 declare const aqPerformance: TestComplete.aqPerformance;
 declare const aqTestCase: TestComplete.aqTestCase;
 declare const aqUtils: TestComplete.aqUtils;

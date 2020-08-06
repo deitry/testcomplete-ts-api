@@ -63,10 +63,19 @@ type cbUnchecked = 0 | false;
 type cbChecked = 1 | true;
 type cbGrayed = 2;
 
-declare const lmNone = TestComplete.MessageType.lmNone;
-declare const lmMessage = TestComplete.MessageType.lmMessage;
-declare const lmWarning = TestComplete.MessageType.lmWarning;
-declare const lmError = TestComplete.MessageType.lmError;
+declare const lmNone: lmNone;
+declare const lmMessage: lmMessage;
+declare const lmWarning: lmWarning;
+declare const lmError: lmError;
+
+/** Do not post any message. */
+type lmNone = 0 & {Tag: "LogMessage"};
+/** Post an informative message. */
+type lmMessage = 1 & {Tag: "LogMessage"};
+/** Post a warning message. */
+type lmWarning = 2 & {Tag: "LogMessage"};
+/** Post an error message. */
+type lmError = 3 & {Tag: "LogMessage"};
 
 declare const HKEY_CLASSES_ROOT: Win32API.Registry.HKEY_CLASSES_ROOT;
 declare const HKEY_CURRENT_CONFIG: Win32API.Registry.HKEY_CURRENT_CONFIG;
