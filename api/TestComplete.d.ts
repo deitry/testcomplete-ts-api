@@ -1361,84 +1361,6 @@ declare namespace TestComplete {
 
     interface Currency { }
 
-    interface aqConvert {
-        /**
-         * Converts a currency value to a string using the specified format settings.
-         * @param C Specifies the currency value to be converted to a string.
-         * @param iNumDigits Specifies the number of digits after the decimal point.
-         * If the value has fewer digits after the point, trailing zeros are added.
-         * Set this parameter to -1 in order to use the default number of digits
-         * after the decimal point that is specific to the current locale.
-         * @param iLncLead Specifies whether to add leading digits to broken numbers.
-         * The acceptable values are `0` (`false`), `-1` (`true`) and `-2` (use a system value specific to the locale).
-         * @param iUseParens Specifies whether to hide the minus sign and enclose negative numbers in parenthesis.
-         * The acceptable values are `0` (`false`), `-1` (`true`) and `-2` (use a system value specific to the locale).
-         * @param iGroup Specifies whether to use thousand separators and group the resulting value by thousands.
-         * The acceptable values are `0` (`false`), `-1` (`true`) and `-2` (use a system value specific to the locale).
-         */
-        CurrencyToFormatStr(C: any, iNumDigits: int, iLncLead: 0 | -1 | -2 | boolean, iUseParens: 0 | -1 | -2 | boolean, iGroup: 0 | -1 | -2 | boolean): string;
-        /** Converts a currency value to a string. */
-        CurrencyToStr(C: Currency): string;
-        /**
-         * Converts a Date value to a string whose format is defined by the FormatStr parameter.
-         * @param D Specifies the value that contains the desired date and time.
-         * @param FormatStr Specifies the format that should be used for the conversion. Can contain"
-         * - `%a` - Abbreviated weekday name.
-         * - `%A` - Full weekday name.
-         * - `%b` - Abbreviated month name.
-         * - `%B` - Full month name.
-         * - `%c` - Date and time representation appropriate for locale. If the # flag (%#c) precedes the specifier, long date and time representation is used.
-         * - `%d` - Day of month as a decimal number (01 – 31). If the # flag (%#d) precedes the specifier, the leading zeros are removed from the number.
-         * - `%H` - Hour in 24-hour format (00 – 23). If the # flag (%#H) precedes the specifier, the leading zeros are removed from the number.
-         * - `%I` - Hour in 12-hour format (01 – 12). If the # flag (%#I) precedes the specifier, the leading zeros are removed from the number.
-         * - `%j` - Day of year as decimal number (001 – 366). If the # flag (%#j) precedes the specifier, the leading zeros are removed from the number.
-         * - `%m` - Month as decimal number (01 – 12). If the # flag (%#m) precedes the specifier, the leading zeros are removed from the number.
-         * - `%M` - Minute as decimal number (00 – 59). If the # flag (%#M) precedes the specifier, the leading zeros are removed from the number.
-         * - `%p` - Current locale's A.M./P.M. indicator for 12-hour clock.
-         * - `%S` - Second as decimal number (00 – 59). If the # flag (%#S) precedes the specifier, the leading zeros are removed from the number.
-         * - `%U` - Week of year as decimal number, with Sunday as first day of week (00 – 53). If the # flag (%#U) precedes the specifier, the leading zeros are removed from the number.
-         * - `%w` - Weekday as decimal number (0 – 6; Sunday is 0). If the # flag (%#w) precedes the specifier, the leading zeros are removed from the number.
-         * - `%W` - Week of year as decimal number, with Monday as first day of week (00 – 53). If the # flag (%#W) precedes the specifier, the leading zeros are removed from the number.
-         * - `%x` - Date representation for current locale. If the # flag (%#x) precedes the specifier, long date representation is enabled.
-         * - `%X` - Time representation for current locale.
-         * - `%y` - Year without century, as decimal number (00 – 99). If the # flag (%#y) precedes the specifier, the leading zeros are removed from the number.
-         * - `%Y` - Year with century, as decimal number. If the # flag (%#Y) precedes the specifier, the leading zeros are removed from the number.
-         * - `%z` - %Z 	Either the time-zone name or time zone abbreviation, depending on registry settings; no characters if time zone is unknown.
-         * - `%%` - Percent sign.
-         * */
-        DateTimeToFormatStr(D: DateTime, FormatStr: string): string;
-        /** Converts a date value to a string. */
-        DateTimeToStr(D: DateTime): string;
-        /** Converts a floating-point value to a string. */
-        FloatToStr(F: float): string;
-        /** Converts a number to a string. */
-        IntToStr(Int: int): string;
-        /** Converts the specified string to a currency value. */
-        StrToCurrency(S: string): Currency;
-        /** Converts the specified string to a date value. */
-        StrToDate(S: string): DateTime;
-        /** Converts the specified string to a date/time value. */
-        StrToDateTime(S: string): DateTime;
-        /** Converts the specified string to a floating-point value. */
-        StrToFloat(S: string): float;
-        /** Converts the specified string to an integer value. */
-        StrToInt(S: string): int;
-        /** Converts the specified string to a long integer value. */
-        StrToInt64(S: string): bigint;
-        /** Converts the specified string to a time value. */
-        StrToTime(S: string): DateTime;
-        /** Converts a date/time value to the number of passed days, hours, minutes and seconds. */
-        TimeIntervalToStr(Interval: DateTime): string;
-        /** Converts the specified variant value to Boolean value. */
-        VarToBool(V: Variant): boolean;
-        /** Converts the specified variant value to floating-point value. */
-        VarToFloat(V: Variant): number;
-        /** Converts the specified variant value to an integer value. */
-        VarToInt(V: Variant): int;
-        /** Converts the specified variant value to a string. */
-        VarToStr(V: Variant): string;
-    }
-
     /**
      * A value that stores a date, time or both date and time.
      * This special type is used to perform various operations over date and time values easily.
@@ -2943,6 +2865,85 @@ declare namespace aqFileSystem {
     function SetCurrentFolder(DirStr: string): boolean;
 }
 
+/** Provides unified methods for converting between various data types. */
+declare namespace aqConvert {
+    /**
+     * Converts a currency value to a string using the specified format settings.
+     * @param C Specifies the currency value to be converted to a string.
+     * @param iNumDigits Specifies the number of digits after the decimal point.
+     * If the value has fewer digits after the point, trailing zeros are added.
+     * Set this parameter to -1 in order to use the default number of digits
+     * after the decimal point that is specific to the current locale.
+     * @param iLncLead Specifies whether to add leading digits to broken numbers.
+     * The acceptable values are `0` (`false`), `-1` (`true`) and `-2` (use a system value specific to the locale).
+     * @param iUseParens Specifies whether to hide the minus sign and enclose negative numbers in parenthesis.
+     * The acceptable values are `0` (`false`), `-1` (`true`) and `-2` (use a system value specific to the locale).
+     * @param iGroup Specifies whether to use thousand separators and group the resulting value by thousands.
+     * The acceptable values are `0` (`false`), `-1` (`true`) and `-2` (use a system value specific to the locale).
+     */
+    function CurrencyToFormatStr(C: any, iNumDigits: int, iLncLead: 0 | -1 | -2 | boolean, iUseParens: 0 | -1 | -2 | boolean, iGroup: 0 | -1 | -2 | boolean): string;
+    /** Converts a currency value to a string. */
+    function CurrencyToStr(C: TestComplete.Currency): string;
+    /**
+     * Converts a Date value to a string whose format is defined by the FormatStr parameter.
+     * @param D Specifies the value that contains the desired date and time.
+     * @param FormatStr Specifies the format that should be used for the conversion. Can contain"
+     * - `%a` - Abbreviated weekday name.
+     * - `%A` - Full weekday name.
+     * - `%b` - Abbreviated month name.
+     * - `%B` - Full month name.
+     * - `%c` - Date and time representation appropriate for locale. If the # flag (%#c) precedes the specifier, long date and time representation is used.
+     * - `%d` - Day of month as a decimal number (01 – 31). If the # flag (%#d) precedes the specifier, the leading zeros are removed from the number.
+     * - `%H` - Hour in 24-hour format (00 – 23). If the # flag (%#H) precedes the specifier, the leading zeros are removed from the number.
+     * - `%I` - Hour in 12-hour format (01 – 12). If the # flag (%#I) precedes the specifier, the leading zeros are removed from the number.
+     * - `%j` - Day of year as decimal number (001 – 366). If the # flag (%#j) precedes the specifier, the leading zeros are removed from the number.
+     * - `%m` - Month as decimal number (01 – 12). If the # flag (%#m) precedes the specifier, the leading zeros are removed from the number.
+     * - `%M` - Minute as decimal number (00 – 59). If the # flag (%#M) precedes the specifier, the leading zeros are removed from the number.
+     * - `%p` - Current locale's A.M./P.M. indicator for 12-hour clock.
+     * - `%S` - Second as decimal number (00 – 59). If the # flag (%#S) precedes the specifier, the leading zeros are removed from the number.
+     * - `%U` - Week of year as decimal number, with Sunday as first day of week (00 – 53). If the # flag (%#U) precedes the specifier, the leading zeros are removed from the number.
+     * - `%w` - Weekday as decimal number (0 – 6; Sunday is 0). If the # flag (%#w) precedes the specifier, the leading zeros are removed from the number.
+     * - `%W` - Week of year as decimal number, with Monday as first day of week (00 – 53). If the # flag (%#W) precedes the specifier, the leading zeros are removed from the number.
+     * - `%x` - Date representation for current locale. If the # flag (%#x) precedes the specifier, long date representation is enabled.
+     * - `%X` - Time representation for current locale.
+     * - `%y` - Year without century, as decimal number (00 – 99). If the # flag (%#y) precedes the specifier, the leading zeros are removed from the number.
+     * - `%Y` - Year with century, as decimal number. If the # flag (%#Y) precedes the specifier, the leading zeros are removed from the number.
+     * - `%z` - %Z 	Either the time-zone name or time zone abbreviation, depending on registry settings; no characters if time zone is unknown.
+     * - `%%` - Percent sign.
+     * */
+    function DateTimeToFormatStr(D: TestComplete.DateTime, FormatStr: string): string;
+    /** Converts a date value to a string. */
+    function DateTimeToStr(D: TestComplete.DateTime): string;
+    /** Converts a floating-point value to a string. */
+    function FloatToStr(F: float): string;
+    /** Converts a number to a string. */
+    function IntToStr(Int: int): string;
+    /** Converts the specified string to a currency value. */
+    function StrToCurrency(S: string): TestComplete.Currency;
+    /** Converts the specified string to a date value. */
+    function StrToDate(S: string): TestComplete.DateTime;
+    /** Converts the specified string to a date/time value. */
+    function StrToDateTime(S: string): TestComplete.DateTime;
+    /** Converts the specified string to a floating-point value. */
+    function StrToFloat(S: string): float;
+    /** Converts the specified string to an integer value. */
+    function StrToInt(S: string): int;
+    /** Converts the specified string to a long integer value. */
+    function StrToInt64(S: string): bigint;
+    /** Converts the specified string to a time value. */
+    function StrToTime(S: string): TestComplete.DateTime;
+    /** Converts a date/time value to the number of passed days, hours, minutes and seconds. */
+    function TimeIntervalToStr(Interval: TestComplete.DateTime): string;
+    /** Converts the specified variant value to Boolean value. */
+    function VarToBool(V: TestComplete.Variant): boolean;
+    /** Converts the specified variant value to floating-point value. */
+    function VarToFloat(V: TestComplete.Variant): number;
+    /** Converts the specified variant value to an integer value. */
+    function VarToInt(V: TestComplete.Variant): int;
+    /** Converts the specified variant value to a string. */
+    function VarToStr(V: TestComplete.Variant): string;
+}
+
 /*
  * Declarations
  * These allow you to use TestComplete keywords in TypeScript, e.g.
@@ -2950,8 +2951,6 @@ declare namespace aqFileSystem {
  */
 
 // declare const Aliases: TestComplete.Aliases
-/** Provides unified methods for converting between various data types. */
-declare const aqConvert: TestComplete.aqConvert;
 declare const aqDateTime: TestComplete.aqDateTime;
 declare const aqEnvironment: TestComplete.aqEnvironment;
 /**
