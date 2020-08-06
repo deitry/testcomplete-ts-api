@@ -237,7 +237,7 @@ declare namespace TestComplete {
          * - `chrome` - Google Chrome
          * @param BrowserIndex The browser process index (1-based) among other browser processes with the same name.
          */
-        Browser(BrowserName?: string, BrowserIndex?: int): BrowserProcess;
+        Browser(BrowserName?: "*" | "iexplore" | "edge" | "firefox" | "chrome", BrowserIndex?: int): BrowserProcess;
         BrowserWindow(Index: int): Window;
         /** Returns a child object by its index. */
         Child(Index: int): RuntimeObject;
@@ -2369,27 +2369,27 @@ declare namespace TestComplete {
         Parent: ProjectTestItem
         /** Specifies what TestComplete will do when an error occurs during a test run.
          * Possible options: the test run will be stopped, the error will be ignored, the test item where the error occurred will be skipped.
-         * - `epvNone` - `0` - Proceed with project execution as if no errors have occurred.
+         * - `0` - Proceed with project execution as if no errors have occurred.
          * Corresponds to the Continue running value of the test item’s On Error column on the Test Items page.
-         * - `epvStopProject` - `1` - Stop the whole project run.
+         * - `1` - Stop the whole project run.
          * Corresponds to the Stop project value of the test item’s On Error column on the Test Items page.
-         * - `epvStopTestItem` - `2` - Stop the current test item run (including all its iterations and child items)
+         * - `2` - Stop the current test item run (including all its iterations and child items)
          * and proceed with subsequent sibling items. Corresponds to the Stop current item value of the test item’s On Error column on the Test Items page.
-         * - `epvProjectDefault` - `3` - Corresponds to the Use project’s 'On error' property value of the test item’s On Error column on the Test Items page.
+         * - `3` - Corresponds to the Use project’s 'On error' property value of the test item’s On Error column on the Test Items page.
          * The item uses the project’s Error handling > On Error property value. It can be Continue running, Stop current item, or Stop project.
          */
-        readonly StopOnError: int;
+        readonly StopOnError: 0 | 1 | 2 | 3;
         /** Specifies what TestComplete will do when an exception occurs during a test run.
          * Possible options: the test will be stopped, the exception will be ignored, the test item where the error occurred will be skipped.
-         * - `epvNone` - `0` - Proceed with the test run as if no exception has occurred.
+         * - `0` - Proceed with the test run as if no exception has occurred.
          * Corresponds to the Continue running value of the test item’s On exception column on the Test Items page.
-         * - `epvProject` - `1` - Stop the execution of the whole project.
+         * - `1` - Stop the execution of the whole project.
          * Corresponds to the Stop project value of the test item’s On exception column on the Test Items page.
-         * - `epvTestItem` - `2` - Stop the execution of the current test item (including its child items
+         * - `2` - Stop the execution of the current test item (including its child items
          * and further iterations of the current item), and proceed with the execution of the subsequent sibling items.
          * Corresponds to the Stop current item value of the test item’s On exception column on the Test Items page.
          */
-        readonly StopOnException: int;
+        readonly StopOnException: 0 | 1 | 2;
         /** Returns the child test item specified by its index. */
         TestItem(Index: int): ProjectTestItem;
         /** Returns the test item’s timeout value, in minutes. */
@@ -2440,20 +2440,20 @@ declare namespace TestComplete {
          * Returns the log item’s status.
          *
          * One of the following constants that specify the log item status:
-         * - `lsOk` - `0` - The log item contains only informative messages.
-         * - `lsWarning` - `1` - The log item contains warning and informative messages and does not contain error messages.
-         * - `lsError` - `2` - The log item contains one or more error messages.
+         * - `0` - The log item contains only informative messages.
+         * - `1` - The log item contains warning and informative messages and does not contain error messages.
+         * - `2` - The log item contains one or more error messages.
          */
         Status: 0 | 1 | 2;
     }
 
     /**
-     * provides a scripting interface to a project’s logs that are displayed under the
-     * Project_Suite_Name Logs | Project_Name Logs node in the Project Explorer panel.
+     * Provides a scripting interface to a project's logs that are displayed under the
+     * `Project_Suite_Name Logs` | `Project_Name Logs` node in the Project Explorer panel.
      * These are top-level log items that can hold result of test runs for a whole project,
      * its test items or project item’s elements (for instance, single script routines, low-level procedures, and so on).
      *
-     * The LogResults object maintains the list of a project’s top-level log items and contains properties
+     * The `LogResults` object maintains the list of a project’s top-level log items and contains properties
      * that let you iterate through log items and access single top-level log items from scripts.
      * This helps you process test results in a specific manner, for instance, to export them to a custom file format.
      */
