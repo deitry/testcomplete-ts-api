@@ -16,7 +16,7 @@ def printHeader(destinationFile: TextIO, baseFile: str):
 
 
 def typeByName(typeName: str) -> str:
-    """Used for variables version 3."""
+    """Used for variables version 4."""
 
     if typeName == 'String':
         return 'string'
