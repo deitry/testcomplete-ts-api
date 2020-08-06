@@ -1587,126 +1587,6 @@ declare namespace TestComplete {
             OverwriteOrCreate?: boolean /* false */): boolean;
     }
 
-    /** Lets you work with the computer’s file system: obtain information about drives,
-     * folders and files as well as to add, modify and remove files and folders. */
-    interface aqFileSystem {
-        /** Returns the collection of disk drives of the current computer. */
-        Drives: any;
-
-        readonly fattrSet: int;
-        readonly fattrInvert: int;
-        readonly fattrFree: int;
-
-        /** A read-only file. */
-        readonly faReadOnly: int;
-        /** A hidden file. */
-        readonly faHidden: int;
-        /** A system file. */
-        readonly faSystem: int;
-        readonly faDirectory: int;
-        /** An archive file. */
-        readonly faArchive: int;
-        readonly faDevice: int;
-        /** A normal file (that is, a file without any other attributes set). */
-        readonly faNormal: int;
-        /** A temporary file. */
-        readonly faTemporary: int;
-        /** A sparse file. */
-        readonly faSparseFile: int;
-        /** A link or shortcut file, or a file that has an associated reparse point. */
-        readonly faReparsePoint: int;
-        /** A compressed file. */
-        readonly faCompressed: int;
-        /** A file whose data is physically moved to offline storage. */
-        readonly faOffline: int;
-        /** A file that is not indexed by the content indexing service. */
-        readonly faNotContentIndexed: int;
-        /** An encrypted file. */
-        readonly faEncrypted: int;
-        /** A virtual file. */
-        readonly faVirtual: int;
-
-        /** Modifies the attribute(s) of the specified file or folder. */
-        ChangeAttributes(Path: string, Attribute: int, Action: int): int;
-        /** Indicates whether the specified file or folder has certain attribute(s). */
-        CheckAttributes(Path: string, Attribute: int): boolean;
-        /** Copy one or several files to a new location */
-        CopyFile(PathToExistingFile: string, PathToNewFile: string, RenameOnCollision?: boolean /* true */): boolean;
-        /** Copies the specified folder(s) to another location. */
-        CopyFolder(Source: string, Destination: string, RenameOnCollision?: boolean /* true */): boolean;
-        /**
-         * Creates a new folder.
-         * @param Path Specifies the fully qualified path where a new folder should be created.
-         * If the path includes folders that do not exist, they will be created as well.
-         */
-        CreateFolder(Path: string): int;
-        /** Deletes the specified file(s). */
-        DeleteFile(PathToFile: string): boolean;
-        /**
-         * Deletes the specified folder(s).
-         * @param Path The fully qualified path to the folder to be deleted.
-         * To delete several folders, use wildcards (* and ?) to specify the mask.
-         * Note, that wildcards are only allowed in the last component of the path.
-         * The path may or may not include a trailing backslash (\).
-         * An empty string or `undefined` means the current working folder,
-         * which can be read and set by using the aqFileSystem.GetCurrentFolder and aqFileSystem.SetCurrentFolder methods, respectively.
-         * @param {boolean} [RemoveNonEmpty = false] Specifies whether the method should remove non-empty folders.
-         * If the parameter is False, the method removes a folder only if it does not contain any files.
-         * If the parameter is True, the method removes non-empty folders as well.
-         */
-        DeleteFolder(Path: string, RemoveNonEmpty?: boolean): boolean;
-        /** Discards connection to the specified network folder. */
-        DisconnectNetworkDrive(Name: string, Force: boolean, Remember: boolean): int;
-        /** Removes the trailing path delimiter from the specified path. */
-        ExcludeTrailingBackSlash(PathToFolder: string): string;
-        /** Indicates whether the specified drive, folder or file exists. */
-        Exists(Path: string): boolean;
-        /** Converts the given relative file name into a fully qualified path name. */
-        ExpandFileName(InPath: string): string;
-        /** Converts the given relative file name into a fully qualified path name using Universal Naming Convention. */
-        ExpandUNCFileName(InPath: string): string;
-        /** Searches a folder for files matching the specified pattern. */
-        FindFiles(Path: string, SearchPattern: string, SearchInSubDirs?: boolean /* false */): aqObjIterator<aqFileInfo>;
-        /** Searches a folder for subfolders matching the specified pattern. */
-        FindFolders(Path: string, SearchPattern: string, SearchInSubDirs?: boolean /* false */): aqObjIterator<aqFolderInfo>;
-        /** Returns the fully qualified name of the current folder. */
-        GetCurrentFolder(): string;
-        /** Retrieves detailed information about the specified drive volume. */
-        GetDriveInfo(Drive: string): aqDriveInfo;
-        /** Extracts the drive part from the specified path. */
-        GetFileDrive(PathToFile: string): string;
-        /** Returns the extension part of the specified path. */
-        GetFileExtension(PathToFile: string): string;
-        /** Extracts the folder path from the full path. */
-        GetFileFolder(PathToFile: string): string;
-        /** Returns an aqFileInfo object that provides information about the specified file. */
-        GetFileInfo(Path: string): aqFileInfo;
-        /** Returns the name and extension parts of the specified path. */
-        GetFileName(PathToFile: string): string;
-        /** Returns the file name, which is part of the specified path, without the extension. */
-        GetFileNameWithoutExtension(PathToFile: string): string;
-        /** Returns an aqFolderInfo object that provides information about the specified folder. */
-        GetFolderInfo(Path: string): any;
-        /** Converts a fully qualified path name into a relative path name. */
-        GetRelativePath(CurrentFolder: string, AbsoluteFileName: string): string;
-        /** Returns the given path in the short 8.3 format. */
-        GetShortPathName(longPath: string): string;
-        /** Ensures that the specified path ends with a trailing path delimiter. */
-        IncludeTrailingBackSlash(PathToFolder: string): string;
-        /** Establishes connection to the specified network folder. */
-        MapNetworkDrive(LocalName: string, Path: string, User: string, Password: string, Remember: boolean): int;
-        /** Moves the specified file(s) to a new location. */
-        MoveFile(PathToExistingFile: string, PathToNewFile: string, RenameOnCollision?: boolean /* true */): boolean;
-        /** Moves the specified folder(s) to another location. */
-        MoveFolder(Source: string, Destination: string, RenameOnCollision?: boolean /* true */): boolean;
-        /** Renames the specified file. */
-        RenameFile(OldPath: string, NewPath: string, RenameOnCollision?: boolean /* true */): boolean;
-        /** Renames the specified folder or moves it to another folder. */
-        RenameFolder(OldPath: string, NewPath: string): boolean;
-        /** Sets the specified folder as the current folder. */
-        SetCurrentFolder(DirStr: string): boolean;
-    }
-
     /**
      * The aqUtils object provides various helper routines that let you extend tests with additional functionality.
      */
@@ -2943,6 +2823,126 @@ declare namespace aqObject {
         CaseSensitive?: boolean/* true */): boolean;
 }
 
+/** Lets you work with the computer’s file system: obtain information about drives,
+ * folders and files as well as to add, modify and remove files and folders. */
+declare namespace aqFileSystem {
+    /** Returns the collection of disk drives of the current computer. */
+    var Drives: any;
+
+    const fattrSet: int;
+    const fattrInvert: int;
+    const fattrFree: int;
+
+    /** A read-only file. */
+    const faReadOnly: int;
+    /** A hidden file. */
+    const faHidden: int;
+    /** A system file. */
+    const faSystem: int;
+    const faDirectory: int;
+    /** An archive file. */
+    const faArchive: int;
+    const faDevice: int;
+    /** A normal file (that is, a file without any other attributes set). */
+    const faNormal: int;
+    /** A temporary file. */
+    const faTemporary: int;
+    /** A sparse file. */
+    const faSparseFile: int;
+    /** A link or shortcut file, or a file that has an associated reparse point. */
+    const faReparsePoint: int;
+    /** A compressed file. */
+    const faCompressed: int;
+    /** A file whose data is physically moved to offline storage. */
+    const faOffline: int;
+    /** A file that is not indexed by the content indexing service. */
+    const faNotContentIndexed: int;
+    /** An encrypted file. */
+    const faEncrypted: int;
+    /** A virtual file. */
+    const faVirtual: int;
+
+    /** Modifies the attribute(s) of the specified file or folder. */
+    function ChangeAttributes(Path: string, Attribute: int, Action: int): int;
+    /** Indicates whether the specified file or folder has certain attribute(s). */
+    function CheckAttributes(Path: string, Attribute: int): boolean;
+    /** Copy one or several files to a new location */
+    function CopyFile(PathToExistingFile: string, PathToNewFile: string, RenameOnCollision?: boolean /* true */): boolean;
+    /** Copies the specified folder(s) to another location. */
+    function CopyFolder(Source: string, Destination: string, RenameOnCollision?: boolean /* true */): boolean;
+    /**
+     * Creates a new folder.
+     * @param Path Specifies the fully qualified path where a new folder should be created.
+     * If the path includes folders that do not exist, they will be created as well.
+     */
+    function CreateFolder(Path: string): int;
+    /** Deletes the specified file(s). */
+    function DeleteFile(PathToFile: string): boolean;
+    /**
+     * Deletes the specified folder(s).
+     * @param Path The fully qualified path to the folder to be deleted.
+     * To delete several folders, use wildcards (* and ?) to specify the mask.
+     * Note, that wildcards are only allowed in the last component of the path.
+     * The path may or may not include a trailing backslash (\).
+     * An empty string or `undefined` means the current working folder,
+     * which can be read and set by using the aqFileSystem.GetCurrentFolder and aqFileSystem.SetCurrentFolder methods, respectively.
+     * @param {boolean} [RemoveNonEmpty = false] Specifies whether the method should remove non-empty folders.
+     * If the parameter is False, the method removes a folder only if it does not contain any files.
+     * If the parameter is True, the method removes non-empty folders as well.
+     */
+    function DeleteFolder(Path: string, RemoveNonEmpty?: boolean): boolean;
+    /** Discards connection to the specified network folder. */
+    function DisconnectNetworkDrive(Name: string, Force: boolean, Remember: boolean): int;
+    /** Removes the trailing path delimiter from the specified path. */
+    function ExcludeTrailingBackSlash(PathToFolder: string): string;
+    /** Indicates whether the specified drive, folder or file exists. */
+    function Exists(Path: string): boolean;
+    /** Converts the given relative file name into a fully qualified path name. */
+    function ExpandFileName(InPath: string): string;
+    /** Converts the given relative file name into a fully qualified path name using Universal Naming Convention. */
+    function ExpandUNCFileName(InPath: string): string;
+    /** Searches a folder for files matching the specified pattern. */
+    function FindFiles(Path: string, SearchPattern: string, SearchInSubDirs?: boolean /* false */): TestComplete.aqObjIterator<TestComplete.aqFileInfo>;
+    /** Searches a folder for subfolders matching the specified pattern. */
+    function FindFolders(Path: string, SearchPattern: string, SearchInSubDirs?: boolean /* false */): TestComplete.aqObjIterator<TestComplete.aqFolderInfo>;
+    /** Returns the fully qualified name of the current folder. */
+    function GetCurrentFolder(): string;
+    /** Retrieves detailed information about the specified drive volume. */
+    function GetDriveInfo(Drive: string): TestComplete.aqDriveInfo;
+    /** Extracts the drive part from the specified path. */
+    function GetFileDrive(PathToFile: string): string;
+    /** Returns the extension part of the specified path. */
+    function GetFileExtension(PathToFile: string): string;
+    /** Extracts the folder path from the full path. */
+    function GetFileFolder(PathToFile: string): string;
+    /** Returns an aqFileInfo object that provides information about the specified file. */
+    function GetFileInfo(Path: string): TestComplete.aqFileInfo;
+    /** Returns the name and extension parts of the specified path. */
+    function GetFileName(PathToFile: string): string;
+    /** Returns the file name, which is part of the specified path, without the extension. */
+    function GetFileNameWithoutExtension(PathToFile: string): string;
+    /** Returns an aqFolderInfo object that provides information about the specified folder. */
+    function GetFolderInfo(Path: string): any;
+    /** Converts a fully qualified path name into a relative path name. */
+    function GetRelativePath(CurrentFolder: string, AbsoluteFileName: string): string;
+    /** Returns the given path in the short 8.3 format. */
+    function GetShortPathName(longPath: string): string;
+    /** Ensures that the specified path ends with a trailing path delimiter. */
+    function IncludeTrailingBackSlash(PathToFolder: string): string;
+    /** Establishes connection to the specified network folder. */
+    function MapNetworkDrive(LocalName: string, Path: string, User: string, Password: string, Remember: boolean): int;
+    /** Moves the specified file(s) to a new location. */
+    function MoveFile(PathToExistingFile: string, PathToNewFile: string, RenameOnCollision?: boolean /* true */): boolean;
+    /** Moves the specified folder(s) to another location. */
+    function MoveFolder(Source: string, Destination: string, RenameOnCollision?: boolean /* true */): boolean;
+    /** Renames the specified file. */
+    function RenameFile(OldPath: string, NewPath: string, RenameOnCollision?: boolean /* true */): boolean;
+    /** Renames the specified folder or moves it to another folder. */
+    function RenameFolder(OldPath: string, NewPath: string): boolean;
+    /** Sets the specified folder as the current folder. */
+    function SetCurrentFolder(DirStr: string): boolean;
+}
+
 /*
  * Declarations
  * These allow you to use TestComplete keywords in TypeScript, e.g.
@@ -2959,11 +2959,6 @@ declare const aqEnvironment: TestComplete.aqEnvironment;
  * This object complements the aqFileSystem object, but unlike the latter it lets you deal with files only.
  */
 declare const aqFile: TestComplete.aqFile;
-/**
- * Lets you work with the computer’s file system: obtain information about drives,
- * folders and files as well as to add, modify and remove files and folders.
- */
-declare const aqFileSystem: TestComplete.aqFileSystem;
 declare const aqPerformance: TestComplete.aqPerformance;
 declare const aqTestCase: TestComplete.aqTestCase;
 declare const aqUtils: TestComplete.aqUtils;
