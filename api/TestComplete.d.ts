@@ -2122,7 +2122,7 @@ declare namespace TestComplete {
         /** Returns the total number of event parameters. */
         readonly ParamCount: int;
         /** Returns the name of the event parameter by its index. */
-        readonly ParamName: string;
+        ParamName(Index: int): string;
     }
 
     /**
@@ -2135,11 +2135,11 @@ declare namespace TestComplete {
         /** Returns the total number of method parameters. */
         readonly ParamCount: int;
         /** Returns the name of the method parameter by its index. */
-        readonly ParamName: string;
+        ParamName(Index: int): string;
         /** Returns the data type of the specified method parameter. */
-        readonly ParamType: VarTypeEnum;
+        ParamType(Index: int): VarTypeEnum;
         /** Returns the data type of the method's return value. */
-        readonly ValueType: VarTypeEnum;
+        ValueType(Index: int): VarTypeEnum;
 
         /** Specifies whether the method has a return value. */
         HasRetValue(): boolean;
