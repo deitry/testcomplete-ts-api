@@ -117,7 +117,7 @@ declare namespace TestComplete {
     interface ToolBar extends Element { }
     interface MenuBar extends Element {
         /** Get item */
-        MenuItem(Item: string | int): MenuItem;
+        MenuItem(Item: string | int): Element;
     }
     interface SplitButton extends Button { }
     interface RibbonItemControl extends Control { }
