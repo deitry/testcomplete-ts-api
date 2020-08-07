@@ -25,7 +25,7 @@ declare namespace TestComplete {
         readonly Name: string;
 
         /** The Exists property tells whether a given object still exists in the system.
-         * If it does not exist, Exists is False; else, True. */
+         * If it does not exist, Exists is `false`; else, `true`. */
         readonly Exists: boolean;
         readonly Parent: RuntimeObject;
         readonly MappedName: string;
@@ -1018,7 +1018,7 @@ declare namespace TestComplete {
         /** Lets you get or set the width and height of the given image. */
         Size: any;
 
-        /** Compares the given image with another image and returns True or False depending on whether they are identical or not. */
+        /** Compares the given image with another image and returns `true` or `false` depending on whether they are identical or not. */
         Compare(
             Picture: Picture,
             Transparent?: boolean /* false */,
@@ -1152,7 +1152,7 @@ declare namespace TestComplete {
     }
 
     /** Used to store font and color settings that can be applied to messages and folders in the Test Log. */
-    interface LogAttributes {
+    interface LogAttributes extends FontStyle {
         /** Specifies the background color of a test log message or folder. */
         BackColor: int;
         /** Specifies whether the text of a test log message or folder will be displayed in bold font. */
@@ -1262,7 +1262,7 @@ declare namespace TestComplete {
             FolderId?: int): void;
 
         /**
-         * If the Log.CallStackSettings.EnableStackOnError property is True,
+         * If the Log.CallStackSettings.EnableStackOnError property is `true`,
          * then the test engine collects information about the execution
          * sequence of tests that led to the call of the Log.Error method
          * and displays this information in the Call Stack page of the test log
@@ -1706,7 +1706,7 @@ declare namespace TestComplete {
          * You can use one of the following constants:
          * - `AQRT_32_BIT` - `0` - 32-bit registry (default)
          * - `AQRT_64_BIT` - `1` - 64-bit registry
-         * @param {boolean} [ReadOnly = false] If this parameter's value is True,
+         * @param {boolean} [ReadOnly = false] If this parameter's value is `true`,
          * the Registry key will be opened in read-only mode.
          * Otherwise, it is opened in read-write mode.
          *
@@ -2266,6 +2266,47 @@ declare namespace TestComplete {
         LogItemsCount(): int;
     }
 
+    /** The FontStyle object represents a collection of font styles that can be used to display
+     * the message in the test log. To get the FontStyle object, access the LogParams.FontStyle property. */
+    interface FontStyle {
+        /** Specifies whether the text of the test log message will be displayed in bold. */
+        Bold: boolean;
+        /** Specifies whether the text of the test log message will be displayed in italic. */
+        Italic: boolean;
+        /** Specifies whether the text of the test log message will be striked out. */
+        StrikeOut: boolean;
+        /** Specifies whether the text of the test log message will be underlined. */
+        Underline: boolean;
+    }
+
+    /**
+     * The LogParams object is used in project events that occur upon posting messages to the test log.
+     * This object contains a number of properties that specify text and attributes of the posted message.
+     * You can modify these properties within an event handler to change message text, its color, font style and other attributes.
+     *
+     * For example: suppose that TestComplete posts an error message to notify you that an unexpected window has appeared.
+     * Before TestComplete posts this message, it creates the LogParams object, fills its properties with data,
+     * generates the OnUnexpectedWindow event and passes this LogParams object as a parameter to the event handler.
+     * Properties of the LogParams object specify text, priority, font style and other attributes of the posted message.
+     * The event handler can modify these properties, so TestComplete will post text specified in the event handler, but not the text used by default.
+     */
+    interface LogParams {
+        /** Specifies the text to be displayed in the Details pane of the Test Log. */
+        AdditionalText: string;
+        /** Specifies the background color of the message in the Test Log. */
+        Color: int;
+        /** Specifies the font color used to display the message in the Test Log panel. */
+        FontColor: int;
+        /** Specifies the font style used to display the message in the Test Log panel. */
+        FontStyle: FontStyle;
+        /** Set this property to `true` to cancel the posting of a message to the test log. */
+        Locked: boolean
+        /** Specifies the text posted to the test log, to the Message column of the Messages pane. */
+        MessageText: string;
+        /** Specifies the priority of the posted message. */
+        Priority: PriorityEnum;
+    }
+
     // Simulate type enums. Used to simplify stating this as param type.
     // Will be expanded in hovers
 
@@ -2319,7 +2360,7 @@ declare namespace aqString {
      * If the input string holds several occurrences of a substring, the method returns the position of the first matching substring.
      * To search for another occurrence, set a different starting point via the StartPosition parameter.
      *
-     * @returns If the substring was found, the method returns the number of the first matching character, otherwise, it returns -1.
+     * @returns If the substring was found, the method returns the number of the first matching character, otherwise, it returns `-1`.
      */
     function Find(
         InputString: string,
@@ -2809,14 +2850,14 @@ declare namespace aqFileSystem {
     /**
      * Deletes the specified folder(s).
      * @param Path The fully qualified path to the folder to be deleted.
-     * To delete several folders, use wildcards (* and ?) to specify the mask.
+     * To delete several folders, use wildcards (`*` and `?`) to specify the mask.
      * Note, that wildcards are only allowed in the last component of the path.
-     * The path may or may not include a trailing backslash (\).
+     * The path may or may not include a trailing backslash (`\`).
      * An empty string or `undefined` means the current working folder,
-     * which can be read and set by using the aqFileSystem.GetCurrentFolder and aqFileSystem.SetCurrentFolder methods, respectively.
+     * which can be read and set by using the `aqFileSystem.GetCurrentFolder` and `aqFileSystem.SetCurrentFolder` methods, respectively.
      * @param {boolean} [RemoveNonEmpty = false] Specifies whether the method should remove non-empty folders.
-     * If the parameter is False, the method removes a folder only if it does not contain any files.
-     * If the parameter is True, the method removes non-empty folders as well.
+     * If the parameter is `false`, the method removes a folder only if it does not contain any files.
+     * If the parameter is `true`, the method removes non-empty folders as well.
      */
     function DeleteFolder(Path: string, RemoveNonEmpty?: boolean): boolean;
     /** Discards connection to the specified network folder. */
@@ -2878,7 +2919,7 @@ declare namespace aqConvert {
      * @param C Specifies the currency value to be converted to a string.
      * @param iNumDigits Specifies the number of digits after the decimal point.
      * If the value has fewer digits after the point, trailing zeros are added.
-     * Set this parameter to -1 in order to use the default number of digits
+     * Set this parameter to `-1` in order to use the default number of digits
      * after the decimal point that is specific to the current locale.
      * @param iLncLead Specifies whether to add leading digits to broken numbers.
      * The acceptable values are `0` (`false`), `-1` (`true`) and `-2` (use a system value specific to the locale).
@@ -2898,22 +2939,22 @@ declare namespace aqConvert {
      * - `%A` - Full weekday name.
      * - `%b` - Abbreviated month name.
      * - `%B` - Full month name.
-     * - `%c` - Date and time representation appropriate for locale. If the # flag (%#c) precedes the specifier, long date and time representation is used.
-     * - `%d` - Day of month as a decimal number (01 – 31). If the # flag (%#d) precedes the specifier, the leading zeros are removed from the number.
-     * - `%H` - Hour in 24-hour format (00 – 23). If the # flag (%#H) precedes the specifier, the leading zeros are removed from the number.
-     * - `%I` - Hour in 12-hour format (01 – 12). If the # flag (%#I) precedes the specifier, the leading zeros are removed from the number.
-     * - `%j` - Day of year as decimal number (001 – 366). If the # flag (%#j) precedes the specifier, the leading zeros are removed from the number.
-     * - `%m` - Month as decimal number (01 – 12). If the # flag (%#m) precedes the specifier, the leading zeros are removed from the number.
-     * - `%M` - Minute as decimal number (00 – 59). If the # flag (%#M) precedes the specifier, the leading zeros are removed from the number.
+     * - `%c` - Date and time representation appropriate for locale. If the `#` flag (`%#c`) precedes the specifier, long date and time representation is used.
+     * - `%d` - Day of month as a decimal number (01 – 31). If the `#` flag (`%#d`) precedes the specifier, the leading zeros are removed from the number.
+     * - `%H` - Hour in 24-hour format (00 – 23). If the `#` flag (`%#H`) precedes the specifier, the leading zeros are removed from the number.
+     * - `%I` - Hour in 12-hour format (01 – 12). If the `#` flag (`%#I`) precedes the specifier, the leading zeros are removed from the number.
+     * - `%j` - Day of year as decimal number (001 – 366). If the `#` flag (`%#j`) precedes the specifier, the leading zeros are removed from the number.
+     * - `%m` - Month as decimal number (01 – 12). If the `#` flag (`%#m`) precedes the specifier, the leading zeros are removed from the number.
+     * - `%M` - Minute as decimal number (00 – 59). If the `#` flag (`%#M`) precedes the specifier, the leading zeros are removed from the number.
      * - `%p` - Current locale's A.M./P.M. indicator for 12-hour clock.
-     * - `%S` - Second as decimal number (00 – 59). If the # flag (%#S) precedes the specifier, the leading zeros are removed from the number.
-     * - `%U` - Week of year as decimal number, with Sunday as first day of week (00 – 53). If the # flag (%#U) precedes the specifier, the leading zeros are removed from the number.
-     * - `%w` - Weekday as decimal number (0 – 6; Sunday is 0). If the # flag (%#w) precedes the specifier, the leading zeros are removed from the number.
-     * - `%W` - Week of year as decimal number, with Monday as first day of week (00 – 53). If the # flag (%#W) precedes the specifier, the leading zeros are removed from the number.
-     * - `%x` - Date representation for current locale. If the # flag (%#x) precedes the specifier, long date representation is enabled.
+     * - `%S` - Second as decimal number (00 – 59). If the `#` flag (`%#S`) precedes the specifier, the leading zeros are removed from the number.
+     * - `%U` - Week of year as decimal number, with Sunday as first day of week (00 – 53). If the `#` flag (`%#U`) precedes the specifier, the leading zeros are removed from the number.
+     * - `%w` - Weekday as decimal number (0 – 6; Sunday is 0). If the `#` flag (`%#w`) precedes the specifier, the leading zeros are removed from the number.
+     * - `%W` - Week of year as decimal number, with Monday as first day of week (00 – 53). If the `#` flag (`%#W`) precedes the specifier, the leading zeros are removed from the number.
+     * - `%x` - Date representation for current locale. If the `#` flag (`%#x`) precedes the specifier, long date representation is enabled.
      * - `%X` - Time representation for current locale.
-     * - `%y` - Year without century, as decimal number (00 – 99). If the # flag (%#y) precedes the specifier, the leading zeros are removed from the number.
-     * - `%Y` - Year with century, as decimal number. If the # flag (%#Y) precedes the specifier, the leading zeros are removed from the number.
+     * - `%y` - Year without century, as decimal number (00 – 99). If the `#` flag (`%#y`) precedes the specifier, the leading zeros are removed from the number.
+     * - `%Y` - Year with century, as decimal number. If the `#` flag (`%#Y`) precedes the specifier, the leading zeros are removed from the number.
      * - `%z` - %Z 	Either the time-zone name or time zone abbreviation, depending on registry settings; no characters if time zone is unknown.
      * - `%%` - Percent sign.
      * */
