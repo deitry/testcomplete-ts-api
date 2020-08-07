@@ -143,6 +143,8 @@ def inferTypeFromName(elName: str) -> str:
         return 'Button'
     elif containsKeyword(elName, 'form'):
         return 'Form'
+    elif containsKeyword(elName, 'window'):
+        return 'Window'
     elif containsKeyword(elName, ['edit', 'textbox', 'input']):
         return 'Edit'
 
@@ -277,7 +279,7 @@ def writeInterfaceDeclaration(
     guid = el.attrib['Owner']
     obj = allObjects[guid]
 
-    file.write(f'    interface {obj.name} extends TestComplete.Window {{')
+    file.write(f'    interface {obj.name} extends TestComplete.Process {{')
     text = ""
     for child in el.findall('Child'):
         children = generateElementDeclaration(child, allObjects)
