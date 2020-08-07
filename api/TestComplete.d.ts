@@ -1324,8 +1324,12 @@ declare namespace TestComplete {
         /** Returns the number of folders created in the log by the current test item. */
         FolderCount(): int;
 
-        /** Adds the specified folder to the folder stack
-        and makes it the top folder of the stack */
+        /**
+         * Adds the specified folder to the folder stack
+         * and makes it the top folder of the stack
+         * @example
+         * Log.PushLogFolder(Log.CreateFolder("Start export"));
+         */
         PushLogFolder(FolderId: int): void;
 
         /** Pops the top folder of the folder stack out of that stack */
@@ -2335,6 +2339,9 @@ declare namespace TestComplete {
         | varDouble | varCurrency | varDate | varOleStr | varDispatch | varError
         | varBoolean | varVariant | varUnknown | varShortInt | varByte | varWord
         | varLongWord | varInt64 | varStrArg | varString | varAny | varArray | varByRef;
+    type FileAttributesEnum = aqFileSystem.faReadOnly | aqFileSystem.faHidden | aqFileSystem.faSystem
+        | aqFileSystem.faArchive | aqFileSystem.faNormal | aqFileSystem.faTemporary
+        | aqFileSystem.faOffline | aqFileSystem.faNotContentIndexed;
 }
 
 /**
@@ -2342,19 +2349,21 @@ declare namespace TestComplete {
  * This object complements the aqFileSystem object, but unlike the latter it lets you deal with files only.
  */
 declare namespace aqFile {
-    /** @default 10 */
-    const faWrite: int;
-    /** @default 11 */
-    const faRead: int;
-    /** @default 12 */
-    const faReadWrite: int;
+    const faWrite: faWrite;
+    const faRead: faRead;
+    const faReadWrite: faReadWrite;
 
-    /** @default 20 */
-    const ctANSI: int;
-    /** @default 21 */ // UTF-16
-    const ctUnicode: int;
-    /** @default 22 */
-    const ctUTF8: int;
+    type faWrite = 10;
+    type faRead = 11;
+    type faReadWrite = 12;
+
+    const ctANSI: ctANSI;
+    const ctUnicode: ctUnicode;
+    const ctUTF8: ctUTF8;
+    type ctANSI = 20 & { Tag: "CodingType" };
+    /** UTF-16 */
+    type ctUnicode = 21 & { Tag: "CodingType" };
+    type ctUTF8 = 22 & { Tag: "CodingType" };
 
     /** Returns the time when the specified file was created. */
     function GetCreationTime(PathToFile: string): any;
@@ -2396,22 +2405,29 @@ declare namespace aqFile {
     /** Returns the attributes of the specified file. */
     function GetFileAttributes(PathToFile: string): int;
     /** Assigns new attributes to the specified file. */
-    function SetFileAttributes(Path: string, fAttr: int): int;
+    function SetFileAttributes(Path: string, fAttr: TestComplete.FileAttributesEnum): int;
     /** Opens the specified file in binary mode. */
     function OpenBinaryFile(Path: string, FileAccess: int, OverwriteOrCreate: boolean): any;
     /** Opens the specified file in text mode. */
     function OpenTextFile(
         Path: string,
         FileAccess: int,
-        TextCodingType: int,
+        TextCodingType: ctANSI | ctUnicode | ctUTF8,
         OverwriteOrCreate?: boolean /* false */): TestComplete.aqTextFile;
-    /** Reads the whole contents of the specified text file into a single string. */
-    function ReadWholeTextFile(Path: string, TextCodingType: int): string;
+    /**
+     * Reads the whole contents of the specified text file into a single string.
+     *
+     * @param TextCodingType
+     * - `aqFile.ctANSI` - `20` - ANSI
+     * - `aqFile.ctUnicode` - `21` - Unicode (UTF-16)
+     * - `aqFile.ctUTF8` - `22` - UTF8
+     */
+    function ReadWholeTextFile(Path: string, TextCodingType: ctANSI | ctUnicode | ctUTF8): string;
     /** Writes a string to the specified text file. */
     function WriteToTextFile(
         Path: string,
         String: string,
-        TextCodingType: int,
+        TextCodingType: ctANSI | ctUnicode | ctUTF8,
         OverwriteOrCreate?: boolean /* false */): boolean;
 }
 
@@ -2932,19 +2948,19 @@ declare namespace aqFileSystem {
     const fattrFree: int;
 
     /** A read-only file. */
-    const faReadOnly: int;
+    const faReadOnly: faReadOnly;
     /** A hidden file. */
-    const faHidden: int;
+    const faHidden: faHidden;
     /** A system file. */
-    const faSystem: int;
+    const faSystem: faSystem;
     const faDirectory: int;
     /** An archive file. */
-    const faArchive: int;
+    const faArchive: faArchive;
     const faDevice: int;
     /** A normal file (that is, a file without any other attributes set). */
-    const faNormal: int;
+    const faNormal: faNormal;
     /** A temporary file. */
-    const faTemporary: int;
+    const faTemporary: faTemporary;
     /** A sparse file. */
     const faSparseFile: int;
     /** A link or shortcut file, or a file that has an associated reparse point. */
@@ -2952,13 +2968,30 @@ declare namespace aqFileSystem {
     /** A compressed file. */
     const faCompressed: int;
     /** A file whose data is physically moved to offline storage. */
-    const faOffline: int;
+    const faOffline: faOffline;
     /** A file that is not indexed by the content indexing service. */
-    const faNotContentIndexed: int;
+    const faNotContentIndexed: faNotContentIndexed;
     /** An encrypted file. */
     const faEncrypted: int;
     /** A virtual file. */
     const faVirtual: int;
+
+    /** A read-only file. */
+    type faReadOnly = 1;
+    /** A hidden file. */
+    type faHidden = 2;
+    /** A system file. */
+    type faSystem = 4;
+    /** An archive file. */
+    type faArchive = 32;
+    /** A file that does not have any other attributes set. */
+    type faNormal = 128;
+    /** A file that is used for temporary storage. */
+    type faTemporary = 256;
+    /** A file whose data is physically moved to offline storage. */
+    type faOffline = 4096;
+    /** A file that is not to be indexed by the content indexing service. */
+    type faNotContentIndexed = 8192;
 
     /** Modifies the attribute(s) of the specified file or folder. */
     function ChangeAttributes(Path: string, Attribute: int, Action: int): int;
