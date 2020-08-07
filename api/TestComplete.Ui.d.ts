@@ -9,13 +9,37 @@ declare namespace TestComplete {
         ClickButton(): void;
     }
 
-    interface Menu extends Element {
+    interface Menu {
+        /** Returns the number of items in the specified Menu control. This number includes menu separators. */
         Count: int;
-
-        Items(Item: any): MenuItem;
-        MenuItem(Item: string | number): MenuItem;
-        Click(Item: any): void;
+        /**
+         * The Menu.Items property returns a MenuItem object that provides access to the menu item specified by its index.
+         *
+         * If you specify an item by its name, TestComplete will treat this name as case-sensitive
+         * or case-insensitive according to the Use case-sensitive parameters project property.
+         * You can use wildcards (`*` and `?`) in item names, where the asterisk
+         * corresponds to a string of any length and the question mark - to any single character.
+         */
+        Items(Item: Variant): MenuItem;
+        /** Simulates a click on a menu or submenu item. */
+        Click(Item: Variant): void;
+        /** Checks or unchecks the specified menu or submenu item. */
+        Check(Item: Variant, Checked: boolean): void;
+        /** Closes the menu. */
         Close(): void;
+        /**
+         * Places the mouse pointer over a menu or submenu item.
+         * Unlike `Click`, Select does not perform a click on the menu item.
+         *
+         * Submenu items should be specified by the "full path" starting from the top-level menu.
+         * To separate items in the "path", use the vertical character (`"|"`).
+         * If you use the index in the path, put the index number in brackets.
+         *
+         * @example
+         * w.MainMenu.Select("View|Show Toolbar")
+         * w.MainMenu.Select("Edit|[1]|[0]")
+         */
+        Select(Item: Variant): void;
     }
 
     interface Edit extends Element {
@@ -79,7 +103,7 @@ declare namespace TestComplete {
         /** Returns the item's position (index) in the menu. */
         Position: int;
         /** Returns this sub menu as a Menu object. */
-        SubMenu: MenuBar;
+        SubMenu: Menu;
     }
     interface ListItem extends Element { }
     interface ToolWindow extends Element { }
