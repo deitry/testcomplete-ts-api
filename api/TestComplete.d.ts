@@ -2472,12 +2472,24 @@ declare namespace aqString {
         CaseSensitive?: boolean /* true */): int;
     /** Compares two specified strings. */
     function Compare(String1: string, String2: string, CaseSensitive: boolean): int;
-    /** Replaces all the occurrences of one substring with another substring. */
+    /**
+     * Replaces all the occurrences of one substring with another substring.
+     *
+     * @param InputString Specifies the string to be processed.
+     * @param StringToReplace Specifies the substring whose occurrences should be replaced.
+     * @param SubsString Specifies the string to be substituted.
+     * @param {boolean} [CaseSensitive = true] Specifies whether the comparison should be case-sensitive or not.
+     *
+     * @example
+     * var str = "Hi, Bob. Have you seen Bob Robinson?";
+     * str = aqString.Replace(str, "Bob", "Jack");
+     * Log.Message(str); // "Hi, Jack. Have you seen Jack Robinson?"
+     */
     function Replace(
         InputString: string,
         StringToReplace: string,
         SubsString: string,
-        CaseSensitive?: boolean /* true */): string;
+        CaseSensitive?: boolean): string;
     /** Checks whether a string contains a substring that matches the specified regular expression. */
     function StrMatches(ExprStr: string, Str: string): boolean;
     /** Returns the number of items in the string list. */

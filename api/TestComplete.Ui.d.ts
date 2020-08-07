@@ -113,7 +113,9 @@ declare namespace TestComplete {
     }
     interface ListItem extends Element { }
     interface ToolWindow extends Element { }
-    interface CheckBox extends Button { }
+    interface CheckBox extends Button {
+        ClickButton(State?: cbChecked | cbUnchecked): void;
+    }
     interface ToolBar extends Element { }
     interface MenuBar extends Element {
         /** Get item */
