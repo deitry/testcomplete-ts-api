@@ -1988,21 +1988,21 @@ declare namespace TestComplete {
     /** Provides detailed information about any drive of the computer, no matter whether the drive is physical or logical.  */
     interface aqDriveInfo {
         /** Returns the letter of the given drive. */
-        DriveLetter: string;
+        readonly DriveLetter: string;
         /** Indicates the type of the specified drive: fixed, removable, network and so on. */
-        DriveType: int;
+        readonly DriveType: int;
         /** Returns the collection of files in the drive's root folder. */
-        Files: aqObjIterator<aqFileInfo>;
+        readonly Files: aqObjIterator<aqFileInfo>;
         /** Returns the name of a disk's file system. */
-        FileSystem: string;
+        readonly FileSystem: string;
         /** Returns the collection of drive folders. */
-        Folders: aqObjIterator<aqFolderInfo>;
+        readonly Folders: aqObjIterator<aqFolderInfo>;
         /** Returns the amount of free space on the given drive (in bytes). */
-        FreeSpace: double;
+        readonly FreeSpace: double;
         /** Returns the unique serial number of a disk. */
-        SerialNumber: double;
+        readonly SerialNumber: double;
         /** Returns the drive's total capacity (in bytes). */
-        TotalSize: double;
+        readonly TotalSize: double;
     }
 
     /** Common interface for objects that could be used in aqObjIterator. */
@@ -2015,35 +2015,35 @@ declare namespace TestComplete {
          * on the Attribute property value and the value corresponding to the desired attribute.
          * Alternatively, you can use the aqFileSystem.CheckAttributes method.
          */
-        Attributes: int;
+        readonly Attributes: int;
         /** Returns an aqFileCertificateInfo object that provides information about the file's authentication certificate. */
-        CertificateInfo: aqFileCertificateInfo;
+        readonly CertificateInfo: aqFileCertificateInfo;
         /** Returns the file's creation date. */
-        DateCreated: DateTime;
+        readonly DateCreated: DateTime;
         /** Returns the date the file was last accessed. */
-        DateLastAccessed: DateTime;
+        readonly DateLastAccessed: DateTime;
         /** Returns the date the file was last modified. */
-        DateLastModified: DateTime;
+        readonly DateLastModified: DateTime;
         /** Returns the drive where the file is located. */
-        Drive: string;
+        readonly Drive: string;
         /** Specifies whether the file exists. */
-        Exists: boolean;
+        readonly Exists: boolean;
         /** Returns the file's name and extension. */
-        Name: string;
+        readonly Name: string;
         /** Returns the file's name without the extension. */
-        NameWithoutExtension: string;
+        readonly NameWithoutExtension: string;
         /** Returns the object that describes the file's parent folder. */
-        ParentFolder: aqFolderInfo;
+        readonly ParentFolder: aqFolderInfo;
         /** Returns the full path to the file. */
-        Path: string;
+        readonly Path: string;
         /** Returns the file name in the 8.3 format. */
-        ShortName: string;
+        readonly ShortName: string;
         /** Returns the path to the file in the 8.3 format. */
-        ShortPath: string;
+        readonly ShortPath: string;
         /** Returns the file size in bytes. */
-        Size: int;
+        readonly Size: int;
         /** Returns an aqFileVersionInfo object that provides version information about the file. */
-        VersionInfo: aqFileVersionInfo;
+        readonly VersionInfo: aqFileVersionInfo;
     }
 
     /**
