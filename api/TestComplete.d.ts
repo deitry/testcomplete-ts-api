@@ -374,7 +374,7 @@ declare namespace TestComplete {
         Id: int;
         Index: int;
         Left: int;
-        MainMenu: any;
+        MainMenu: Menu;
         MappedName: string;
         readonly Name: string;
         ObjectIdentifier: any;
@@ -1431,102 +1431,6 @@ declare namespace TestComplete {
         GetLocaleInfo(Locale: int, Type: int): string;
     }
 
-    /**
-     * Allows to manage files as well as read from and write to text and binary files.
-     * This object complements the aqFileSystem object, but unlike the latter it lets you deal with files only.
-     */
-    interface aqFile {
-        /** @default 10 */
-        readonly faWrite: int;
-        /** @default 11 */
-        readonly faRead: int;
-        /** @default 12 */
-        readonly faReadWrite: int;
-
-        /** @default 20 */
-        readonly ctANSI: int;
-        /** @default 21 */ // UTF-16
-        readonly ctUnicode: int;
-        /** @default 22 */
-        readonly ctUTF8: int;
-
-        /** Returns the time when the specified file was created. */
-        GetCreationTime(PathToFile: string): any;
-        /** Returns the time when the specified file was last accessed. */
-        GetLastAccessTime(PathToFile: string): any;
-        /** Returns the time when the specified file was last modified. */
-        GetLastWriteTime(PathToFile: string): any;
-        /** Returns the size of the specified file. */
-        GetSize(PathToFile: string): int;
-        /** Copies the specified file to a new location. */
-        Copy(
-            PathToExistingFile: string,
-            PathToNewFile: string,
-            RenameOnCollision?: boolean /* true */): boolean;
-        /** Deletes the specified file. */
-        Delete(PathToFile: string): boolean;
-        /** Creates a new file with the specified name. NOTE: The folder where you want to create a file must exist. */
-        Create(PathToFile: string): int;
-        /** Indicates whether the specified file, folder or drive exists. */
-        Exists(Path: string): boolean;
-        /** Renames the specified file. */
-        Rename(
-            OldPath: string,
-            NewPath: string,
-            RenameOnCollision?: boolean /* true */): boolean;
-        /** Moves the specified file to a new location. */
-        Move(
-            PathToExistingFile: string,
-            PathToNewFile: string,
-            RenameOnCollision?: boolean /* true */): boolean;
-        /** Compares two specified files. */
-        Compare(PathToFile1: string, PathToFile2: string): boolean;
-        /** Sets a new creation time for the specified file. */
-        SetCreationTime(Path: string, Time: any): boolean;
-        /** Sets a new time when the file was last accessed. */
-        SetLastAccessTime(Path: string, Time: any): boolean;
-        /** Sets a new time when the file was last written to. */
-        SetLastWriteTime(Path: string, Time: any): boolean;
-        /** Returns the attributes of the specified file. */
-        GetFileAttributes(PathToFile: string): int;
-        /** Assigns new attributes to the specified file. */
-        SetFileAttributes(Path: string, fAttr: int): int;
-        /** Opens the specified file in binary mode. */
-        OpenBinaryFile(Path: string, FileAccess: int, OverwriteOrCreate: boolean): any;
-        /** Opens the specified file in text mode. */
-        OpenTextFile(
-            Path: string,
-            FileAccess: int,
-            TextCodingType: int,
-            OverwriteOrCreate?: boolean /* false */): aqTextFile;
-        /** Reads the whole contents of the specified text file into a single string. */
-        ReadWholeTextFile(Path: string, TextCodingType: int): string;
-        /** Writes a string to the specified text file. */
-        WriteToTextFile(
-            Path: string,
-            String: string,
-            TextCodingType: int,
-            OverwriteOrCreate?: boolean /* false */): boolean;
-    }
-
-    /**
-     * The aqUtils object provides various helper routines that let you extend tests with additional functionality.
-     */
-    interface aqUtils {
-        /** Generates a simple tone using the PC speakers. */
-        Beep(Freq: int, Duration: int): void;
-        /** Delays the test execution for the specified time period in milliseconds. */
-        Delay(ms: int, Str?: string): void;
-        /** Returns the path to the specified COM server. */
-        GetCOMServerPath(Server: string, Is64bit: boolean): string;
-        /** Indicates whether the specified string is a valid JavaScript, JScript, Python, C++Script, C#Script or DelphiScript identifier. */
-        IsValidIdent(Ident: string): boolean;
-        /** Converts the specified OS error code into the corresponding error message string. */
-        SysErrorMessage(ErrorCode: int): string;
-        /** Checks a Windows API call's return value and raises an appropriate exception when this call fails. */
-        Win32Check(ExitCode: boolean): boolean;
-    }
-
     interface aqPerformance {
         Value(CounterName: string): int;
         Start(CounterName: string, WarnIfExists?: boolean): void;
@@ -2413,6 +2317,102 @@ declare namespace TestComplete {
         | varLongWord | varInt64 | varStrArg | varString | varAny | varArray | varByRef;
 }
 
+/**
+ * Allows to manage files as well as read from and write to text and binary files.
+ * This object complements the aqFileSystem object, but unlike the latter it lets you deal with files only.
+ */
+declare namespace aqFile {
+    /** @default 10 */
+    const faWrite: int;
+    /** @default 11 */
+    const faRead: int;
+    /** @default 12 */
+    const faReadWrite: int;
+
+    /** @default 20 */
+    const ctANSI: int;
+    /** @default 21 */ // UTF-16
+    const ctUnicode: int;
+    /** @default 22 */
+    const ctUTF8: int;
+
+    /** Returns the time when the specified file was created. */
+    function GetCreationTime(PathToFile: string): any;
+    /** Returns the time when the specified file was last accessed. */
+    function GetLastAccessTime(PathToFile: string): any;
+    /** Returns the time when the specified file was last modified. */
+    function GetLastWriteTime(PathToFile: string): any;
+    /** Returns the size of the specified file. */
+    function GetSize(PathToFile: string): int;
+    /** Copies the specified file to a new location. */
+    function Copy(
+        PathToExistingFile: string,
+        PathToNewFile: string,
+        RenameOnCollision?: boolean /* true */): boolean;
+    /** Deletes the specified file. */
+    function Delete(PathToFile: string): boolean;
+    /** Creates a new file with the specified name. NOTE: The folder where you want to create a file must exist. */
+    function Create(PathToFile: string): int;
+    /** Indicates whether the specified file, folder or drive exists. */
+    function Exists(Path: string): boolean;
+    /** Renames the specified file. */
+    function Rename(
+        OldPath: string,
+        NewPath: string,
+        RenameOnCollision?: boolean /* true */): boolean;
+    /** Moves the specified file to a new location. */
+    function Move(
+        PathToExistingFile: string,
+        PathToNewFile: string,
+        RenameOnCollision?: boolean /* true */): boolean;
+    /** Compares two specified files. */
+    function Compare(PathToFile1: string, PathToFile2: string): boolean;
+    /** Sets a new creation time for the specified file. */
+    function SetCreationTime(Path: string, Time: TestComplete.DateTime): boolean;
+    /** Sets a new time when the file was last accessed. */
+    function SetLastAccessTime(Path: string, Time: TestComplete.DateTime): boolean;
+    /** Sets a new time when the file was last written to. */
+    function SetLastWriteTime(Path: string, Time: TestComplete.DateTime): boolean;
+    /** Returns the attributes of the specified file. */
+    function GetFileAttributes(PathToFile: string): int;
+    /** Assigns new attributes to the specified file. */
+    function SetFileAttributes(Path: string, fAttr: int): int;
+    /** Opens the specified file in binary mode. */
+    function OpenBinaryFile(Path: string, FileAccess: int, OverwriteOrCreate: boolean): any;
+    /** Opens the specified file in text mode. */
+    function OpenTextFile(
+        Path: string,
+        FileAccess: int,
+        TextCodingType: int,
+        OverwriteOrCreate?: boolean /* false */): TestComplete.aqTextFile;
+    /** Reads the whole contents of the specified text file into a single string. */
+    function ReadWholeTextFile(Path: string, TextCodingType: int): string;
+    /** Writes a string to the specified text file. */
+    function WriteToTextFile(
+        Path: string,
+        String: string,
+        TextCodingType: int,
+        OverwriteOrCreate?: boolean /* false */): boolean;
+}
+
+/**
+ * The aqUtils object provides various helper routines that let you extend tests with additional functionality.
+ */
+declare namespace aqUtils {
+    /** Generates a simple tone using the PC speakers. */
+    function Beep(Freq: int, Duration: int): void;
+    /** Delays the test execution for the specified time period in milliseconds. */
+    function Delay(ms: int, Str?: string): void;
+    /** Returns the path to the specified COM server. */
+    function GetCOMServerPath(Server: string, Is64bit: boolean): string;
+    /** Indicates whether the specified string is a valid JavaScript, JScript, Python, C++Script, C#Script or DelphiScript identifier. */
+    function IsValidIdent(Ident: string): boolean;
+    /** Converts the specified OS error code into the corresponding error message string. */
+    function SysErrorMessage(ErrorCode: int): string;
+    /** Checks a Windows API call's return value and raises an appropriate exception when this call fails. */
+    function Win32Check(ExitCode: boolean): boolean;
+}
+
 /** Lets to perform various operations on string values */
 declare namespace aqString {
     /** Leading spaces will be trimmed. */
@@ -2940,6 +2940,10 @@ declare namespace aqFileSystem {
      * Creates a new folder.
      * @param Path Specifies the fully qualified path where a new folder should be created.
      * If the path includes folders that do not exist, they will be created as well.
+     *
+     * @returns If the creation succeeds, the method returns `0`, otherwise, it returns the error code.
+     * To get a description that corresponds to the given error code, you can use the `aqUtils.SysErrorMessage` method.
+     * A complete list of error codes is provided in the System Error Codes article in the MSDN library.
      */
     function CreateFolder(Path: string): int;
     /** Deletes the specified file(s). */
@@ -3097,14 +3101,8 @@ declare namespace aqConvert {
 // declare const Aliases: TestComplete.Aliases
 declare const aqDateTime: TestComplete.aqDateTime;
 declare const aqEnvironment: TestComplete.aqEnvironment;
-/**
- * Allows to manage files as well as read from and write to text and binary files.
- * This object complements the aqFileSystem object, but unlike the latter it lets you deal with files only.
- */
-declare const aqFile: TestComplete.aqFile;
 declare const aqPerformance: TestComplete.aqPerformance;
 declare const aqTestCase: TestComplete.aqTestCase;
-declare const aqUtils: TestComplete.aqUtils;
 declare const Browsers: TestComplete.Browsers;
 /** Provides symbolic names for the TestComplete global constants . The descriptions for the constants are given in the descriptions of those methods where the corresponding constants are applied. */
 declare const Consts: TestComplete.Consts;
