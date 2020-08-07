@@ -170,7 +170,7 @@ declare namespace TestComplete {
     }
 
     /**
-     * The Sys object “represents” the system in your tests -- everything outside TestComplete.
+     * The Sys object "represents"”" the system in your tests -- everything outside TestComplete.
      * Its methods and properties allow you to control test execution, interact with active windows, simulate key presses, and so on.
      */
     interface Sys extends Element, IDispatch {
@@ -295,7 +295,7 @@ declare namespace TestComplete {
          * Returns a Process object by its application name and index.
          *
          * If the process is not found, the method returns an empty object and posts
-         * the message “The process … was not found” to the test log. You can call Exists
+         * the message "The process … was not found"”" to the test log. You can call Exists
          * to determine whether the returned object is a process in the system.
          * To obtain the process object without posting any messages to the test log, use Sys.WaitProcess or WaitChild.
          *
@@ -761,7 +761,7 @@ declare namespace TestComplete {
          * such as a database table or recordset, an Excel spreadsheet or CSV file, and returns values from that source
          * (a scripting interface to a database table variable is provided by the DBTableVariable object).
          */
-        AddVariable(VariableName: string, VariableType: "Boolean" | "Double" | "Integer" | "Object" | "String" | "Password" | "Table" | "DBTable" ): void;
+        AddVariable(VariableName: string, VariableType: "Boolean" | "Double" | "Integer" | "Object" | "String" | "Password" | "Table" | "DBTable"): void;
         /** Returns the variable category. */
         GetVariableCategory(Variable: Variant): string;
         /** Returns the default value of a variable. */
@@ -1779,6 +1779,26 @@ declare namespace TestComplete {
         readonly Parent: RuntimeObject;
     }
 
+    /** Any mapped processes, windows, controls and the Aliases object. */
+    interface MappedObject {
+        /**
+         * Use the `WaitAliasChild` method to delay the test execution until the object
+         * specified by its alias appears in the system or until the specified time limit is reached.
+         * If the specified object is found, the method returns it;
+         * otherwise it returns an "empty" stub object that only has the `Exists` property.
+         *
+         * @param ChildName The alias of the desired child object, as it is defined
+         * in the Aliases section of the NameMapping editor. This alias must be a child item of the AliasObj in the Aliases tree.
+         *
+         * NOTE: The alias is always case-insensitive, in spite of the value of the Use case-sensitive parameters project option.
+         *
+         * @param WaitTime The time period, in milliseconds, to wait until the specified object becomes available.
+         * If WaitTime is `0`, the method searches for the specified object once and returns immediately.
+         * If WaitTime is `-1`, the waiting time is specified by the Auto-wait timeout project setting.
+         */
+        WaitAliasChild(ChildName: string, WaitTime?: int): TestComplete.RuntimeObject | { Exists: boolean };
+    }
+
     interface Process extends RuntimeObject {
         AppDomain(Name: string, ClrVersion?: string): AppDomain;
         Form(Caption: string): Form;
@@ -2417,14 +2437,14 @@ declare namespace aqUtils {
 declare namespace aqString {
     /** Leading spaces will be trimmed. */
     const stLeading: stLeading;
-    type stLeading = 1 & {Tag: "TrimType"};
+    type stLeading = 1 & { Tag: "TrimType" };
 
     /** Trailing spaces will be trimmed. */
     const stTrailing: stTrailing;
-    type stTrailing = 2 & {Tag: "TrimType"};
+    type stTrailing = 2 & { Tag: "TrimType" };
     /** Both leading and trailing spaces will be trimmed. */
     const stAll: stAll;
-    type stAll = 3 & {Tag: "TrimType"};
+    type stAll = 3 & { Tag: "TrimType" };
 
     /** Specifies a character used to separate individual values in a list. */
     var QuoteSymbol: string;
@@ -2946,7 +2966,39 @@ declare namespace aqFileSystem {
     function CheckAttributes(Path: string, Attribute: int): boolean;
     /** Copy one or several files to a new location */
     function CopyFile(PathToExistingFile: string, PathToNewFile: string, RenameOnCollision?: boolean /* true */): boolean;
-    /** Copies the specified folder(s) to another location. */
+    /**
+     * Copies the specified folder(s) to another location.
+     *
+     * @param Source The path to the folder to be copied. Both fully-qualified and relative paths are acceptable.
+     * This path must not include a trailing backslash (to remove it from the path,
+     * you can use the `aqFileSystem.ExcludeTrailingBackSlash` method).
+     *
+     * To copy several folders, use wildcards (`*` and `?`) to specify the mask.
+     * Note, that wildcards are only allowed in the last component of the path.
+     *
+     * @param Destination The path to the folder where the folder(s) specified
+     * by the `Source` parameter will be copied along with their contents.
+     * Both fully-qualified and relative paths are acceptable.
+     * This path may or may not include a trailing backslash.
+     * If the destination folder does not exist, it will be created.
+     *
+     * Note that if the `Source` mask does not match any folder, the destination folder is not created.
+     *
+     * @param RenameOnCollision Specifies the method behavior in case the Destination folder
+     * already contains a subfolder with the same name as the Source folder.
+     * If `RenameOnCollision` is `true` (which is the default value), the method creates
+     * the Copy of <FolderName> subfolder in the `Destination` folder and copies the `Source`’s contents to that subfolder.
+     * Otherwise, the method copies the Source folder’s contents to the existing destination subfolder replacing the files having the same name.
+     *
+     * @returns `true` if all the specified folders were copied successfully, and `false` otherwise.
+     *
+     * If the Source folder was not found, the method returns `false`. However,
+     * if the Source mask that uses wildcards does not match any folder, the method returns `true`.
+     *
+     * @example
+     * aqFileSystem.CopyFolder(".\\orig", ".\\copy");
+     * // ".\\copy\\orig"
+     */
     function CopyFolder(Source: string, Destination: string, RenameOnCollision?: boolean /* true */): boolean;
     /**
      * Creates a new folder.
@@ -3104,6 +3156,38 @@ declare namespace aqConvert {
     function VarToStr(V: TestComplete.Variant): string;
 }
 
+declare namespace Aliases {
+    /**
+     * Pauses the test execution until the specified object property
+     * achieves the specified value or until the specified timeout elapses
+     * @param {int} [WaitTime = -1] The number of milliseconds to wait for the specified property value.
+     * If WaitTime is 0, the method does not wait and returns immediately.
+     * If WaitTime is -1, the waiting time is specified by the Auto-wait timeout project property.
+     *
+     * @returns If the property achieves the specified value within the timeout, the method returns `true`.
+     * Otherwise, if the timeout elapses before the property achieves the specified value, the method returns `false`.
+     * Also, `false` if the object does not have the specified property.
+     */
+    function WaitProperty(PropertyName: string, PropertyValue: TestComplete.Variant, WaitTime?: int): boolean;
+
+    /**
+     * Use the `WaitAliasChild` method to delay the test execution until the object
+     * specified by its alias appears in the system or until the specified time limit is reached.
+     * If the specified object is found, the method returns it;
+     * otherwise it returns an "empty" stub object that only has the `Exists` property.
+     *
+     * @param ChildName The alias of the desired child object, as it is defined
+     * in the Aliases section of the NameMapping editor. This alias must be a child item of the AliasObj in the Aliases tree.
+     *
+     * NOTE: The alias is always case-insensitive, in spite of the value of the Use case-sensitive parameters project option.
+     *
+     * @param WaitTime The time period, in milliseconds, to wait until the specified object becomes available.
+     * If WaitTime is `0`, the method searches for the specified object once and returns immediately.
+     * If WaitTime is `-1`, the waiting time is specified by the Auto-wait timeout project setting.
+     */
+    function WaitAliasChild(ChildName: string, WaitTime?: int): TestComplete.RuntimeObject | { Exists: boolean };
+}
+
 /*
  * Declarations
  * These allow you to use TestComplete keywords in TypeScript, e.g.
@@ -3145,7 +3229,7 @@ declare const Runner: TestComplete.Runner;
 declare const slPacker: TestComplete.slPacker;
 declare const Storages: TestComplete.Storages;
 /**
- * The Sys object “represents” the system in your tests -- everything outside TestComplete.
+ * The Sys object "represents"”" the system in your tests -- everything outside TestComplete.
  * Its methods and properties allow you to control test execution, interact with active windows, simulate key presses, and so on.
  */
 declare const Sys: TestComplete.Sys;

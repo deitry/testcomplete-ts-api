@@ -279,7 +279,7 @@ def writeInterfaceDeclaration(
     guid = el.attrib['Owner']
     obj = allObjects[guid]
 
-    file.write(f'    interface {obj.name} extends TestComplete.Process {{')
+    file.write(f'    interface {obj.name} extends TestComplete.Process, TestComplete.MappedObject {{')
     text = ""
     for child in el.findall('Child'):
         children = generateElementDeclaration(child, allObjects)
