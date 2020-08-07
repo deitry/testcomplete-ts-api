@@ -125,3 +125,79 @@ type mtCustom = 1 & {Tag: "MessageType"};
 type mtError = 2 & {Tag: "MessageType"};
 type mtInformation = 3 & {Tag: "MessageType"};
 type mtWarning = 4 & {Tag: "MessageType"};
+
+declare const varEmpty: varEmpty;
+declare const varNull: varNull;
+declare const varSmallInt: varSmallInt;
+declare const varInteger: varInteger;
+declare const varSingle: varSingle;
+declare const varDouble: varDouble;
+declare const varCurrency: varCurrency;
+declare const varDate: varDate;
+declare const varOleStr: varOleStr;
+declare const varDispatch: varDispatch;
+declare const varError: varError;
+declare const varBoolean: varBoolean;
+declare const varVariant: varVariant;
+declare const varUnknown: varUnknown;
+declare const varShortInt: varShortInt;
+declare const varByte: varByte;
+declare const varWord: varWord;
+declare const varLongWord: varLongWord;
+declare const varInt64: varInt64;
+declare const varStrArg: varStrArg;
+declare const varString: varString;
+declare const varAny: varAny;
+declare const varArray: varArray;
+declare const varByRef: varByRef;
+/** Empty (uninitialized). */
+type varEmpty = 0x0000 & {Tag: "VarType"};
+/** Null (no valid data). */
+type varNull = 0x0001 & {Tag: "VarType"};
+/** Signed 16-bit integer. */
+type varSmallInt = 0x0002 & {Tag: "VarType"};
+/** Signed 32-bit integer. */
+type varInteger = 0x0003 & {Tag: "VarType"};
+/** Single-precision floating-point number. Number of significant digits: 7-8. */
+type varSingle = 0x0004 & {Tag: "VarType"};
+/** Double-precision floating-point number. Number of significant digits: 15-16. */
+type varDouble = 0x0005 & {Tag: "VarType"};
+/** High-precision floating-point number. Number of significant digits: 19-20.
+ * Intended to minimize rounding errors in monetary calculations. */
+type varCurrency = 0x0006 & {Tag: "VarType"};
+/** OLE-compatible TDateTime type. */
+type varDate = 0x0007 & {Tag: "VarType"};
+/** String of 16-bit Unicode characters. */
+type varOleStr = 0x0008 & {Tag: "VarType"};
+/** Automation object that implements `IDispatch` interface. */
+type varDispatch = 0x0009 & {Tag: "VarType"};
+/** Code of an OS error. */
+type varError = 0x000A & {Tag: "VarType"};
+/** Boolean. */
+type varBoolean = 0x000B & {Tag: "VarType"};
+/** Variant. */
+type varVariant = 0x000C & {Tag: "VarType"};
+/** Reference to an unknown OLE object. */
+type varUnknown = 0x000D & {Tag: "VarType"};
+/** Signed 8-bit integer. */
+type varShortInt = 0x0010 & {Tag: "VarType"};
+/** Unsigned 8-bit integer. */
+type varByte = 0x0011 & {Tag: "VarType"};
+/** Unsigned 16-bit integer. */
+type varWord = 0x0012 & {Tag: "VarType"};
+/** Unsigned 32-bit integer. */
+type varLongWord = 0x0013 & {Tag: "VarType"};
+/** Signed 64-bit integer. */
+type varInt64 = 0x0014 & {Tag: "VarType"};
+/** A COM-compatible string. */
+type varStrArg = 0x0048 & {Tag: "VarType"};
+/** A reference to a dynamically allocated string (not COM-compatible). */
+type varString = 0x0100 & {Tag: "VarType"};
+/** A Variant that can contain any value. */
+type varAny = 0x0101 & {Tag: "VarType"};
+/** Array. Type of array elements is specified by the lower bits.
+ * For example, `2003h` is an array of integers. */
+type varArray = 0x2000 & {Tag: "VarType"};
+/** Reference to a value of the type given by the lower bits.
+ * For example, `4007h` is a reference to a date. */
+type varByRef = 0x4000 & {Tag: "VarType"};

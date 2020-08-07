@@ -20,11 +20,17 @@ declare namespace TestComplete {
          * You can use wildcards (`*` and `?`) in item names, where the asterisk
          * corresponds to a string of any length and the question mark - to any single character.
          */
-        Items(Item: Variant): MenuItem;
-        /** Simulates a click on a menu or submenu item. */
-        Click(Item: Variant): void;
+        Items(Item: string | int): MenuItem;
+        /**
+         * Specifies the item you want to click.
+         * Submenu items should be specified by the "full path" starting from the top-level menu.
+         * To separate items in the "path", use the vertical character (`"|"`).
+         * @example
+         * w.MainMenu.Click("View|Show Toolbar")
+         */
+        Click(Item: string | int): void;
         /** Checks or unchecks the specified menu or submenu item. */
-        Check(Item: Variant, Checked: boolean): void;
+        Check(Item: string | int, Checked: boolean): void;
         /** Closes the menu. */
         Close(): void;
         /**

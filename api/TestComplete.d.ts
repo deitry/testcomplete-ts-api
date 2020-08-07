@@ -178,7 +178,7 @@ declare namespace TestComplete {
         ChildCount: int;
         /** Puts text or images to the clipboard or retrieves the clipboard data. */
         Clipboard: Variant;
-        /** Stores the model and frequency of the computer’s processor(s). */
+        /** Stores the model and frequency of the computer's processor(s). */
         CPU: string;
         /** Returns the number of CPUs installed on your computer. */
         CPUCount: int;
@@ -194,7 +194,7 @@ declare namespace TestComplete {
         FullName: string;
         /** The name of the current computer. */
         HostName: string;
-        /** Returns the object’s identifier. */
+        /** Returns the object's identifier. */
         Id: int;
         /** Returns the custom name that is mapped to the original object name and is used to address the object in scripts. */
         MappedName: string;
@@ -217,7 +217,7 @@ declare namespace TestComplete {
          * To specify the OLE server running on the local machine, do not specify the MachineName parameter.
          * NOTE: You cannot use TestComplete as a client application for in-process OLE objects, the bitness of which is different than the bitness of TestComplete.
          * NOTE: TestComplete does not release instances of OLE objects created via the Sys.OleObject method at design time,
-         * that is, when this method is used to explore the object in the Object Browser or to get code completion for the object’s methods and properties.
+         * that is, when this method is used to explore the object in the Object Browser or to get code completion for the object's methods and properties.
          * For example, creating a Word.Application object launches Microsoft Word and it keeps running after you have finished working with the object in the Object Browser or the Code Editor.
          * To release the used OLE object instance, you need to manually close the process that the object is running in or to execute the script code that would release that object.
          * @param OleObject ProgID or CLSID of the OLE server you want to access.
@@ -666,11 +666,11 @@ declare namespace TestComplete {
         ConfigPath: string;
         /** Returns the name of the current project's .mds file. */
         FileName: string;
-        /** Returns the LogResults object that provides access to the project’s logs. */
+        /** Returns the LogResults object that provides access to the project's logs. */
         Logs: LogResults;
         /** Returns the path to the current project's .mds file. */
         Path: string;
-        /** Returns the TestItems object which provides access to the project’s test items. */
+        /** Returns the TestItems object which provides access to the project's test items. */
         TestItems: ProjectTestItems;
         /** Returns the collection of local variables defined in the current project. */
         Variables: Variables;
@@ -694,21 +694,21 @@ declare namespace TestComplete {
      */
     interface IDispatch {
         /**
-         * Assigns a value to an object’s property given the property name as a string.
+         * Assigns a value to an object's property given the property name as a string.
          * If the property with the given name was not found, an error occurs.
          *
          * `$set` works similar to `aqObject.SetPropertyValue`, but is easier to use in JavaScript.
          */
         $set(PropertyName: string, Value: Variant): void;
         /**
-         * Assigns a value to an object’s property given the property name as a string.
+         * Assigns a value to an object's property given the property name as a string.
          * If the property with the given name was not found, an error occurs.
          *
          * `$set` works similar to `aqObject.SetPropertyValue`, but is easier to use in JavaScript.
          */
         $set(PropertyName: string, Param: Variant, Value: Variant): void;
         /**
-         * Assigns a value to an object’s property given the property name as a string.
+         * Assigns a value to an object's property given the property name as a string.
          * If the property with the given name was not found, an error occurs.
          *
          * `$set` works similar to `aqObject.SetPropertyValue`, but is easier to use in JavaScript.
@@ -718,7 +718,7 @@ declare namespace TestComplete {
         $set(PropertyName: string, Param1: Variant, Param2: Variant, ...Params: Variant[]): void;
 
         /**
-         * Get an object’s property value given the property name as a string.
+         * Get an object's property value given the property name as a string.
          * If the property with the given name was not found, an error occurs.
          *
          * `$get` works similar to `aqObject.GetPropertyValue`, but is easier to use in JavaScript.
@@ -729,7 +729,7 @@ declare namespace TestComplete {
         $get(PropertyName: string, ...Param: Variant[]): Variant;
 
         /**
-         * In JavaScript code, you can use $call to call an object’s method given the method name as a string.
+         * In JavaScript code, you can use $call to call an object's method given the method name as a string.
          * `$call` works similar to `aqObject.CallMethod`, but is easier to use in JavaScript.
          */
         $call(MethodName: string, ...Param: Variant[]): Variant;
@@ -820,13 +820,13 @@ declare namespace TestComplete {
         AutorunOnRecording: boolean;
         /** Specifies the number of the application instances to be launched. */
         Count: int;
-        /** Returns the date of the application’s executable or batch file. */
+        /** Returns the date of the application's executable or batch file. */
         Date: DateTime;
         /** Specifies the file name of the tested application (without path). */
         FileName: string;
         /** Specifies the fully-qualified file name of the tested application. */
         FullFileName: string;
-        /** Specifies the name of the tested application in the tested application’s collection. */
+        /** Specifies the name of the tested application in the tested application's collection. */
         ItemName: string;
         /** Specifies whether the application should be launched. */
         Launch: boolean;
@@ -834,9 +834,9 @@ declare namespace TestComplete {
         Params: TestedAppParams;
         /** Specifies the application path. */
         Path: string
-        /** Returns the size of the application’s executable or batch file. */
+        /** Returns the size of the application's executable or batch file. */
         Size: int;
-        /** Returns the time of the tested application’s executable or batch file. */
+        /** Returns the time of the tested application's executable or batch file. */
         Time: DateTime;
 
         /**
@@ -1523,7 +1523,7 @@ declare namespace TestComplete {
         IsValidIdent(Ident: string): boolean;
         /** Converts the specified OS error code into the corresponding error message string. */
         SysErrorMessage(ErrorCode: int): string;
-        /** Checks a Windows API call’s return value and raises an appropriate exception when this call fails. */
+        /** Checks a Windows API call's return value and raises an appropriate exception when this call fails. */
         Win32Check(ExitCode: boolean): boolean;
     }
 
@@ -1603,7 +1603,7 @@ declare namespace TestComplete {
          that can be accessed via Microsoft's ADO DB. */
         ADODriver(ConnectionString: string, TableName: string): ADODriver;
 
-        /** Closes the driver’s connection to data and frees all
+        /** Closes the driver's connection to data and frees all
         resources associated with the driver. */
         CloseDriver(Name: string): void;
 
@@ -1635,7 +1635,7 @@ declare namespace TestComplete {
      * stored in the system registry, INI, XML and binary files.
      */
     interface Section {
-        /** Specifies the section’s name. */
+        /** Specifies the section's name. */
         readonly Name: string;
         /** Returns the number of options in the current section. */
         readonly OptionCount: int;
@@ -1781,7 +1781,7 @@ declare namespace TestComplete {
         ParamName(Index: int): string;
 
         /** Type of the property parameter specified by its index */
-        ParamType(Index: int): int;
+        ParamType(Index: VarTypeEnum): int;
     }
 
     interface TestedAppBaseParams {
@@ -1858,7 +1858,7 @@ declare namespace TestComplete {
         readonly Exists: boolean;
         /** Specifies the full name that uniquely identifies the object in TestComplete.  */
         readonly FullName: string;
-        /** Returns the object’s identifier.  */
+        /** Returns the object's identifier.  */
         readonly Id: int;
         /** Returns the custom name that is mapped to the original object name
         and is used to address the object in scripts.  */
@@ -1991,9 +1991,9 @@ declare namespace TestComplete {
         DriveLetter: string;
         /** Indicates the type of the specified drive: fixed, removable, network and so on. */
         DriveType: int;
-        /** Returns the collection of files in the drive’s root folder. */
+        /** Returns the collection of files in the drive's root folder. */
         Files: aqObjIterator<aqFileInfo>;
-        /** Returns the name of a disk’s file system. */
+        /** Returns the name of a disk's file system. */
         FileSystem: string;
         /** Returns the collection of drive folders. */
         Folders: aqObjIterator<aqFolderInfo>;
@@ -2001,7 +2001,7 @@ declare namespace TestComplete {
         FreeSpace: double;
         /** Returns the unique serial number of a disk. */
         SerialNumber: double;
-        /** Returns the drive’s total capacity (in bytes). */
+        /** Returns the drive's total capacity (in bytes). */
         TotalSize: double;
     }
 
@@ -2010,15 +2010,15 @@ declare namespace TestComplete {
 
     /** Provides various information about a file */
     interface aqFileInfo extends IIterable {
-        /** Returns the file’s attributes. See aqFileSystem.fa* constants.
+        /** Returns the file's attributes. See aqFileSystem.fa* constants.
          * To check if a file has a specific attribute set, perform the bitwise AND check
          * on the Attribute property value and the value corresponding to the desired attribute.
          * Alternatively, you can use the aqFileSystem.CheckAttributes method.
          */
         Attributes: int;
-        /** Returns an aqFileCertificateInfo object that provides information about the file’s authentication certificate. */
+        /** Returns an aqFileCertificateInfo object that provides information about the file's authentication certificate. */
         CertificateInfo: aqFileCertificateInfo;
-        /** Returns the file’s creation date. */
+        /** Returns the file's creation date. */
         DateCreated: DateTime;
         /** Returns the date the file was last accessed. */
         DateLastAccessed: DateTime;
@@ -2028,11 +2028,11 @@ declare namespace TestComplete {
         Drive: string;
         /** Specifies whether the file exists. */
         Exists: boolean;
-        /** Returns the file’s name and extension. */
+        /** Returns the file's name and extension. */
         Name: string;
         /** Returns the file's name without the extension. */
         NameWithoutExtension: string;
-        /** Returns the object that describes the file’s parent folder. */
+        /** Returns the object that describes the file's parent folder. */
         ParentFolder: aqFolderInfo;
         /** Returns the full path to the file. */
         Path: string;
@@ -2046,10 +2046,104 @@ declare namespace TestComplete {
         VersionInfo: aqFileVersionInfo;
     }
 
-    interface aqFolderInfo extends IIterable { }
-    interface aqObjField extends IIterable { }
-    interface aqObjEvent extends IIterable { }
-    interface aqObjMethod extends IIterable { }
+    /**
+     * Provides detailed information about a folder.
+     */
+    interface aqFolderInfo extends IIterable {
+        /** Returns the folder's attributes. */
+        readonly Attributes: int;
+        /** Returns the folder's creation date. */
+        readonly DateCreated: DateTime;
+        /** Returns the date the folder was last accessed. */
+        readonly DateLastAccessed: DateTime
+        /** Returns the date the folder was last modified. */
+        readonly DateLastModified: DateTime;
+        /** Returns the drive where the folder is located. */
+        readonly Drive: string;
+        /** Specifies whether the folder exists. */
+        readonly Exists: boolean;
+        /** Returns the collection of files stored in the given folder. */
+        readonly Files: aqObjIterator<aqFileInfo>;
+        /** Indicates whether the folder is a root folder. */
+        readonly IsRootFolder: boolean;
+        /** Returns the name of the folder. */
+        readonly Name: string;
+        /** Returns the object that describes the parent folder of the given folder. */
+        readonly ParentFolder: aqFolderInfo;
+        /** Returns the full path to the folder. */
+        readonly Path: string;
+        /**
+         * Sets the folder's attributes.
+         *
+         * @returns If the folder attributes have been changed successfully, the method returns `0`.
+         * Otherwise, it returns a Windows error code. To get the error description, use the `aqUtils.SysErrorMessage` method.
+         * For the complete list of error codes, refer to the System Error Codes article in the MSDN library.
+        */
+        SetAttributes(fAttr: int): int;
+        /** Returns the folder name in the 8.3 format. */
+        readonly ShortName: string;
+        /** Returns the path to the folder in the 8.3 format. */
+        readonly ShortPath: string;
+        /** Returns the total size of the folder. */
+        Size: double;
+        /** Returns the collection of subfolders of the given folder. */
+        SubFolders: aqObjIterator<aqFolderInfo>;
+
+        /** Copies the related folder to a new location. */
+        Copy(NewPath: string, RenameOnCollision?: boolean): boolean;
+        /** Deletes the specified folder. */
+        Delete(Confirm?: boolean): boolean;
+        /** Moves the related folder to a new location. */
+        Move(NewPath: string, RenameOnCollision?: boolean): boolean;
+        /** Assigns a new name to the related folder. */
+        Rename(NewPath: string): boolean;
+    }
+
+    /**
+     * provides a scripting interface to object fields that you can see on the Fields page of the Object Browser panel.
+     * To obtain the `aqObjField` object in scripts, use the `GetFields` method of the `aqObject` object.
+     */
+    interface aqObjField extends IIterable {
+        /** Returns the access type of the field. */
+        readonly Category: "private" | "protected" | "public";
+        /** Returns the field name. */
+        readonly Name: string;
+        /** Specifies the field's value. */
+        Value: Variant;
+    }
+
+    /**
+     * Provides a scripting interface to object events that you can see on the Events page of the Object Browser panel.
+     * To obtain the `aqObjEvent` object in scripts, use the `GetEvents` method of the `aqObject` object.
+     */
+    interface aqObjEvent extends IIterable {
+        /** Returns the event name. */
+        readonly Name: string;
+        /** Returns the total number of event parameters. */
+        readonly ParamCount: int;
+        /** Returns the name of the event parameter by its index. */
+        readonly ParamName: string;
+    }
+
+    /**
+     * Provides a scripting interface to object methods that you can see on the Methods page of the Object Browser panel.
+     * To obtain the `aqObjMethod` object in scripts, use the GetMethods method of the `aqObject` object.
+     */
+    interface aqObjMethod extends IIterable {
+        /** Returns the method name. */
+        readonly Name: string;
+        /** Returns the total number of method parameters. */
+        readonly ParamCount: int;
+        /** Returns the name of the method parameter by its index. */
+        readonly ParamName: string;
+        /** Returns the data type of the specified method parameter. */
+        readonly ParamType: VarTypeEnum;
+        /** Returns the data type of the method's return value. */
+        readonly ValueType: VarTypeEnum;
+
+        /** Specifies whether the method has a return value. */
+        HasRetValue(): boolean;
+    }
     interface aqFileCertificateInfo { }
 
     /**
@@ -2065,7 +2159,7 @@ declare namespace TestComplete {
         Comments: string;
         /** Returns the name of the company that produced the file. */
         CompanyName: string;
-        /** Returns the build part of the file’s version number. */
+        /** Returns the build part of the file's version number. */
         FileBuildVersion: int;
         /** Returns the file description. */
         FileDescription: string;
@@ -2073,11 +2167,11 @@ declare namespace TestComplete {
         FileFlags: int;
         /** Returns the file version number. */
         FileFullVersion: string;
-        /** Returns the major part of the file’s version number. */
+        /** Returns the major part of the file's version number. */
         FileMajorVersion: int;
-        /** Returns the minor part of the file’s version number. */
+        /** Returns the minor part of the file's version number. */
         FileMinorVersion: int;
-        /** Returns the revision part of the file’s version number. */
+        /** Returns the revision part of the file's version number. */
         FileRevisionVersion: int;
         /** Allows you to get additional information about a device driver, font file or virtual device file.
          * This property returns 0 for a file of another type (for example, an executable).
@@ -2089,7 +2183,7 @@ declare namespace TestComplete {
         FileSubType: int;
         /** Indicates the general type of the file. Returns one of the Win32API.VFT_* constants. */
         FileType: int;
-        /** Returns the file’s internal name. If none exists, the property returns the file’s original name (the OriginalFilename value) without the extension.
+        /** Returns the file's internal name. If none exists, the property returns the file's original name (the OriginalFilename value) without the extension.
          * @param Index A file can contain multiple version information blocks translated in different languages.
          * This parameter specifies a zero-based index of the desired version information translation, among those included in the file.
          * The default value is 0, which means the default version information block.
@@ -2105,7 +2199,7 @@ declare namespace TestComplete {
         LegalCopyright(Index?: int): string;
         /** Returns the legal trademarks for the file. */
         LegalTrademarks(Index?: int): string;
-        /** Returns the file’s original name. */
+        /** Returns the file's original name. */
         OriginalFilename(Index?: int): string;
         /** Indicates the operating system that the file was designed for. */
         OSFile: int;
@@ -2141,21 +2235,21 @@ declare namespace TestComplete {
         Next(): Type;
         /** Moves to the first object in the collection. */
         Reset(): void;
-        /** Increases the index indicating the iterator’s position by the specified number and returns the object by the result index. */
+        /** Increases the index indicating the iterator's position by the specified number and returns the object by the result index. */
         Skip(SkipCount: int): Type;
     }
 
     interface Set { }
 
     /**
-     * The TestItem object provides access to a test item defined in your project and allows you to get the test item’s property values.
+     * The TestItem object provides access to a test item defined in your project and allows you to get the test item's property values.
      * Note that all of the TestItem object properties are read-only and cannot be changed during the test run.
-     * To set up the project’s test items, use the Test Items page of the project editor.
+     * To set up the project's test items, use the Test Items page of the project editor.
      */
     interface ProjectTestItem {
         /** Returns the number of times the test item is to be run. */
         Count: int;
-        /** Returns the test item’s description. */
+        /** Returns the test item's description. */
         Description: string;
         /** Returns a TestItemElement object corresponding to the test run by the test item. */
         ElementToBeRun: TestItemElement;
@@ -2165,44 +2259,44 @@ declare namespace TestComplete {
         ItemCount: int;
         /** Returns the current iteration of the test item run. */
         Iteration: int;
-        /** Returns the test item’s name. */
+        /** Returns the test item's name. */
         Name: string;
         /** Returns the parent test item. */
         Parent: ProjectTestItem
         /** Specifies what TestComplete will do when an error occurs during a test run.
          * Possible options: the test run will be stopped, the error will be ignored, the test item where the error occurred will be skipped.
          * - `0` - Proceed with project execution as if no errors have occurred.
-         * Corresponds to the Continue running value of the test item’s On Error column on the Test Items page.
+         * Corresponds to the Continue running value of the test item's On Error column on the Test Items page.
          * - `1` - Stop the whole project run.
-         * Corresponds to the Stop project value of the test item’s On Error column on the Test Items page.
+         * Corresponds to the Stop project value of the test item's On Error column on the Test Items page.
          * - `2` - Stop the current test item run (including all its iterations and child items)
-         * and proceed with subsequent sibling items. Corresponds to the Stop current item value of the test item’s On Error column on the Test Items page.
-         * - `3` - Corresponds to the Use project’s 'On error' property value of the test item’s On Error column on the Test Items page.
-         * The item uses the project’s Error handling > On Error property value. It can be Continue running, Stop current item, or Stop project.
+         * and proceed with subsequent sibling items. Corresponds to the Stop current item value of the test item's On Error column on the Test Items page.
+         * - `3` - Corresponds to the Use project's 'On error' property value of the test item's On Error column on the Test Items page.
+         * The item uses the project's Error handling > On Error property value. It can be Continue running, Stop current item, or Stop project.
          */
         readonly StopOnError: 0 | 1 | 2 | 3;
         /** Specifies what TestComplete will do when an exception occurs during a test run.
          * Possible options: the test will be stopped, the exception will be ignored, the test item where the error occurred will be skipped.
          * - `0` - Proceed with the test run as if no exception has occurred.
-         * Corresponds to the Continue running value of the test item’s On exception column on the Test Items page.
+         * Corresponds to the Continue running value of the test item's On exception column on the Test Items page.
          * - `1` - Stop the execution of the whole project.
-         * Corresponds to the Stop project value of the test item’s On exception column on the Test Items page.
+         * Corresponds to the Stop project value of the test item's On exception column on the Test Items page.
          * - `2` - Stop the execution of the current test item (including its child items
          * and further iterations of the current item), and proceed with the execution of the subsequent sibling items.
-         * Corresponds to the Stop current item value of the test item’s On exception column on the Test Items page.
+         * Corresponds to the Stop current item value of the test item's On exception column on the Test Items page.
          */
         readonly StopOnException: 0 | 1 | 2;
         /** Returns the child test item specified by its index. */
         TestItem(Index: int): ProjectTestItem;
-        /** Returns the test item’s timeout value, in minutes. */
+        /** Returns the test item's timeout value, in minutes. */
         Timeout: int;
     }
 
     /**
      * The TestItem object provides access to a test item defined in your project
-     * and allows you to get the test item’s property values. Note that all
+     * and allows you to get the test item's property values. Note that all
      * of the TestItem object properties are read-only and cannot be changed during the test run.
-     * To set up the project’s test items, use the Test Items page of the project editor.
+     * To set up the project's test items, use the Test Items page of the project editor.
      */
     interface ProjectTestItems {
         /** Returns the test item that is currently running. */
@@ -2219,27 +2313,27 @@ declare namespace TestComplete {
     interface PictureLogData extends LogData { }
 
     /**
-     * provides a scripting interface to a project’s log item. Log items are displayed in the test log panel.
+     * provides a scripting interface to a project's log item. Log items are displayed in the test log panel.
      * They are organized in a tree-like structure. At that, each log item of any level
      * (topmost log items as well as child items) are represented as the LogItem object.
      *
-     * The LogItem object also contains properties that let you access a log item’s dataset,
+     * The LogItem object also contains properties that let you access a log item's dataset,
      * that is, results displayed for the given log item in additional log panels.
-     * To obtain the log item’s dataset, use the Data property.
+     * To obtain the log item's dataset, use the Data property.
      */
     interface LogItem {
         /** Returns the child log item by its index. */
         Child(Index: int): LogItem;
         /** Returns the total number of child log items of the current log item. */
         ChildCount: int;
-        /** Returns the log item’s dataset by its index. */
+        /** Returns the log item's dataset by its index. */
         Data(Index: int): LogData;
         /** Returns the total number of datasets in the given log item. */
         DataCount: int;
-        /** Returns the log item’s caption. */
+        /** Returns the log item's caption. */
         Name: string;
         /**
-         * Returns the log item’s status.
+         * Returns the log item's status.
          *
          * One of the following constants that specify the log item status:
          * - `0` - The log item contains only informative messages.
@@ -2253,16 +2347,16 @@ declare namespace TestComplete {
      * Provides a scripting interface to a project's logs that are displayed under the
      * `Project_Suite_Name Logs` | `Project_Name Logs` node in the Project Explorer panel.
      * These are top-level log items that can hold result of test runs for a whole project,
-     * its test items or project item’s elements (for instance, single script routines, low-level procedures, and so on).
+     * its test items or project item's elements (for instance, single script routines, low-level procedures, and so on).
      *
-     * The `LogResults` object maintains the list of a project’s top-level log items and contains properties
+     * The `LogResults` object maintains the list of a project's top-level log items and contains properties
      * that let you iterate through log items and access single top-level log items from scripts.
      * This helps you process test results in a specific manner, for instance, to export them to a custom file format.
      */
     interface LogResults {
-        /** Returns the project’s top-level log item by its index. */
+        /** Returns the project's top-level log item by its index. */
         LogItem(Index: int): LogItem;
-        /** Returns the total number of project’s top-level log items. */
+        /** Returns the total number of project's top-level log items. */
         LogItemsCount(): int;
     }
 
@@ -2313,6 +2407,10 @@ declare namespace TestComplete {
     type PriorityEnum = pmLowest | pmLower | pmNormal | pmHigher | pmHighest;
     type ShiftStateEnum = skNoShift | skShift | skAlt | skCtrl;
     type LogMessageTypeEnum = lmNone | lmMessage | lmWarning | lmError;
+    type VarTypeEnum = varEmpty | varNull | varSmallInt | varInteger | varSingle
+        | varDouble | varCurrency | varDate | varOleStr | varDispatch | varError
+        | varBoolean | varVariant | varUnknown | varShortInt | varByte | varWord
+        | varLongWord | varInt64 | varStrArg | varString | varAny | varArray | varByRef;
 }
 
 /** Lets to perform various operations on string values */
@@ -2577,31 +2675,30 @@ declare namespace BuiltIn {
 
     var StandardColorsCount: int;
 
-    const varAny: int;
-    const varArray: int;
-    const varBoolean: int;
-    const varByRef: int;
-    const varByte: int;
-    const varCurrency: int;
-    const varDate: int;
-    const varDispatch: int;
-    const varDouble: int;
-    const varEmpty: int;
-    const varError: int;
-    const varInt64: int;
-    const varInteger: int;
-    const varLongWord: int;
-    const varNull: int;
-    const varOleStr: int;
-    const varShortInt: int;
-    const varSingle: int;
-    const varSmallint: int;
-    const varStrArg: int;
-    const varString: int;
-    const varTypeMask: int;
-    const varUnknown: int;
-    const varVariant: int;
-    const varWord: int;
+    const varEmpty: varEmpty;
+    const varNull: varNull;
+    const varSmallInt: varSmallInt;
+    const varInteger: varInteger;
+    const varSingle: varSingle;
+    const varDouble: varDouble;
+    const varCurrency: varCurrency;
+    const varDate: varDate;
+    const varOleStr: varOleStr;
+    const varDispatch: varDispatch;
+    const varError: varError;
+    const varBoolean: varBoolean;
+    const varVariant: varVariant;
+    const varUnknown: varUnknown;
+    const varShortInt: varShortInt;
+    const varByte: varByte;
+    const varWord: varWord;
+    const varLongWord: varLongWord;
+    const varInt64: varInt64;
+    const varStrArg: varStrArg;
+    const varString: varString;
+    const varAny: varAny;
+    const varArray: varArray;
+    const varByRef: varByRef;
 
     /** Creates an array of Variant elements. */
     function CreateVariantArray(Param1: int, Param2: int): any;
@@ -2695,33 +2792,33 @@ declare namespace BuiltIn {
 }
 
 /**
- * Provides unified methods for operating objects’ members at run time.
+ * Provides unified methods for operating objects' members at run time.
  */
 declare namespace aqObject {
-    const varEmpty = 0x0000;
-    const varNull = 0x0001;
-    const varSmallInt = 0x0002;
-    const varInteger = 0x0003;
-    const varSingle = 0x0004;
-    const varDouble = 0x0005;
-    const varCurrency = 0x0006;
-    const varDate = 0x0007;
-    const varOleStr = 0x0008;
-    const varDispatch = 0x0009;
-    const varError = 0x000A;
-    const varBoolean = 0x000B;
-    const varVariant = 0x000C;
-    const varUnknown = 0x000D;
-    const varShortInt = 0x0010;
-    const varByte = 0x0011;
-    const varWord = 0x0012;
-    const varLongWord = 0x0013;
-    const varInt64 = 0x0014;
-    const varStrArg = 0x0048;
-    const varString = 0x0100;
-    const varAny = 0x0101;
-    const varArray = 0x2000;
-    const varByRef = 0x4000;
+    const varEmpty: varEmpty;
+    const varNull: varNull;
+    const varSmallInt: varSmallInt;
+    const varInteger: varInteger;
+    const varSingle: varSingle;
+    const varDouble: varDouble;
+    const varCurrency: varCurrency;
+    const varDate: varDate;
+    const varOleStr: varOleStr;
+    const varDispatch: varDispatch;
+    const varError: varError;
+    const varBoolean: varBoolean;
+    const varVariant: varVariant;
+    const varUnknown: varUnknown;
+    const varShortInt: varShortInt;
+    const varByte: varByte;
+    const varWord: varWord;
+    const varLongWord: varLongWord;
+    const varInt64: varInt64;
+    const varStrArg: varStrArg;
+    const varString: varString;
+    const varAny: varAny;
+    const varArray: varArray;
+    const varByRef: varByRef;
 
     /** Returns an empty object. */
     const EmptyObject: Object;
@@ -2732,9 +2829,9 @@ declare namespace aqObject {
     function GetVarType(VarParam: TestComplete.Variant): int;
     /** Indicates whether the specified object has a member with the given name. */
     function IsSupported(IObject: any, MemberName: string): boolean;
-    /** Returns the value of an object’s property. */
+    /** Returns the value of an object's property. */
     function GetPropertyValue(IObject: any, PropertyName: string): TestComplete.Variant;
-    /** Assigns a new value to an object’s property. */
+    /** Assigns a new value to an object's property. */
     function SetPropertyValue(IObject: any, PropertyName: string, Value: TestComplete.Variant): void;
     /** Calls the specified method of a particular object. */
     function CallMethod(IObject: any, MethodName: string): any;
@@ -2746,14 +2843,14 @@ declare namespace aqObject {
     /** Returns the collection of fields of the given object.  */
     function GetFields(SourceObject: any, ShowHidden?: boolean): TestComplete.aqObjIterator<TestComplete.aqObjField>;
     /** Returns the collection of methods of the given object. */
-    function GetMethods(SourceObject: any, ShowHidden?: boolean): TestComplete.aqObjIterator<TestComplete.aqObjEvent>;
+    function GetMethods(SourceObject: any, ShowHidden?: boolean): TestComplete.aqObjIterator<TestComplete.aqObjMethod>;
     /**
      * Lists all the properties of the desired object
      * @param {boolean} [ShowHidden = false]
      */
     function GetProperties(SourceObject: any, ShowHidden?: boolean): TestComplete.aqObjIterator<TestComplete.aqObjProperty>;
     /**
-     * Verifies an object’s property value according to the specified condition.
+     * Verifies an object's property value according to the specified condition.
      * @param {boolean} [CaseSensitive = true]
      * @param {int} [MessageType = lmWarning]
      */
@@ -2781,7 +2878,7 @@ declare namespace aqObject {
         SaveMethods?: boolean,
         Depth?: int): boolean;
     /**
-     * Verifies an object’s property value according to the specified condition.
+     * Verifies an object's property value according to the specified condition.
      * @param {boolean} [CaseSensitive = true]
      */
     function CheckProperty(
@@ -2792,7 +2889,7 @@ declare namespace aqObject {
         CaseSensitive?: boolean/* true */): boolean;
 }
 
-/** Lets you work with the computer’s file system: obtain information about drives,
+/** Lets you work with the computer's file system: obtain information about drives,
  * folders and files as well as to add, modify and remove files and folders. */
 declare namespace aqFileSystem {
     /** Returns the collection of disk drives of the current computer. */
