@@ -85,9 +85,11 @@ declare const HKEY_LOCAL_MACHINE: Win32API.Registry.HKEY_LOCAL_MACHINE;
 declare const HKEY_PERFORMANCE_DATA: Win32API.Registry.HKEY_PERFORMANCE_DATA;
 declare const HKEY_USERS: Win32API.Registry.HKEY_USERS;
 
-/** 32-bit registry (default) */
+/** 32-bit registry (default)
+ * @default 0 */
 declare const AQRT_32_BIT: AQRT_32_BIT;
-/** 64-bit registry */
+/** 64-bit registry
+ * @default 1 */
 declare const AQRT_64_BIT: AQRT_64_BIT;
 declare type AQRT_32_BIT = 0 & {Tag: "RegistryType"};
 declare type AQRT_64_BIT = 1 & {Tag: "RegistryType"};

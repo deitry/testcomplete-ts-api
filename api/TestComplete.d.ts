@@ -334,34 +334,71 @@ declare namespace TestComplete {
          * If you obtain several processes with the same name and the process with the lowest index is terminated,
          * the indexes of other processes will be decreased by one.
          */
-        WaitProcess(ProcessName: string, Timeout?: int /* 0 */, ProcessIndex?: int /* 1 */): Process;
+        WaitProcess(ProcessName: string, Timeout?: int, ProcessIndex?: int): Process;
         /** Waits until the specified object property achieves the specified value during the timeout period. */
         WaitProperty(PropertyName: string, PropertyValue: any, WaitTime: int): boolean;
         /** Returns a window by its handle. */
         WindowFromHandle(Handle: int): Window;
     }
 
+    /**
+     * lets you work with different Windows desktop properties.
+     * It provides properties and methods that allow you to get or set
+     * the current mouse coordinates, obtain a screenshot of a definite area of the screen,
+     * get the active or focused window and so on.
+     */
     interface Desktop extends Element {
+        /** Gets or sets the horizontal position of the mouse pointer. */
         MouseX: int;
+        /** Gets or sets the vertical position of the mouse pointer. */
         MouseY: int;
 
+        /**  	Returns the desktop width. */
         readonly Width: int;
+        /** Returns the desktop height. */
         readonly Height: int;
 
-        PictureUnderMouse(Width: int, Height: int, Mouse: boolean): Picture;
+        /**
+         * Returns the image of the rectangular area around the mouse pointer.
+         * @param Mouse If `true` (default), the captured image includes the mouse cursor image;
+         * if `false`, the image of the mouse cursor is not included.
+         */
+        PictureUnderMouse(Width: int, Height: int, Mouse?: boolean): Picture;
+        /** Returns the image of the specified screen area. */
         Picture(ClientX?: int, ClientY?: int, Width?: int, Height?: int, Mouse?: boolean): Picture;
 
-        Keys(Keys: string): any;
+        /** Returns the top-level window. */
         ActiveWindow(): Window;
+        /** Returns the focused window. */
         FocusedWindow(): Window;
-        ObjectFromPoint(X: int, Y: int, FindTransparent: boolean): any;
-        WindowFromHandle(Handle: int): any;
+        /** Returns the onscreen object that contains the pixel with the specified screen coordinates. */
+        ObjectFromPoint(X: int, Y: int, FindTransparent?: boolean): RuntimeObject;
+        /** Returns a window by its handle. */
+        WindowFromHandle(Handle: int): Window;
 
-        MouseDown(VirtuakKeyCode: int, X: int, Y: int): any;
-        MouseUp(VirtuakKeyCode: int, X: int, Y: int): any;
+        /**
+         * Simulates the pressing of the specified mouse button.
+         * @param VirtualKeyCode Specifies the button to be pressed.
+         * You can use the following values for the parameter:
+         * - `VK_LBUTTON` - `1` - The left mouse button.
+         * - `VK_RBUTTON` - `2` - The right mouse button.
+         * - `VK_MBUTTON` - `4` - The middle mouse button.
+         *
+         * If the Win32API plugin is installed in TestComplete, you can refer
+         * to the constants using their names without defining them in scripts.
+         */
+        MouseDown(VirtualKeyCode: 1 | 2 | 4, X: int, Y: int): any;
+        /** Simulates the releasing of the specified mouse button.
+         * @see `MouseDown`
+         */
+        MouseUp(VirtualKeyCode: 1 | 2 | 4, X: int, Y: int): any;
 
-        KeyDown(VirtuakKeyCode: int): any;
-        KeyUp(VirtuakKeyCode: int): any;
+        /** Simulates the pressing of the specified key. */
+        KeyDown(VirtualKeyCode: int): void;
+        /** Simulates one or several keypresses. */
+        Keys(Keys: string): void;
+        /** Simulates the releasing of the specified key. */
+        KeyUp(VirtualKeyCode: int): void;
     }
 
     interface Window extends Element {
