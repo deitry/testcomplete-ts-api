@@ -2967,11 +2967,11 @@ declare namespace aqObject {
      * @param {boolean} [CaseSensitive = true]
      */
     function CheckProperty(
-        Object: any,
+        Object: TestComplete.RuntimeObject,
         Property: string,
         Condition: int,
-        Value: any,
-        CaseSensitive?: boolean/* true */): boolean;
+        Value: TestComplete.Variant,
+        CaseSensitive?: boolean): boolean;
 }
 
 /** Lets you work with the computer's file system: obtain information about drives,
@@ -3282,7 +3282,6 @@ declare const JavaClasses: TestComplete.JavaClasses;
  * or have them organized as a tree whose nodes are folders that can include test log items and other folders.
  */
 declare const Log: TestComplete.Log;
-// declare const NameMapping: TestComplete.NameMapping;
 
 /** Name mapping */
 declare namespace NameMapping {
@@ -3303,7 +3302,6 @@ declare const Storages: TestComplete.Storages;
  * Its methods and properties allow you to control test execution, interact with active windows, simulate key presses, and so on.
  */
 declare const Sys: TestComplete.Sys;
-// declare const TestedApps: TestComplete.TestedApps;
 declare const Utils: TestComplete.Utils;
 declare const DBTables: TestComplete.DBTables;
 declare const Files: TestComplete.Files;
@@ -3316,12 +3314,12 @@ declare const XML: TestComplete.XML;
 /**
  * Delays the test execution for the specified time period in milliseconds.
  *
- * NOTE: This is the method of aqUtils object. Consider using it with stating aqUtils.
+ * @deprecated: Use `aqUtils.Delay` instead
  */
 declare function Delay(count: int): void;
 
 /**
- * @param {boolean} [CaseSensitive = true]
+ * @deprecate Use `aqObject.CheckProperty` instead
  */
 declare function CheckProperty(
     Object: TestComplete.RuntimeObject,
