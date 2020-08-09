@@ -3,13 +3,6 @@
  * TODO: Make auto-generated
  */
 
-declare const lsXML = 0;
-declare const lsHTML = 1;
-declare const lsMHT = 2;
-declare const lsZip = 3;
-declare const lsPackedHTML = 4;
-declare const lsJUnit = 5;
-
 declare const pmLowest: pmLowest;
 declare const pmLower: pmLower;
 declare const pmNormal: pmNormal;
@@ -203,3 +196,48 @@ type varArray = 0x2000 & {Tag: "VarType"};
 /** Reference to a value of the type given by the lower bits.
  * For example, `4007h` is a reference to a date. */
 type varByRef = 0x4000 & {Tag: "VarType"};
+
+declare const lsHTML: lsHTML;
+declare const lsMHT: lsMHT;
+declare const lsXML: lsXML;
+declare const lsZip: lsZip;
+declare const lsPackedHTML: lsPackedHTML;
+declare const lsJUnit: lsJUnit;
+
+/** XML format (default).  */
+type lsXML = 0 & { Tag: "LogSaveFormat" };
+/** A web page with accompanying images, stylesheets and other data files. */
+type lsHTML = 1 & { Tag: "LogSaveFormat" };
+/** A web page archive (web page with accompanying files packed into one file). */
+type lsMHT = 2 & { Tag: "LogSaveFormat" };
+/** A zip archive containing a full TestComplete log in its native format (a .tcLog file). */
+type lsZip = 3 & { Tag: "LogSaveFormat" };
+/** A zip archive included an exported test log in HTML format. */
+type lsPackedHTML = 4 & { Tag: "LogSaveFormat" };
+/** An XML file with a Summary report saved in the JUnit report format.
+ * You can view and process the report in any JUnit-style-compatible framework
+ * or in a tool like JUnit Viewer, xUnit Viewer, or Allure. */
+type lsJUnit = 5 & { Tag: "LogSaveFormat" };
+
+declare const ltfPlain: ltfPlain;
+declare const ltfHTML: ltfHTML;
+declare const ltfXML: ltfXML;
+declare const ltfURL: ltfURL;
+/** Plain text */
+type ltfPlain = 0 & { Tag: "LogDataObjFormat" };
+/** HTML */
+type ltfHTML = 1 & { Tag: "LogDataObjFormat" };
+/** XML */
+type ltfXML = 2 & { Tag: "LogDataObjFormat" };
+/** Hyperlink */
+type ltfURL = 3 & { Tag: "LogDataObjFormat" };
+
+declare const ldtTable: ldtTable;
+declare const ldtText: ldtText;
+declare const ldtPicture: ldtPicture;
+/** Tabular data or data in the tree-like list */
+type ldtTable = 0 & { Tag: "LogDataType" };
+/** Text data (plain text, HTML, XML or an URL string) */
+type ldtText = 1 & { Tag: "LogDataType" };
+/** Picture */
+type ldtPicture = 2 & { Tag: "LogDataType" };

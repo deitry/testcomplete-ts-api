@@ -1283,16 +1283,16 @@ declare namespace TestComplete {
         /** Log MessageText detail,
          * and AdditionalInformation to the Additional Information panel  */
         Message(
-            MessageText: any,
-            AdditionalInformation?: any,
+            MessageText: string,
+            AdditionalInformation?: string,
             Priority?: PriorityEnum, /* pmNormal */
             Attrib?: LogAttributes | null,
             Picture?: Picture | Element | string,
             FolderId?: int): void;
         /** Posts a warning to the test log. */
         Warning(
-            MessageText: any,
-            AdditionalInformation?: any,
+            MessageText: string,
+            AdditionalInformation?: string,
             Priority?: PriorityEnum, /* pmNormal */
             Attrib?: LogAttributes | null,
             Picture?: Picture | Element | string,
@@ -1305,16 +1305,16 @@ declare namespace TestComplete {
          * and displays this information in the Call Stack page of the test log
          */
         Error(
-            MessageText: any,
-            AdditionalInformation?: any,
+            MessageText: string,
+            AdditionalInformation?: string,
             Priority?: PriorityEnum, /* pmNormal */
             Attrib?: LogAttributes | null,
             Picture?: Picture | Element | string,
             FolderId?: int): void;
         /** Event message is a message next to which TestComplete displays the Event glyph */
         Event(
-            MessageText: any,
-            AdditionalInformation?: any,
+            MessageText: string,
+            AdditionalInformation?: string,
             Priority?: PriorityEnum, /* pmNormal */
             Attrib?: LogAttributes | null,
             Picture?: Picture | Element | string,
@@ -1322,24 +1322,24 @@ declare namespace TestComplete {
         /** Posts an image to the test log. */
         Picture(
             Picture: Picture | Element,
-            MessageText?: any,
-            AdditionalInformation?: any,
+            MessageText?: string,
+            AdditionalInformation?: string,
             Priority?: PriorityEnum, /* pmNormal */
             Attrib?: LogAttributes | null,
             FolderId?: int): string;
         /** Posts a file to the test log. */
         File(
             FileName: string,
-            MessageText?: any,
-            AdditionalInformation?: any,
+            MessageText?: string,
+            AdditionalInformation?: string,
             Priority?: PriorityEnum, /* pmNormal */
             Attrib?: LogAttributes | null,
             FolderId?: int): string;
         /** Posts a reference to a file or to any other resource to the test log. */
         Link(
             Link: string,
-            MessageText?: any,
-            AdditionalInformation?: any,
+            MessageText?: string,
+            AdditionalInformation?: string,
             Priority?: PriorityEnum, /* pmNormal */
             Attrib?: LogAttributes | null,
             FolderId?: int): void;
@@ -1353,8 +1353,8 @@ declare namespace TestComplete {
         UnlockEvents(): void;
         /** Creates a folder in the test log. This folder can hold messages of different types and subfolders. */
         CreateFolder(
-            MessageText: any,
-            AdditionalInformation?: any,
+            MessageText: string,
+            AdditionalInformation?: string,
             Priority?: PriorityEnum, /* pmNormal */
             Attrib?: LogAttributes | null,
             OwnerFolderId?: int): int;
@@ -1363,9 +1363,13 @@ declare namespace TestComplete {
 
         /**
          * Adds the specified folder to the folder stack
-         * and makes it the top folder of the stack
+         * and makes it the top folder of the stack.
+         *
+         * NOTE: Consider using `Log.AppendFolder` for newly created folders.
          * @example
          * Log.PushLogFolder(Log.CreateFolder("Start export"));
+         *
+         * @see Log.AppendFolder
          */
         PushLogFolder(FolderId: int): void;
 
@@ -1374,7 +1378,7 @@ declare namespace TestComplete {
         /** Saves the current test log results to one or several files in a particular format. */
         SaveResultsAs(
             FileName: string,
-            LogFormat?: int, /* lsXML */
+            LogFormat?: LogFormatEnum, /* lsXML */
             ExportVisualizerImages?: boolean, /* true */
             LogScope?: int): boolean;
         /** Posts the log contents to an issue-tracking system. */
@@ -1383,15 +1387,15 @@ declare namespace TestComplete {
         CreateNewAttributes(): LogAttributes;
         /** Creates a folder in the test log and activates the folder so that all posted messages are sent to this folder. */
         AppendFolder(
-            MessageText: any,
-            AdditionalInformation?: any,
+            MessageText: string,
+            AdditionalInformation?: string,
             Priority?: PriorityEnum, /* pmNormal */
             Attrib?: LogAttributes | null,
             OwnerFolderId?: int): int;
         /** Posts a checkpoint message to the test log. */
         Checkpoint(
-            MessageText: any,
-            AdditionalInformation?: any,
+            MessageText: string,
+            AdditionalInformation?: string,
             Priority?: PriorityEnum, /* pmNormal */
             Attrib?: LogAttributes | null,
             Picture?: Picture | Element | string,
@@ -2272,10 +2276,77 @@ declare namespace TestComplete {
         TestItem(Index: int): ProjectTestItem;
     }
 
-    interface LogData { }
-    interface LogTableData extends LogData { }
-    interface TextLogData extends LogData { }
-    interface PictureLogData extends LogData { }
+    /** The scheme holds the dataset name and describes the type and structure of the stored data. */
+    interface LogDataScheme {
+        /** Returns the scheme of the child dataset by its index. */
+        Child(Index: int): LogDataScheme | LogTableDataScheme;
+        /** Returns the total number of child datasets in the dataset that the given scheme describes. */
+        ChildCount: int;
+        /** Returns the type of data in the dataset that the given scheme describes. */
+        DataType: ldtText | ldtPicture | ldtTable;
+        /** Returns the name of the dataset that the given scheme describes. */
+        Name: string;
+    }
+
+    interface LogTableDataScheme extends LogDataScheme {}
+
+    interface LogData {
+        /** Scheme of the log data. */
+        Scheme: LogDataScheme;
+    }
+
+    interface LogTableData extends LogData {
+        /** Returns the total number of rows in the current table. */
+        RowCount: int;
+        /** Returns the table row by index. */
+        Rows: LogTableRow;
+        /** Returns the LogTableDataScheme object holding the table scheme. */
+        Scheme: LogTableDataScheme;
+    }
+
+    interface LogColumn {}
+
+    /**
+     * The tables in the TestComplete test log can be two types: common tables
+     * and tree-like tables (for example, the Test Log table in the generic script log).
+     * Each row of the test log table, including child rows of tree-like tables, is represented as the LogTableRow object.
+     */
+    interface LogTableRow {
+        /** Returns the child dataset for the given row by its scheme. */
+        ChildData(DataScheme: LogDataScheme): LogTableData | TextLogData | PictureLogData;
+        /** Returns the child dataset for the given row by the dataset’s index. */
+        ChildDataByIndex(Index: int): LogTableData | TextLogData | PictureLogData;
+        /** Returns the child dataset for the given row by the panel name where this data is displayed. */
+        ChildDataByName(DataName: string): LogTableData | TextLogData | PictureLogData;
+        /** Returns the child row by its index. */
+        ChildRow(Index: int): LogTableRow;
+        /** Returns the total number of child rows for a given row. */
+        ChildRowCount: int;
+        /** Returns the value stored in the specified column. */
+        Value(Column: LogColumn): Variant;
+        /** Returns the value stored in the column specified by its index. */
+        ValueByIndex(Index: int): Variant;
+        /** Returns the value stored in the column with the specified name. */
+        ValueByName(ColumnName: string): Variant;
+    }
+
+    interface TextLogData extends LogData {
+        /** Returns the format of the stored text. */
+        Format: ltfPlain | ltfHTML | ltfXML | ltfURL;
+        /** Returns the LogDataScheme object holding the scheme of the text data. */
+        Scheme: LogDataScheme;
+        /** Returns the stored text. */
+        Text: string;
+    }
+
+    /** The PictureLogData object lets you work with a picture stored in the log.
+     * This can be, for example, the picture displayed in the Picture panel of the Test Log page. */
+    interface PictureLogData extends LogData {
+        /** Returns the Picture object holding the stored picture. */
+        Picture: Picture;
+        /** Returns the LogDataScheme object holding the scheme of the picture data. */
+        Scheme: LogDataScheme;
+    }
 
     /**
      * provides a scripting interface to a project's log item. Log items are displayed in the test log panel.
@@ -2379,6 +2450,7 @@ declare namespace TestComplete {
     type FileAttributesEnum = aqFileSystem.faReadOnly | aqFileSystem.faHidden | aqFileSystem.faSystem
         | aqFileSystem.faArchive | aqFileSystem.faNormal | aqFileSystem.faTemporary
         | aqFileSystem.faOffline | aqFileSystem.faNotContentIndexed;
+    type LogFormatEnum = lsXML | lsHTML | lsJUnit | lsMHT | lsPackedHTML | lsZip;
 }
 
 /**
@@ -2688,13 +2760,14 @@ declare namespace BuiltIn {
     const lmNone: lmNone;
     const lmWarning: lmWarning;
 
-    const lsHTML: int;
-    const lsMHT: int;
-    const lsXML: int;
-    const ltfHTML: int;
-    const ltfPlain: int;
-    const ltfURL: int;
-    const ltfXML: int;
+    const lsHTML: lsHTML;
+    const lsMHT: lsMHT;
+    const lsXML: lsXML;
+
+    const ltfHTML: ltfHTML;
+    const ltfPlain: ltfPlain;
+    const ltfURL: ltfURL;
+    const ltfXML: ltfXML;
 
     const mbAbort: mbAbort;
     const mbAbortIgnore: mbAbortIgnore;
