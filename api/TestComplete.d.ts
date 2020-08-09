@@ -1504,7 +1504,14 @@ declare namespace TestComplete {
         cmpNotIn = 15,
     }
 
+    interface CallObjectMethodAsyncResult {}
+
+    /**
+     * The Runner object is used to control script execution from the script. It includes
+     * methods that allow you to stop the script execution and to run routines by their names.
+     */
     interface Runner {
+        /** Initializes TestComplete subsystems and runs the tests provided by the current project. */
         Start(): void;
 
         /**
@@ -1512,10 +1519,38 @@ declare namespace TestComplete {
          * this method does not post messages to the test log.
          */
         Stop(CurrentTestOnly: boolean): void;
-        Halt(ErrorString: string): void;
+        /**
+         * The `Halt` method stops the script execution and posts an error string specified by `ErrorMsg` to the test log.
+         *
+         * The methods stops the entire test run, that is, for instance, if you are executing a project
+         * or project suite test, the method will stop the entire project or project suite run.
+         *
+         * TestComplete generates the OnStopTest event when you stop the test run using the Runner.Halt method.
+         * You can create a handling routine for this event to perform specific actions when the test stops.
+         */
+        Halt(ErrorMsg: string): void;
+        /** Calls a script routine specified by its name and unit name. */
         CallMethod(ComplexName: string): void;
-        CallObjectMethodAsync(Obj: any, MethodName: any): any;
-        SetObjectPropertyAsync(Obj: any, PropertyName: any): any;
+        /**
+         * Calls the method of the specified application object from scripts asynchronously
+         * (that is, CallObjectMethodAsync does not pause the script run until the method execution is over).
+         * You can also use this method to obtain a property’s value (that is, to call the property’s get method).
+         *
+         * @param Obj Specifies the object whose method will be called.
+         * @param MethodName The name of the desired object method or property.
+         * @param Params Specifies the method parameters (if any). If you obtain
+         * the value of an indexed property, these parameters specify the index values.
+         *
+         * @returns the CallObjectMethodAsyncResult object that contains methods and properties
+         * allowing you to pause the script execution until the called method returns and providing access to method results.
+         */
+        CallObjectMethodAsync(Obj: any, MethodName: string, ...Params: Variant[]): CallObjectMethodAsyncResult;
+
+        /**
+         * Sets the property of the specified application object from scripts asynchronously
+         * (that is, SetObjectPropertyAsync does not pause the script run until the execution of the property’s set method is over).
+         */
+        SetObjectPropertyAsync(Obj: any, PropertyName: any, ...Params: Variant[]): any;
 
         /** Pauses the test execution and activates the debugger. */
         Pause(): void;
@@ -2931,7 +2966,11 @@ declare namespace BuiltIn {
         Reserved: int): mrYes | mrAll | mrYesToAll | mrNo | mrAbort | mrNoToAll | mrOk | mrRetry | mrCancel | mrIgnore;
     /** Returns a number of command-line arguments passed to TestComplete at startup. */
     function ParamCount(): int;
-    /** Returns a TestComplete command-line argument specified by its index. */
+    /**
+     * Returns a TestComplete command-line argument specified by its index.
+     * @param Index The index of the arguments is not zero-based. However,
+     * you can use the 0 index to access the fully-qualified name of the TestComplete executable.
+     */
     function ParamStr(Index: int): string;
     /** Sends an e-mail message using the Simple Mail Transfer Protocol (SMTP). */
     function SendMail(
