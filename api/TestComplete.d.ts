@@ -244,42 +244,42 @@ declare namespace TestComplete {
 
         /** Searches for a child object that has the specified property values. */
         Find(
-            PropNames: Array<any>,
-            PropValues: Array<string>,
+            PropNames: Array<string>,
+            PropValues: Array<any>,
             Depth?: int /* 1 */,
             RefreshTree?: boolean /* true */): any;
         /** Returns an array of child objects that have the specified property values. */
         FindAll(
-            PropNames: Array<any>,
-            PropValues: Array<string>,
+            PropNames: Array<string>,
+            PropValues: Array<any>,
             Depth?: int /* 1 */,
             RefreshTree?: boolean /* true */): any;
         /** Returns an array of child objects that have the specified property values. */
         FindAllChildren(
-            PropNames: Array<any>,
-            PropValues: Array<string>,
+            PropNames: Array<string> | string,
+            PropValues: Array<any> | any,
             Depth?: int /* 1 */,
             RefreshTree?: boolean /* true */): any;
 
         /** Searches for a child object that has the specified property values. */
         FindChild(
-            PropNames: Array<any>,
-            PropValues: Array<string>,
+            PropNames: Array<string>,
+            PropValues: Array<any>,
             Depth?: int /* 0 */,
             RefreshTree?: boolean /* true */): any;
 
         /** Searches for a child object that has the specified property values during the specified timeout period. */
         FindChildEx(
-            PropNames: Array<any>,
-            PropValues: Array<string>,
+            PropNames: Array<string>,
+            PropValues: Array<any>,
             Depth?: int /* 0 */,
             RefreshTree?: boolean /* true */,
             Timeout?: int /* 0 */): any;
 
         /** Searches for a child object that has the specified property values during the specified timeout period. */
         FindEx(
-            PropNames: Array<any>,
-            PropValues: Array<string>,
+            PropNames: Array<string>,
+            PropValues: Array<any>,
             Depth?: int /* 1 */,
             RefreshTree?: boolean /* true */,
             Timeout?: int /* 0 */): any;
