@@ -145,6 +145,7 @@ declare namespace TestComplete {
     interface ExportWindow extends Window { }
     interface ClashesWindow extends Window { }
     interface MarkersDialogLogin extends Dialog { }
+    interface Client extends Element {}
     interface TreeView extends Element {
         ExpandItem(Item: any): void;
         ClickItem(Item: string, Shift?: int /* skNoShift */): void;
