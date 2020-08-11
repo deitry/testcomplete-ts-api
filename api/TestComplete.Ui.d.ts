@@ -25,8 +25,11 @@ declare namespace TestComplete {
          * Specifies the item you want to click.
          * Submenu items should be specified by the "full path" starting from the top-level menu.
          * To separate items in the "path", use the vertical character (`"|"`).
+         * If you use the index in the path, put the index number in brackets.
+         *
          * @example
          * w.MainMenu.Click("View|Show Toolbar")
+         * w.MainMenu.Click("Edit|[1]|[0]")
          */
         Click(Item: string | int): void;
         /** Checks or unchecks the specified menu or submenu item. */
