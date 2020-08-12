@@ -436,6 +436,12 @@ declare namespace TestComplete {
         Text(Name: string): Text;
         RadioButton(Name: string): RadioButton;
 
+        /**
+         * This action brings the window to the top (that is, in front of other windows)
+         * if it is a top-level window or an MDI-child window. If the window is minimized,
+         * `Activate` first brings it back to the normal state. This action has no effect
+         * on popup windows and controls, except that an error message is inserted into the test log.
+         */
         Activate(): void;
         AWTObject(Name: any, AccName: any, Index: any, WndIndex: any): any;
         Child(Index: int): any;
