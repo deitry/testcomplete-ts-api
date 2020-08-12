@@ -261,7 +261,7 @@ def generateElementDeclaration(
     if (not obj.type) or obj.type == "Element":
         obj.type = inferTypeFromName(mappedName)
 
-    result += f'{CLASS_PREFIX}{obj.type} & '
+    result += f'{CLASS_PREFIX}{obj.type} & TestComplete.MappedObject & '
     result += '{\n'
     result += generatePropsDeclarations(obj)
     children = generateChildrenDeclaration(el, allObjects)
