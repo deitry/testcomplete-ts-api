@@ -1163,6 +1163,16 @@ declare namespace TestComplete {
          * white pixels on the mask are taken into account during the comparison,
          * whereas black pixels are ignored.
          *
+         * @returns If the compared images are identical, the Difference method returns an empty value (`null` in JavaScript).
+         * If the images differ, the method returns a picture (represented by the Picture object)
+         * that shows the difference between the images. The following color highlighting scheme is used:
+         * - Identical pixels are filled with white.
+         * - The pixels that differ from one image to another are highlighted with red.
+         * - The excess areas (when the images' height or width is different) are highlighted with fuchsia.
+         * - Dissimilar pixels that were skipped due to the PixelTolerance parameter are highlighted with blue.
+         * - The pixels that were skipped due to the Transparent or Mask parameter are filled with gray.
+         * - The pixels that were ignored due to the ColorTolerance parameter are highlighted with yellow.
+         *
          * @see https://support.smartbear.com/testcomplete/docs/testing-with/checkpoints/regions/why-image-comparison-fails.html
          * @see https://support.smartbear.com/testcomplete/docs/testing-with/checkpoints/regions/factors-affecting-image-comparison.html
          */
