@@ -1061,7 +1061,42 @@ declare namespace TestComplete {
         /** Lets you get or set the width and height of the given image. */
         Size: any;
 
-        /** Compares the given image with another image and returns `true` or `false` depending on whether they are identical or not. */
+        /**
+         * Compares the given image with another image and returns `true` or `false`
+         * depending on whether they are identical or not.
+         *
+         * @param Picture The Picture object that represents the image to be compared
+         * with the PictureObj image. Alternatively, this can be an object that has
+         * the Picture method which returns the desired Picture object.
+         * @param Transparent `false` by default. If it is `true`, then the top left pixel
+         * of the given image will be treated as the “transparent” (background) color
+         * in this image. Therefore, any transparent pixels in the first image will be
+         * excluded when being compared to the second image.
+         * @param PixelTolerance Lets you ignore slight differences between the bitmaps
+         * during the search. If the number of different pixels is less than or equal
+         * to PixelTolerance, then TestComplete considers the images to be identical.
+         * `0` is the default value; it means that no differences between the bitmaps
+         * except for those set by the Transparent parameter are ignored.
+         * NOTE: Using the PixelTolerance parameter with non-zero values may slow down the search process.
+         * @param Mouse This parameter is only meaningful if --
+         * - The Picture parameter specifies an object that has the Picture method that returns a Picture object.
+         * and
+         * - Picture corresponds to an image that has a mouse pointer on it.
+         * If the Mouse parameter is `true`, the `Compare` method includes the mouse
+         * pointer in the Picture image. The method will only return `true` if Picture also
+         * contains the mouse pointer image in the same position.
+         * @param ColorTolerance Allows ignoring hue differences when comparing bitmaps.
+         * The parameter specifies an acceptable color difference under which two pixels
+         * of a certain color should be treated as identical. The color difference
+         * is represented as an integer value within the range `0`…`255` that specifies
+         * an acceptable difference for each color component (red, green and blue)
+         * of the compared pixels. Two pixels are considered identical if the difference
+         * between intensities of each of their color components does not exceed the specified value.
+         *
+         * When ColorTolerance is `0`, which is the default value, compared pixels
+         * are considered identical only if they have exactly the same color.
+         * When ColorTolerance is `255`, pixels of any color are considered identical.
+         */
         Compare(
             Picture: Picture,
             Transparent?: boolean /* false */,
