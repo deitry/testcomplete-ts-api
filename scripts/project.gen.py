@@ -135,7 +135,7 @@ def generateFile(sourceXmlPath: str, destinationDTs: str):
         generatedFile.write('/**\n')
         generatedFile.write(' * Provides interface to current project parameters.\n')
         generatedFile.write(' *\n')
-        generatedFile.write(' * NOTE: Auto-generated from ./Revizto5Tests/Revizto5Tests.mds.\n')
+        generatedFile.write(f' * NOTE: Auto-generated from {sourceXmlPath}.\n')
         generatedFile.write(' */\n')
         generatedFile.write('declare const Project: TestComplete.Generated.Project;\n')
 
