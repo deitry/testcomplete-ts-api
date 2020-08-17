@@ -139,11 +139,13 @@ def inferTypeFromName(elName: str) -> str:
         return 'ComboBox'
     elif containsKeyword(elName, 'checkbox'):
         return 'CheckBox'
-    elif containsKeyword(elName, 'button'):
+    elif containsKeyword(elName, ['button', 'btn']):
         return 'Button'
     elif containsKeyword(elName, 'form'):
         return 'Form'
-    elif containsKeyword(elName, 'window'):
+    elif containsKeyword(elName, ['window', 'wnd']):
+        return 'Window'
+    elif containsKeyword(elName, ['dialog', 'dlg']):
         return 'Window'
     elif containsKeyword(elName, ['edit', 'textbox', 'input']):
         return 'Edit'
