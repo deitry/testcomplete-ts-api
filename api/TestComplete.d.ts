@@ -499,18 +499,6 @@ declare namespace TestComplete {
         WPFObject(Name: any, Caption: any, Index: any): any;
     }
 
-    interface Aliases {
-        Exists: boolean;
-        RefreshMappingInfo(): void;
-        WaitProperty(PropertyName: string, PropertyValue: any, WaitTime?: int): boolean;
-        WaitAliasChild(ChildName: string, WaitTime?: int): any;
-        GetUnderlyingObject(): any;
-    }
-
-    interface Alias extends Aliases {
-    }
-
-
     /** Browser objects */
 
     interface BrowserProcess {
@@ -1978,7 +1966,7 @@ declare namespace TestComplete {
          * If WaitTime is `0`, the method searches for the specified object once and returns immediately.
          * If WaitTime is `-1`, the waiting time is specified by the Auto-wait timeout project setting.
          */
-        WaitAliasChild(ChildName: string, WaitTime?: int): TestComplete.RuntimeObject | { Exists: boolean };
+        WaitAliasChild(ChildName: string, WaitTime?: int): TestComplete.RuntimeObject | { readonly Exists: false };
     }
 
     interface Process extends RuntimeObject {
@@ -3469,7 +3457,7 @@ declare namespace Aliases {
      * If WaitTime is `0`, the method searches for the specified object once and returns immediately.
      * If WaitTime is `-1`, the waiting time is specified by the Auto-wait timeout project setting.
      */
-    function WaitAliasChild(ChildName: string, WaitTime?: int): TestComplete.RuntimeObject | { Exists: boolean };
+    function WaitAliasChild(ChildName: string, WaitTime?: int): TestComplete.RuntimeObject | { readonly Exists: false };
 }
 
 /*
