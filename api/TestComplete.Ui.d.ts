@@ -69,11 +69,28 @@ declare namespace TestComplete {
         SelectItem(Item: any): void;
     }
 
+    /** Common TestComplete ComboBox interface */
     interface ComboBox extends Element {
-        ClickItem(Item: any): void;
-        DropDown(): void;
+        /** 
+         * @param Item Specifies the desired item. You can enter the item’s index (from 0) or its caption. 
+         * The caption can contain asterisk (*) or question mark (?) wildcards or regular expressions. 
+         * The asterisk (*) corresponds to a string of any length (including an empty string), 
+         * the question mark corresponds to any single character (including none). 
+         * To specify more complicated parts of a caption, use regular expressions.
+         * 
+         * The caption can be case-sensitive or case-insensitive depending on the value of the Use case-sensitive parameters project setting.
+         */
+        ClickItem(Item: int | string): void;
 
-        SelectItemWithValue(name: string, val: any): void;
+        /** Opens the control’s drop-down list. */
+        DropDown(): void;
+    }
+
+    /** Wpf-specific ComboBox interface */
+    interface WpfComboBox<T extends System.Object> extends ComboBox {
+        Items: System.Windows.Controls.ItemCollection<T>;
+
+        SelectItemWithValue(name: string, selectNow: boolean): void;
     }
 
     interface List extends Element { }
@@ -148,7 +165,7 @@ declare namespace TestComplete {
     interface ExportWindow extends Window { }
     interface ClashesWindow extends Window { }
     interface MarkersDialogLogin extends Dialog { }
-    interface Client extends Element {}
+    interface Client extends Element { }
     interface TreeView extends Element {
         ExpandItem(Item: any): void;
         ClickItem(Item: string, Shift?: int /* skNoShift */): void;
