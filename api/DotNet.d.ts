@@ -6,6 +6,8 @@ declare namespace System {
     interface Object {
         ToString(): string;
     }
+
+    interface String extends Object { }
 }
 
 declare namespace System.Windows.Controls {
