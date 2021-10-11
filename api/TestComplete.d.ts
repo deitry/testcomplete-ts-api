@@ -963,7 +963,25 @@ declare namespace TestComplete {
         Items(ObjectName: string): any;
     }
 
-    interface Rect { }
+    interface Rect {
+        /** Get or set the vertical (Y) coordinate of the rectangle’s bottom edge (relative to the screen). */
+        Bottom: int;
+
+        /** Get or set the horizontal (X) coordinate of the rectangle’s left edge (relative to the screen). */
+        Left: int;
+
+        /** Get or set the horizontal (X) coordinate of the rectangle’s right edge (relative to the screen). */
+        Right: int;
+
+        /** Get or get the vertical (Y) coordinate of the rectangle’s top edge (relative to the screen). */
+        Top: int;
+        
+        /** Returns the rectangle’s height. */
+        readonly Height: int;
+
+        /** Returns the rectangle’s width. */
+        readonly Width: int;
+    }
 
     interface Regions {
         Add(FileName: string, Name: string, ACopyFile: boolean): boolean;
@@ -1003,7 +1021,7 @@ declare namespace TestComplete {
             Mouse?: boolean /* false */,
             PixelTolerance?: int /* 0 */): Rect;
 
-        /** searches pixel-by-pixel for one image.
+        /** Searches pixel-by-pixel for one image.
         The only difference from Find() is the order of the
         PictureToSearchIn and PictureToSearchFor parameters
          */
@@ -1180,7 +1198,7 @@ declare namespace TestComplete {
             PixelTolerance?: int /* 0 */,
             Mouse?: boolean /* true */,
             ColorTolerance?: int /* 0 */,
-            Mask?: Picture): any;
+            Mask?: Picture): Rect;
         /** Returns a new Picture object containing the specified rectangular region of the given picture. */
         GetRect(X: int, Y: int, Width: int, Height: int): any;
         /** Loads the given image from a file. */
