@@ -133,11 +133,11 @@ def inferTypeFromName(elName: str) -> str:
     """Tries to guess type of element by its name."""
     elName = elName.lower()
 
-    if containsKeyword(elName, 'radiobutton'):
+    if containsKeyword(elName, ['radiobutton', 'rb']):
         return 'RadioButton'
     elif containsKeyword(elName, 'combobox'):
         return 'ComboBox'
-    elif containsKeyword(elName, 'checkbox'):
+    elif containsKeyword(elName, ['checkbox', 'cb']):
         return 'CheckBox'
     elif containsKeyword(elName, ['button', 'btn']):
         return 'Button'
