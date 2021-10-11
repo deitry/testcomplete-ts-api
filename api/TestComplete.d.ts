@@ -1626,7 +1626,8 @@ declare namespace TestComplete {
          * Use the Stop method to stop the test execution. Unlike Runner.Halt,
          * this method does not post messages to the test log.
          */
-        Stop(CurrentTestOnly: boolean): void;
+        Stop(CurrentTestOnly: boolean): never;
+
         /**
          * The `Halt` method stops the script execution and posts an error string specified by `ErrorMsg` to the test log.
          *
@@ -1636,9 +1637,11 @@ declare namespace TestComplete {
          * TestComplete generates the OnStopTest event when you stop the test run using the Runner.Halt method.
          * You can create a handling routine for this event to perform specific actions when the test stops.
          */
-        Halt(ErrorMsg: string): void;
+        Halt(ErrorMsg: string): never;
+
         /** Calls a script routine specified by its name and unit name. */
         CallMethod(ComplexName: string): void;
+
         /**
          * Calls the method of the specified application object from scripts asynchronously
          * (that is, CallObjectMethodAsync does not pause the script run until the method execution is over).
