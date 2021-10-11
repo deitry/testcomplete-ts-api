@@ -401,6 +401,13 @@ declare namespace TestComplete {
         KeyUp(VirtualKeyCode: int): void;
     }
 
+    /**
+     * All the Win32 application windows are accessed through window objects in TestComplete tests: 
+     * top-level, child and popup windows. Top-level and popup windows belong to a process object; 
+     * child windows belong to a parent window (popup windows, of course, have no children.) 
+     * Both process and window objects have a method, Window, that returns any window they own by specifying its class 
+     * and, optionally, its caption (that is, its index within siblings of the same class)
+     */
     interface Window extends Element {
         readonly ControlId: int;
         readonly Focused: boolean;
@@ -435,6 +442,7 @@ declare namespace TestComplete {
         Popup(Name: string): Popup;
         Text(Name: string): Text;
         RadioButton(Name: string): RadioButton;
+        Button(Name: string): Button;
 
         /**
          * This action brings the window to the top (that is, in front of other windows)
