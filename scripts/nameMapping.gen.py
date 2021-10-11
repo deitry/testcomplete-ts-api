@@ -174,6 +174,8 @@ def getObject(el: Element, allObjects: Dict[str, NameMappingElement]):
                     obj.type = val.value
                 if name == 'WndClass':
                     obj.type = convertWndClass(val.value)
+                if name == 'ClrClassName':
+                    obj.type = val.value
                 if name == 'RootVisual.ClrClassName':
                     obj.type = val.value
                 if name == 'ClrFullClassName':
