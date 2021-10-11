@@ -975,7 +975,7 @@ declare namespace TestComplete {
 
         /** Get or get the vertical (Y) coordinate of the rectangle’s top edge (relative to the screen). */
         Top: int;
-        
+
         /** Returns the rectangle’s height. */
         readonly Height: int;
 
@@ -1612,7 +1612,7 @@ declare namespace TestComplete {
         cmpNotIn = 15,
     }
 
-    interface CallObjectMethodAsyncResult {}
+    interface CallObjectMethodAsyncResult { }
 
     /**
      * The Runner object is used to control script execution from the script. It includes
@@ -1990,7 +1990,79 @@ declare namespace TestComplete {
         WaitAliasChild(ChildName: string, WaitTime?: int): TestComplete.RuntimeObject | { readonly Exists: false };
     }
 
+    /**
+     * Everything outside of TestComplete itself is accessed by tests as an element of a Windows process. The object through which all outside access to tests is obtained, Sys, has Process children, each with a unique, two-part ID:
+     * - The name of the executable file that starts the process.
+     * - The index of the process instance. An application can have several instances running simultaneously. 
+     * The first (earliest launched instance) has index 1, the second - index 2, etc. 
+     * If you obtain several processes with an identical name and the process with the lowest index is terminated, 
+     * the indexes of the other processes will be decreased by one.
+     */
     interface Process extends RuntimeObject {
+
+        /** Returns the number of child objects of the given object. */
+        readonly ChildCount: int;
+
+        /** 
+         * Returns the command line passed to the process at the moment of process creation. 
+         * The first argument of this command line is the name of the executable that started the process. 
+         */
+        readonly CommandLine: string;
+
+        /** Returns the approximate percentage of CPU time spent on executing the process. */
+        readonly CPUUsage: int;
+
+        /** 
+         * Specifies the application name users see it in the operating system.
+         * NOTE: Applied only to the process objects that correspond to Windows Store applications. 
+         */
+        readonly FriendlyName: string;
+
+        /** Specifies the full name that uniquely identifies the object in TestComplete. */
+        readonly FullName: string;
+
+        /** Index of the process among other processes started by the same executable. */
+        readonly Index: int;
+
+        /** Specifies whether the process is an Open Application (TestComplete can access methods, properties and events of internal application’s objects). */
+        readonly IsOpen: boolean;
+
+        /** Returns the custom name that is mapped to the original object name and is used to address the object in scripts. */
+        readonly MappedName: string;
+
+        /** Returns the total amount of memory (in kilobytes) allocated by the process. */
+        readonly MemUsage: int;
+
+        /** Specifies the executable’s path and name that started the process. */
+        readonly Path: string;
+
+        /** Specifies the priority of the process in the operating system. */
+        readonly Priority: int;
+
+        /** Name of the executable that started the process. */
+        readonly ProcessName: string;
+
+        /** Specifies whether the process is a 32- or 64-bit process. */
+        readonly ProcessType: string;
+
+        /** Returns the identifier of a session in which the process is running. */
+        readonly SessionId: int;
+
+        /** 
+         * The System indicates whether the specified application process is a system process. 
+         * System processes are, for example, those running under the System, Local Service and Network Service accounts. 
+         */
+        readonly System: boolean;
+
+        /** Returns the number of the active threads in the process. */
+        readonly ThreadCount: int;
+
+        /** Returns the name of the user account that started the process. */
+        readonly UserName: string;
+
+        /** Returns the amount of virtual memory (in kilobytes) committed to the process. */
+        readonly VMSize: int;
+
         AppDomain(Name: string, ClrVersion?: string): AppDomain;
         Form(Caption: string): Form;
 
@@ -2024,6 +2096,65 @@ declare namespace TestComplete {
          * @see `Process.Close`
          */
         Terminate(): boolean;
+
+        /** 
+         * The Refresh method updates the tree of currently running processes, their windows and child objects 
+         * which you can access either using the Sys object, or using the Object Browser panel. 
+         * This helps you ensure that the tree corresponds to the actual processes running in the system, 
+         * the windows they have and the objects that belong to these windows.
+         */
+        Refresh(): void;
+
+        /**
+         * Saves the process dump (minidump) to the specified .dmp file.
+         * Dumps created by this method include the following information:
+         * - stack traces for all threads existing in the process,
+         * - recently unloaded modules,
+         * - data referenced by locals or other stack memory.
+         * - (optional) the entire memory of the process.
+         * 
+         * @param FileName The fully-qualified path to the .dmp file to create. If the file already exists, TestComplete overwrites it.
+         * @param FullMemory Specifies whether to include the entire memory of the process in the dump. Defaults to `false`
+         */
+        SaveDumpToFile(FileName: string, FullMemory?: boolean): void;
+
+        /** 
+         * Creates a process dump (a .dmp file) in the project’s Log folder and adds the link to the dump file to the test log.
+         * This methods creates dumps in the minidump format. The dump includes the following information:
+         * - stack traces for all threads existing in the process,
+         * - recently unloaded modules,
+         * - data referenced by locals or other stack memory.
+         * - (optional) the entire memory of the process.
+         * 
+         * @param FullMemory Specifies whether to include the entire memory of the process in the dump. Defaults to `false`
+         */
+        SaveDumpToLog(FullMemory?: boolean): void;
+
+        /**
+         * This method returns the AppDomain object that is a wrapper for the AppDomain object of .NET Framework. 
+         * You can use this object to retrieve information about application domains existing in the ProcessObj process
+         * and to get access to static non-visual objects that exist in that domain (you can get the access through the dotNET property).
+         * 
+         * @param Name The friendly name of the application domain. This name is specified by the domain’s native FriendlyName property value.
+         * The friendly name of the default application domain is the same as the file name of the application executable. 
+         * For example, if the application file name is Orders.exe, the friendly name of its default domain is "Orders.exe".
+         * Note that a process can have multiple application domains with different names.
+         * @param ClrVersion This parameter is only used if the application hosts multiple CLR versions in the same process, 
+         * for example, .NET 4.0 runtime and .NET 2.0 runtime. It specifies the CLR version of the application domain 
+         * that you wish to obtain. The version number string must have the "major_version.minor_version" format. 
+         * For example, "4.0" or "2.0".
+         */
+        AppDomain(Name: string, ClrVersion?: string): AppDomain;
+    }
+
+    /**
+     * The AppDomain object provides access to .NET application domains that exist within an application process. 
+     * It also allows you to access namespaces, classes and class members in assemblies loaded into the corresponding domain.
+     * 
+     * @see https://support.smartbear.com/testcomplete/docs/reference/test-objects/controls/misc/appdomain/index.html
+     */
+    interface AppDomain {
+        // TODO
     }
 
     enum ObjectSearchStrategyType {
@@ -2434,7 +2565,7 @@ declare namespace TestComplete {
         Name: string;
     }
 
-    interface LogTableDataScheme extends LogDataScheme {}
+    interface LogTableDataScheme extends LogDataScheme { }
 
     interface LogData {
         /** Scheme of the log data. */
@@ -2450,7 +2581,7 @@ declare namespace TestComplete {
         Scheme: LogTableDataScheme;
     }
 
-    interface LogColumn {}
+    interface LogColumn { }
 
     /**
      * The tables in the TestComplete test log can be two types: common tables
