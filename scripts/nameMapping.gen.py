@@ -96,7 +96,7 @@ class PropertyValue():
 
 class NameMappingElement():
     def __init__(self, name: str):
-        self.name = name
+        self.name = name.replace(" ", "")
         self.props: Dict[str, PropertyValue] = {}
         # will save here only GUIDs since all objects should be in single dict
         self.childs: List[str] = []
@@ -172,13 +172,13 @@ def getObject(el: Element, allObjects: Dict[str, NameMappingElement]):
                 # special handling for type properties
                 if name == 'ObjectType':
                     obj.type = val.value
-                if name == 'WndClass':
+                elif name == 'WndClass':
                     obj.type = convertWndClass(val.value)
-                if name == 'ClrClassName':
+                elif name == 'ClrClassName':
                     obj.type = val.value
-                if name == 'RootVisual.ClrClassName':
+                elif name == 'RootVisual.ClrClassName':
                     obj.type = val.value
-                if name == 'ClrFullClassName':
+                elif name == 'ClrFullClassName':
                     # something like System.Windows.Controls.Grid. Get last
                     obj.type = val.value.split('.')[-1]
                 else:
@@ -187,6 +187,8 @@ def getObject(el: Element, allObjects: Dict[str, NameMappingElement]):
     # last chance to deduce type
     if obj.type == 'Element':
         obj.type = inferTypeFromName(obj.name)
+
+    obj.type = obj.type.replace(" ", "")
 
     # child items
     for guid, child in getChilds(el, allObjects):

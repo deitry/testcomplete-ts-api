@@ -142,31 +142,18 @@ declare namespace TestComplete {
         MenuItem(Item: string | int): Element;
     }
     interface SplitButton extends Button { }
-    interface RibbonItemControl extends Control { }
-    interface RevitRibbonControl extends Control { }
     interface ContentPresenter extends Element { }
     interface TextBlock extends Element { }
     interface TextBox extends Element { }
-    interface MainWindow extends Window { }
     interface TabItem extends Element { }
     interface MenuControl extends Element { }
     interface GroupItem extends Element { }
     interface DatePicker extends Element { }
     interface ListBoxItem extends Element { }
     interface Label extends Element { }
-    interface RichEdit20W extends Edit { }
     interface StackPanel extends Panel { }
     interface ImageButton extends Button { }
     interface ThreadExceptionDialog extends Dialog { }
-    interface MarkersWindow extends Window { }
-    interface SheetsWindow extends Window { }
-    interface ReportingWindow extends Window { }
-    interface SharingControlWindow extends Window { }
-    interface AccountControl extends Window { }
-    interface ExportWindow extends Window { }
-    interface ClashesWindow extends Window { }
-    interface MarkersDialogLogin extends Dialog { }
-    interface Client extends Element { }
     interface TreeView extends Element {
         ExpandItem(Item: any): void;
         ClickItem(Item: string, Shift?: int /* skNoShift */): void;
