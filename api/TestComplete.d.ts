@@ -402,10 +402,10 @@ declare namespace TestComplete {
     }
 
     /**
-     * All the Win32 application windows are accessed through window objects in TestComplete tests: 
-     * top-level, child and popup windows. Top-level and popup windows belong to a process object; 
-     * child windows belong to a parent window (popup windows, of course, have no children.) 
-     * Both process and window objects have a method, Window, that returns any window they own by specifying its class 
+     * All the Win32 application windows are accessed through window objects in TestComplete tests:
+     * top-level, child and popup windows. Top-level and popup windows belong to a process object;
+     * child windows belong to a parent window (popup windows, of course, have no children.)
+     * Both process and window objects have a method, Window, that returns any window they own by specifying its class
      * and, optionally, its caption (that is, its index within siblings of the same class)
      */
     interface Window extends Element {
@@ -2001,9 +2001,9 @@ declare namespace TestComplete {
     /**
      * Everything outside of TestComplete itself is accessed by tests as an element of a Windows process. The object through which all outside access to tests is obtained, Sys, has Process children, each with a unique, two-part ID:
      * - The name of the executable file that starts the process.
-     * - The index of the process instance. An application can have several instances running simultaneously. 
-     * The first (earliest launched instance) has index 1, the second - index 2, etc. 
-     * If you obtain several processes with an identical name and the process with the lowest index is terminated, 
+     * - The index of the process instance. An application can have several instances running simultaneously.
+     * The first (earliest launched instance) has index 1, the second - index 2, etc.
+     * If you obtain several processes with an identical name and the process with the lowest index is terminated,
      * the indexes of the other processes will be decreased by one.
      */
     interface Process extends RuntimeObject {
@@ -2011,18 +2011,18 @@ declare namespace TestComplete {
         /** Returns the number of child objects of the given object. */
         readonly ChildCount: int;
 
-        /** 
-         * Returns the command line passed to the process at the moment of process creation. 
-         * The first argument of this command line is the name of the executable that started the process. 
+        /**
+         * Returns the command line passed to the process at the moment of process creation.
+         * The first argument of this command line is the name of the executable that started the process.
          */
         readonly CommandLine: string;
 
         /** Returns the approximate percentage of CPU time spent on executing the process. */
         readonly CPUUsage: int;
 
-        /** 
+        /**
          * Specifies the application name users see it in the operating system.
-         * NOTE: Applied only to the process objects that correspond to Windows Store applications. 
+         * NOTE: Applied only to the process objects that correspond to Windows Store applications.
          */
         readonly FriendlyName: string;
 
@@ -2056,9 +2056,9 @@ declare namespace TestComplete {
         /** Returns the identifier of a session in which the process is running. */
         readonly SessionId: int;
 
-        /** 
-         * The System indicates whether the specified application process is a system process. 
-         * System processes are, for example, those running under the System, Local Service and Network Service accounts. 
+        /**
+         * The System indicates whether the specified application process is a system process.
+         * System processes are, for example, those running under the System, Local Service and Network Service accounts.
          */
         readonly System: boolean;
 
@@ -2105,10 +2105,10 @@ declare namespace TestComplete {
          */
         Terminate(): boolean;
 
-        /** 
-         * The Refresh method updates the tree of currently running processes, their windows and child objects 
-         * which you can access either using the Sys object, or using the Object Browser panel. 
-         * This helps you ensure that the tree corresponds to the actual processes running in the system, 
+        /**
+         * The Refresh method updates the tree of currently running processes, their windows and child objects
+         * which you can access either using the Sys object, or using the Object Browser panel.
+         * This helps you ensure that the tree corresponds to the actual processes running in the system,
          * the windows they have and the objects that belong to these windows.
          */
         Refresh(): void;
@@ -2120,45 +2120,45 @@ declare namespace TestComplete {
          * - recently unloaded modules,
          * - data referenced by locals or other stack memory.
          * - (optional) the entire memory of the process.
-         * 
+         *
          * @param FileName The fully-qualified path to the .dmp file to create. If the file already exists, TestComplete overwrites it.
          * @param FullMemory Specifies whether to include the entire memory of the process in the dump. Defaults to `false`
          */
         SaveDumpToFile(FileName: string, FullMemory?: boolean): void;
 
-        /** 
+        /**
          * Creates a process dump (a .dmp file) in the project’s Log folder and adds the link to the dump file to the test log.
          * This methods creates dumps in the minidump format. The dump includes the following information:
          * - stack traces for all threads existing in the process,
          * - recently unloaded modules,
          * - data referenced by locals or other stack memory.
          * - (optional) the entire memory of the process.
-         * 
+         *
          * @param FullMemory Specifies whether to include the entire memory of the process in the dump. Defaults to `false`
          */
         SaveDumpToLog(FullMemory?: boolean): void;
 
         /**
-         * This method returns the AppDomain object that is a wrapper for the AppDomain object of .NET Framework. 
+         * This method returns the AppDomain object that is a wrapper for the AppDomain object of .NET Framework.
          * You can use this object to retrieve information about application domains existing in the ProcessObj process
          * and to get access to static non-visual objects that exist in that domain (you can get the access through the dotNET property).
-         * 
+         *
          * @param Name The friendly name of the application domain. This name is specified by the domain’s native FriendlyName property value.
-         * The friendly name of the default application domain is the same as the file name of the application executable. 
+         * The friendly name of the default application domain is the same as the file name of the application executable.
          * For example, if the application file name is Orders.exe, the friendly name of its default domain is "Orders.exe".
          * Note that a process can have multiple application domains with different names.
-         * @param ClrVersion This parameter is only used if the application hosts multiple CLR versions in the same process, 
-         * for example, .NET 4.0 runtime and .NET 2.0 runtime. It specifies the CLR version of the application domain 
-         * that you wish to obtain. The version number string must have the "major_version.minor_version" format. 
+         * @param ClrVersion This parameter is only used if the application hosts multiple CLR versions in the same process,
+         * for example, .NET 4.0 runtime and .NET 2.0 runtime. It specifies the CLR version of the application domain
+         * that you wish to obtain. The version number string must have the "major_version.minor_version" format.
          * For example, "4.0" or "2.0".
          */
         AppDomain(Name: string, ClrVersion?: string): AppDomain;
     }
 
     /**
-     * The AppDomain object provides access to .NET application domains that exist within an application process. 
+     * The AppDomain object provides access to .NET application domains that exist within an application process.
      * It also allows you to access namespaces, classes and class members in assemblies loaded into the corresponding domain.
-     * 
+     *
      * @see https://support.smartbear.com/testcomplete/docs/reference/test-objects/controls/misc/appdomain/index.html
      */
     interface AppDomain {
@@ -3705,3 +3705,11 @@ declare function getActiveXObject(OleObject: string, MachineName?: string): any;
 declare function MkSet(...Params: any): TestComplete.Set;
 /** Checks whether a particular set has a definite member. */
 declare function InSet(Member: any, SetName: TestComplete.Set): boolean;
+
+/**
+ * Compares two expressions to determine if they are equal, and returns true or false.
+ * If the compared expressions are not of the same type, TestComplete attempts
+ * to convert them to the same type (such as string, number, or boolean)
+ * before the comparison.
+ */
+declare function equal(a: TestComplete.Variant, b: TestComplete.Variant): boolean;
