@@ -76,8 +76,31 @@ declare namespace TestComplete {
         WaitProperty(PropertyName: string, PropertyValue: Variant, WaitTime?: int): boolean;
     }
 
+    interface TestObject {
+        /** Simulates a click of the left mouse button on the text block. */
+        Click(ClientX?: int, ClientY?: int, Shift?: ShiftStateEnum /** skNoShift */): void;
+        /** Simulates a click of the middle mouse button on the text block. */
+        ClickM(ClientX?: int, ClientY?: int, Shift?: ShiftStateEnum /** skNoShift */): void;
+        /** Simulates a click of the right mouse button on the text block. */
+        ClickR(ClientX?: int, ClientY?: int, Shift?: ShiftStateEnum /** skNoShift */): void;
+        /** Simulates a double-click of the left mouse button on the text block. */
+        DblClick(ClientX?: int, ClientY?: int, Shift?: ShiftStateEnum /* skNoShift */): void;
+        /** Simulates a double-click of the middle mouse button on the text block. */
+        DblClickM(ClientX?: int, ClientY?: int, Shift?: ShiftStateEnum /* skNoShift */): void;
+        /** Simulates a double-click of the right mouse button on the text block. */
+        DblClickR(ClientX?: int, ClientY?: int, Shift?: ShiftStateEnum /* skNoShift */): void;
+        /** Simulates a dragging event performed with the left mouse button. */
+        Drag(ClientX: int, ClientY: int, toX: int, toY: int, Shift?: ShiftStateEnum): void;
+        /** Simulates a dragging event performed with the middle mouse button. */
+        DragM(ClientX: int, ClientY: int, toX: int, toY: int, Shift?: ShiftStateEnum): void;
+        /** Simulates a dragging event performed with the right mouse button. */
+        DragR(ClientX: int, ClientY: int, toX: int, toY: int, Shift?: ShiftStateEnum): void;
+        /** Simulates moving the mouse pointer to the specified position within an text block. */
+        HoverMouse(ClientX?: int, ClientY?: int): void;
+    }
+
     /** Any onscreen object */
-    interface Element extends RuntimeObject {
+    interface Element extends RuntimeObject, TestObject {
         readonly Parent: Element;
         readonly Enabled: boolean;
         readonly Id: int;
@@ -96,9 +119,6 @@ declare namespace TestComplete {
 
         Refresh(): void;
         Picture(): Picture;
-        Click(ClientX?: int, ClientY?: int, Shift?: ShiftStateEnum /** skNoShift */): void;
-        DblClick(ClientX?: int, ClientY?: int, Shift?: ShiftStateEnum /* skNoShift */): void;
-        HoverMouse(ClientX?: int, ClientY?: int): void;
         Keys(input: string): void;
 
         // override
@@ -453,15 +473,8 @@ declare namespace TestComplete {
         Activate(): void;
         AWTObject(Name: any, AccName: any, Index: any, WndIndex: any): any;
         Child(Index: int): any;
-        ClickM(ClientX: int, ClientY: int, Shift: any): void;
-        ClickR(ClientX: int, ClientY: int, Shift: any): void;
         Close(WaitTimeout?: int): void;
         CLXObject(Name: any): any;
-        DblClickM(ClientX: int, ClientY: int, Shift: any): void;
-        DblClickR(ClientX: int, ClientY: int, Shift: any): void;
-        Drag(ClientX: int, ClientY: int, toX: int, toY: int, Shift: any): void;
-        DragM(ClientX: int, ClientY: int, toX: int, toY: int, Shift: any): void;
-        DragR(ClientX: int, ClientY: int, toX: int, toY: int, Shift: any): void;
         FindId(Id: int, RefreshTree: boolean): any;
         JavaFXObject(Name: any, Text: any, Index: any): any;
         Keys(Keys: string): void;
@@ -622,7 +635,7 @@ declare namespace TestComplete {
         SaveFile(path: string): void;
     }
 
-    interface Page {
+    interface Page extends TestObject {
         ChildCount: int;
         contentDocument: any;
         Enabled: boolean;
@@ -647,17 +660,8 @@ declare namespace TestComplete {
         Width: int;
         Alert(): any;
         Child(Index: int): any;
-        Click(ClientX: int, ClientY: int, Shift: any): void;
-        ClickM(ClientX: int, ClientY: int, Shift: any): void;
-        ClickR(ClientX: int, ClientY: int, Shift: any): void;
         Close(): void;
         Confirm(): any;
-        DblClick(ClientX: int, ClientY: int, Shift: any): void;
-        DblClickM(ClientX: int, ClientY: int, Shift: any): void;
-        DblClickR(ClientX: int, ClientY: int, Shift: any): void;
-        Drag(ClientX: int, ClientY: int, toX: int, toY: int, Shift: any): void;
-        DragM(ClientX: int, ClientY: int, toX: int, toY: int, Shift: any): void;
-        DragR(ClientX: int, ClientY: int, toX: int, toY: int, Shift: any): void;
         EvaluateXPath(XPath: string, SearchInFrames: boolean): any;
         Find(PropNames: any, PropValues: any, Depth: int, RefreshTree: boolean): any;
         FindAll(PropNames: any, PropValues: any, Depth: int, RefreshTree: boolean): any;
@@ -667,7 +671,6 @@ declare namespace TestComplete {
         FindChildEx(PropNames: any, PropValues: any, Depth: int, RefreshTree: boolean, Timeout: int): any;
         FindEx(PropNames: any, PropValues: any, Depth: int, RefreshTree: boolean, Timeout: int): any;
         FindId(Id: int, RefreshTree: boolean): any;
-        HoverMouse(ClientX: int, ClientY: int): void;
         Keys(Keys: string): void;
         Login(): any;
         MouseWheel(Delta: int, Shift: any): void;
@@ -2736,9 +2739,93 @@ declare namespace TestComplete {
         Priority: PriorityEnum;
     }
 
+    /**
+     * The Bounds object provides information about the height, width and coordinates
+     * of the upper-left and lower-right corners of a bounds rectangle. Generally this
+     * object contains data about the borders of a single control’s element
+     * like item, icon, button and so on.
+     */
+    interface Bounds {
+        /** Specifies the y-coordinate of the lower-right corner of a bounds rectangle. */
+        Bottom: int;
+        /** Returns the height of a bounds rectangle. */
+        Height: int;
+        /** Specifies the x-coordinate of the upper-left corner of a bounds rectangle. */
+        Left: int;
+        /** Specifies the x-coordinate of the lower-right corner of a bounds rectangle. */
+        Right: int;
+        /** Specifies the y-coordinate of the upper-left corner of a bounds rectangle. */
+        Top: int;
+        /** Returns the width of a bounds rectangle. */
+        Width: int;
+    }
+
+    interface MobileObject {
+        /** Simulates a touch on the text block. */
+        Touch(X?: int, Y?: int): void;
+    }
+
+    interface AndroidObject {
+        /**
+         * Simulates a long touch at the specified point of an object in an Android application (by default, in the object’s center).
+         */
+        LongTouch(X?: int, Y?: int): void;
+    }
+
+    interface XamarinFormsObject extends MobileObject { }
+    interface iOSObject extends MobileObject { }
+
+    interface OCRTextBlock extends TestObject, AndroidObject {
+        /** Returns the bounds of the text block. */
+        Bounds: Bounds;
+        /** Returns the text of the text block. */
+        Text: string;
+
+        /** Simulates a click of the left mouse button on the screen area that is at the specified distance and in the specified position relative to the text block. */
+        ClickNextTo(Direction: DirectionEnum, Offset: int): void;
+
+        /**
+         * Sends a keystroke to the screen area that is at the specified distance and in the specified position relative to the text block.
+         *
+         * @see https://support.smartbear.com/testcomplete/docs/reference/program-objects/ocrtextblock/sendkeys.html
+         */
+        SendKeys(Keys: string, Direction: int, Offset: int): void;
+
+        /** Simulates a touch on the screen area that is at the specified distance and in the specified position relative to the text block. */
+        TouchNextTo(Direction: DirectionEnum, Offset: int): void;
+    }
+
+    interface OCRTable {
+        /** Returns the bounds of the table area. */
+        Bounds: Bounds;
+        /** Returns the table cell specified by its row index and column index. */
+        Cell(RowIndex: int, ColumnIndex: int): OCRTextBlock;
+        /** Returns the header of the column specified by its index. */
+        Column(Index: int): string;
+        /** Returns the number of the table columns. */
+        ColumnCount: int;
+        /** Returns the number of table rows. */
+        RowCount: int;
+    }
+
+    interface OCRTextDocument {
+        /** Returns the recognized text in a tabular form. */
+        AsTable: OCRTable;
+        /** Returns a block of the recognized text by its index. */
+        Block(Index: int): OCRTextBlock;
+        /** Returns the number of the recognized text blocks. */
+        BlockCount: int;
+        /** Returns a table that resides at the specified position of the recognition area. */
+        DetectTable(SelectionPreference?: SelectionPreferenceEnum, HasHeader?: boolean): OCRTable;
+        /** Returns all the recognized text. */
+        FullText: string;
+    }
+
     // Simulate type enums. Used to simplify stating this as param type.
     // Will be expanded in hovers
 
+    type DirectionEnum = toLeft | toTop | toRight | toBottom;
+    type SelectionPreferenceEnum = spNone | spNearestToCenter | spLeftMost | spRightMost | spTopMost | spBottomMost | spLargest | spSmallest;
     type PriorityEnum = pmLowest | pmLower | pmNormal | pmHigher | pmHighest;
     type ShiftStateEnum = skNoShift | skShift | skAlt | skCtrl;
     type LogMessageTypeEnum = lmNone | lmMessage | lmWarning | lmError;
@@ -3667,6 +3754,25 @@ declare namespace NameMapping {
     function ConfigurationNames(Index: int): any;
 }
 
+declare interface OCR {
+    /**
+     * Recognizes the text of the specified UI element or image and returns
+     * an OCRTextDocument object that provides access to all the recognized text
+     * and individual text blocks and tabular data.
+     *
+     * - Your TestComplete version must be 12.60 or later.
+     * - You need an active license for the TestComplete Intelligent Quality add-on.
+     * - The Intelligent Quality add-on must be enabled in TestComplete.
+     * - Optical Character Recognition support must be enabled in TestComplete.
+     * - Your computer must have access to the ocr.api.dev.smartbear.com web service
+     * - Your firewall must allow traffic through port 443.
+     *
+     * @param SearchArea OleVariant object
+     * @see https://support.smartbear.com/testcomplete/docs/reference/program-objects/ocr/recognize.html
+     */
+    Recognize(SearchArea: any): TestComplete.OCRTextDocument;
+}
+
 declare const Options: TestComplete.Options;
 // declare const Project: TestComplete.Project;
 declare const ProjectSuite: TestComplete.ProjectSuite;
@@ -3682,6 +3788,7 @@ declare const Utils: TestComplete.Utils;
 declare const DBTables: TestComplete.DBTables;
 declare const Files: TestComplete.Files;
 declare const Objects: TestComplete.Objects;
+declare const OCR: OCR;
 declare const Regions: TestComplete.Regions;
 declare const Tables: TestComplete.Tables;
 declare const WebTesting: TestComplete.WebTesting;

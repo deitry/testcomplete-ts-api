@@ -16,6 +16,42 @@ declare type pmNormal = 300 & {Tag: "Priority"};
 declare type pmHigher = 400 & {Tag: "Priority"};
 declare type pmHighest = 500 & {Tag: "Priority"};
 
+declare const toLeft: toLeft;
+declare const toTop: toTop;
+declare const toRight: toRight;
+declare const toBottom: toBottom;
+
+declare type toLeft = 100 & {Tag: "Direction"};
+declare type toTop = 200 & {Tag: "Direction"};
+declare type toRight = 300 & {Tag: "Direction"};
+declare type toBottom = 400 & {Tag: "Direction"};
+
+/** The default value. The property will return the first table it finds. */
+declare const spNone: spNone;
+/** The property will return the table that is the closest to the center of the recognition area. */
+declare const spNearestToCenter: spNearestToCenter;
+/** The property will return the leftmost table. */
+declare const spLeftMost: spLeftMost;
+/** The property will return the rightmost table. */
+declare const spRightMost: spRightMost;
+/** The property will return the topmost table. */
+declare const spTopMost: spTopMost;
+/** The property will return the bottommost table. */
+declare const spBottomMost: spBottomMost;
+/** The property will return the largest table (the table that occupies the largest area). */
+declare const spLargest: spLargest;
+/** The property will return the smallest table (the table that occupies the smallest area). */
+declare const spSmallest: spSmallest;
+
+declare type spNone = -10 & {Tag: "SelectionPreference"};
+declare type spNearestToCenter = -20 & {Tag: "SelectionPreference"};
+declare type spLeftMost = -30 & {Tag: "SelectionPreference"};
+declare type spRightMost = -40 & {Tag: "SelectionPreference"};
+declare type spTopMost = -50 & {Tag: "SelectionPreference"};
+declare type spBottomMost = -60 & {Tag: "SelectionPreference"};
+declare type spLargest = -70 & {Tag: "SelectionPreference"};
+declare type spSmallest = -80 & {Tag: "SelectionPreference"};
+
 /** shift key is pressed */
 declare const skShift: skShift;
 /** alt key is pressed */
