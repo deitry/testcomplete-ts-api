@@ -1072,8 +1072,17 @@ declare namespace TestComplete {
          * the subsequent bytes hold values of green and blue components respectively.
          * @see https://support.smartbear.com/testcomplete/docs/scripting/colors.html */
         Pixels(X: int, Y: int): int;
-        /** Lets you get or set the width and height of the given image. */
-        Size: any;
+
+        /**
+         * Lets you get or set the width and height of the given image.
+         *
+         * NOTE: If you change the image size via the Picture.Size property,
+         * the image will be resized without scaling. The resulting image will be
+         * cropped or padded at the bottom right.
+         *
+         * To resize an image with scaling, use the Picture.Stretch method.
+         */
+        Size: Size;
 
         /**
          * Compares the given image with another image and returns `true` or `false`
@@ -1225,11 +1234,16 @@ declare namespace TestComplete {
 
         Point: any;
         Rect: any;
-        Size: any;
+        Size: Size;
         Timers: any;
 
         CreateStubObject(): any;
         Enumerator(Collection: any): any;
+    }
+
+    interface Size {
+        Width: int;
+        Height: int;
     }
 
     /** Provides symbolic names for the TestComplete global constants.
