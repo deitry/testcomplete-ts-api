@@ -108,7 +108,6 @@ declare namespace TestComplete {
     interface Pane extends Element { }
     interface TitleBar extends Element { }
     interface RadioButton extends Button { }
-    interface RadioButton extends Button { }
     interface MenuItem extends Element {
         /** Returns the caption of the menu item. */
         Caption: string;
