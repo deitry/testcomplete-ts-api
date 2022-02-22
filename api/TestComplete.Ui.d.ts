@@ -71,13 +71,13 @@ declare namespace TestComplete {
 
     /** Common TestComplete ComboBox interface */
     interface ComboBox extends Element {
-        /** 
-         * @param Item Specifies the desired item. You can enter the item’s index (from 0) or its caption. 
-         * The caption can contain asterisk (*) or question mark (?) wildcards or regular expressions. 
-         * The asterisk (*) corresponds to a string of any length (including an empty string), 
-         * the question mark corresponds to any single character (including none). 
+        /**
+         * @param Item Specifies the desired item. You can enter the item’s index (from 0) or its caption.
+         * The caption can contain asterisk (*) or question mark (?) wildcards or regular expressions.
+         * The asterisk (*) corresponds to a string of any length (including an empty string),
+         * the question mark corresponds to any single character (including none).
          * To specify more complicated parts of a caption, use regular expressions.
-         * 
+         *
          * The caption can be case-sensitive or case-insensitive depending on the value of the Use case-sensitive parameters project setting.
          */
         ClickItem(Item: int | string): void;
@@ -146,6 +146,7 @@ declare namespace TestComplete {
     interface RevitRibbonControl extends Control { }
     interface ContentPresenter extends Element { }
     interface TextBlock extends Element { }
+    interface TextBox extends Element { }
     interface MainWindow extends Window { }
     interface TabItem extends Element { }
     interface MenuControl extends Element { }
